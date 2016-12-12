@@ -213,18 +213,10 @@ public class MainActivity extends AppCompatActivity
 
     private void startNewsActivity(int id, String name){
         startActivity(id, name, NewsActivity.class);
-//        Intent activityIntent = new Intent(this, NewsActivity.class);
-//        activityIntent.putExtra("id", id);
-//        activityIntent.putExtra("name", name);
-//        startActivity(activityIntent);
     }
 
     private void startListActivity(int id, String name){
         startActivity(id, name, ListActivity.class);
-//        Intent activityIntent = new Intent(this, ListActivity.class);
-//        activityIntent.putExtra("id", id);
-//        activityIntent.putExtra("name", name);
-//        startActivity(activityIntent);
     }
 
     private void showNavFragment(int id, String name){
