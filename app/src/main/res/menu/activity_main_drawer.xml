@@ -3,33 +3,62 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_deputies"
+            android:icon="@drawable/ic_search_black_18dp"
+            android:title="Депутаты и Члены СФ" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_laws"
+            android:icon="@drawable/ic_search_black_18dp"
+            android:title="Законопроекты" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_depqueries"
+            android:icon="@drawable/ic_search_black_18dp"
+            android:title="Депутатские запросы" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Новости">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_news_gd"
+                android:icon="@drawable/ic_rss_feed_black_18dp"
+                android:title="Новости ГД" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_news_preds"
+                android:icon="@drawable/ic_rss_feed_black_18dp"
+                android:title="Новости председателя ГД" />
+        </menu>
+    </item>
+
+    <item android:title="Справочники">
+        <menu>
+            <item
+                android:id="@+id/nav_comittee"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список комитетов" />
+            <item
+                android:id="@+id/nav_blocks"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список тематических блоков" />
+            <item
+                android:id="@+id/nav_otras"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список отраслей законодательства" />
+            <item
+                android:id="@+id/nav_reg"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список региональных органов власти" />
+            <item
+                android:id="@+id/nav_fed"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список федеральных органов власти" />
+            <item
+                android:id="@+id/nav_stad"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список стадий рассмотрения" />
+            <item
+                android:id="@+id/nav_inst"
+                android:icon="@drawable/ic_list_black_18dp"
+                android:title="Список инстанций рассмотрения" />
         </menu>
     </item>
 

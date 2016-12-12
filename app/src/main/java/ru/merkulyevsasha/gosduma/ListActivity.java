@@ -1,0 +1,72 @@
+package ru.merkulyevsasha.gosduma;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.models.ListData;
+import ru.merkulyevsasha.gosduma.ui.ListViewListDataAdapter;
+
+
+public class ListActivity extends AppCompatActivity {
+
+    private HashMap<Integer, String> mListDataTableName = new HashMap<Integer, String>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.list_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        Intent intent = getIntent();
+        final int id = intent.getIntExtra("id", 0);
+        final String name = intent.getStringExtra("name");
+        setTitle(name);
+
+        mListDataTableName.put(R.id.nav_comittee, DatabaseHelper.COMMITTEE_TABLE_NAME);
+        mListDataTableName.put(R.id.nav_blocks, DatabaseHelper.BLOCKS_TABLE_NAME);
+        mListDataTableName.put(R.id.nav_otras, DatabaseHelper.OTRAS_TABLE_NAME);
+        mListDataTableName.put(R.id.nav_reg, DatabaseHelper.REG_TABLE_NAME);
+        mListDataTableName.put(R.id.nav_fed, DatabaseHelper.FED_TABLE_NAME);
+        mListDataTableName.put(R.id.nav_stad, DatabaseHelper.STAD_TABLE_NAME);
+        mListDataTableName.put(R.id.nav_inst, DatabaseHelper.INST_TABLE_NAME);
+
+        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        List<ListData> data = db.selectAll(mListDataTableName.get(id));
+
+        ListView mListView = (ListView) findViewById(R.id.listview_listdata);
+        ListViewListDataAdapter mAdapter = new ListViewListDataAdapter(this, new ArrayList<ListData>());
+        mListView.setAdapter(mAdapter);
+        mAdapter.clear();
+        mAdapter.addAll(data);
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+}
