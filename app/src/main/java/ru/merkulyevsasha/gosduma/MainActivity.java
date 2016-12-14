@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RadioButton;
 
 import com.google.firebase.crash.FirebaseCrash;
@@ -313,6 +314,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDeputyClick(Deputy deputy) {
-        Snackbar.make(findViewById(R.id.main_content_layout), deputy.name, Snackbar.LENGTH_LONG).show();
+
+        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
+        if (fl != null){
+            DeputyDetailsFragment fragment = DeputyDetailsFragment.newInstance(deputy);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        } else {
+            Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
+            activityIntent.putExtra("deputy", deputy);
+            startActivity(activityIntent);
+        }
+
+
     }
 }
