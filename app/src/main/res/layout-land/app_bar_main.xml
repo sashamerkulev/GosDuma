@@ -25,15 +25,26 @@
         android:id="@+id/main_content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:paddingTop="?attr/actionBarSize"
         >
 
         <FrameLayout
             android:id="@+id/frame_searchlist"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             >
         </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_searchdetails"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+        </FrameLayout>
+
 
     </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
@@ -17,7 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.RadioButton;
 
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -25,18 +27,27 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.DeputiesFragment;
+import ru.merkulyevsasha.gosduma.mvp.DeputiesPresenter;
+import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
+import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        SearchView.OnQueryTextListener{
+        SearchView.OnQueryTextListener,
+        ViewInterface.OnViewListener,
+        ViewInterface.onDeputyClickListener
+{
 
-    private final int IDD_SORT = 1;
-    private final int IDD_FILTER = 2;
+    public final static int IDD_DEPUTY_SORT = 1;
+    public final static int IDD_DEPUTY_FILTER = 2;
 
-    private AlertDialog.Builder mBuilder;
-    private int mSortItem = -1;
+    private PresenterInterface mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +96,10 @@ public class MainActivity extends AppCompatActivity
             FirebaseCrash.report(e);
         }
 
+        if (savedInstanceState == null) {
+            setDeputyFragment();
+        }
+
     }
 
     @Override
@@ -100,30 +115,84 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected Dialog onCreateDialog(int id) {
 
+        AlertDialog.Builder builder;
+
         switch (id) {
-            case IDD_SORT:
+            case IDD_DEPUTY_SORT:
 
-                final String[] sortItems ={"По наименованию", "По номеру", "По дате"};
+                final String[] sortItems = {getString(R.string.item_sort_name), getString(R.string.item_sort_birtdate),
+                        getString(R.string.item_sort_fractionname)};
 
-                mBuilder = new AlertDialog.Builder(this);
-                mBuilder.setTitle("Сортировка");
-                mBuilder.setCancelable(false);
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.title_sort);
 
-                mBuilder.setSingleChoiceItems(sortItems, mSortItem,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int item) {
-                            mSortItem = item;
-                            Toast.makeText(getApplicationContext(), "Сортировка: " + sortItems[item], Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                builder.setSingleChoiceItems(sortItems, mPresenter.getCurrentSortIndexValue().get(0),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+
+                                List<Integer> newSort = new ArrayList<Integer>();
+                                newSort.add(item);
+
+                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), newSort);
+                                dialog.dismiss();
+                            }
+                        });
+
+                return builder.create();
+
+            case IDD_DEPUTY_FILTER:
+
+                builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.title_filter);
+
+                View view = getLayoutInflater().inflate(R.layout.dialog_deputy_filter, null); // Получаем layout по его ID
+                builder.setView(view);
+                final RadioButton rb_deputy = (RadioButton)view.findViewById(R.id.radiobox_deputy_gd);
+                final RadioButton rb_member = (RadioButton)view.findViewById(R.id.radiobox_member);
+                final RadioButton rb_working = (RadioButton)view.findViewById(R.id.radiobox_working);
+                final RadioButton rb_not_working = (RadioButton)view.findViewById(R.id.radiobox_not_working);
+
+                final List<Integer> filterSettings = mPresenter.getCurrentFilterIndexValue();
+                final int deputy =  filterSettings.get(0);
+
+                rb_deputy.setChecked(deputy == DeputiesPresenter.DEPUTY_INDEX);
+                rb_member.setChecked(deputy == DeputiesPresenter.MEMBER_INDEX);
+
+                final int working =  filterSettings.get(1);
+                rb_working.setChecked(working == DeputiesPresenter.WORKING_INDEX);
+                rb_not_working.setChecked(working == DeputiesPresenter.NOT_WORKING_INDEX);
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() { // Кнопка ОК
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        List<Integer> newFilterSettings = new ArrayList<Integer>();
+                        if (rb_deputy.isChecked()){
+                            newFilterSettings.add(DeputiesPresenter.DEPUTY_INDEX);
+                        } else {
+                            if (rb_member.isChecked()) {
+                                newFilterSettings.add(DeputiesPresenter.MEMBER_INDEX);
+                            }
                         }
-                    });
+                        if (rb_working.isChecked()){
+                            newFilterSettings.add(DeputiesPresenter.WORKING_INDEX);
+                        } else {
+                            if (rb_not_working.isChecked()) {
+                                newFilterSettings.add(DeputiesPresenter.NOT_WORKING_INDEX);
+                            }
+                        }
+                        dialog.dismiss();
+                        mPresenter.filter(newFilterSettings);
+                    }
+                });
 
-                return mBuilder.create();
+                return builder.create();
+
 
             default:
                 return null;
         }
+
+
 
     }
 
@@ -140,7 +209,7 @@ public class MainActivity extends AppCompatActivity
         filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                showDialog(IDD_FILTER);
+                showDialog(mPresenter.getFilterDialogType());
                 return false;
             }
         });
@@ -149,19 +218,13 @@ public class MainActivity extends AppCompatActivity
         sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                showDialog(IDD_SORT);
+                showDialog(mPresenter.getSortDialogType());
                 return false;
             }
         });
 
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -219,17 +282,37 @@ public class MainActivity extends AppCompatActivity
         startActivity(id, name, ListActivity.class);
     }
 
+    private void setDeputyFragment(){
+        setTitle(R.string.menu_deputies);
+        DeputiesFragment fragment = new DeputiesFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchlist, fragment).commit();
+    }
+
     private void showNavFragment(int id, String name){
 
+        if (id == R.id.nav_deputies) {
+            setDeputyFragment();
+        }
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        mPresenter.search(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    @Override
+    public void onPresenterCreated(PresenterInterface presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void onDeputyClick(Deputy deputy) {
+        Snackbar.make(findViewById(R.id.main_content_layout), deputy.name, Snackbar.LENGTH_LONG).show();
     }
 }

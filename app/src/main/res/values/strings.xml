@@ -5,4 +5,23 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="menu_deputies">Депутаты и Члены СФ</string>
+    <string name="menu_laws">Законопроекты</string>
+    <string name="menu_deputies_requests">Депутатские запросы</string>
+    <string name="menu_news_gd">Новости ГД</string>
+    <string name="menu_news_preds">Новости председателя ГД</string>
+    <string name="menu_news">Новости</string>
+    <string name="menu_lists">Справочники</string>
+    <string name="menu_comittee">Список комитетов</string>
+    <string name="menu_blocks">Список тематических блоков</string>
+    <string name="menu_otras">Список отраслей законодательства</string>
+    <string name="menu_reg">Список региональных органов власти</string>
+    <string name="menu_fed">Список федеральных органов власти</string>
+    <string name="menu_stad">Список стадий рассмотрения</string>
+    <string name="menu_inst">Список инстанций рассмотрения</string>
+    <string name="title_sort">Сортировка</string>
+    <string name="title_filter">Фильтр</string>
+    <string name="item_sort_name">По имени</string>
+    <string name="item_sort_birtdate">По дате рождения</string>
+    <string name="item_sort_fractionname">По фракции</string>
 </resources>

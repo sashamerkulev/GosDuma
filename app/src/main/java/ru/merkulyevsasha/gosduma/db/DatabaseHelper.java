@@ -15,9 +15,13 @@ import java.util.Date;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.models.Article;
+import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.ListData;
 
 public class DatabaseHelper {
+
+    public final static String ASC = " asc";
+    public final static String DESC = " desc";
 
     public final static String DATABASE_NAME = "gosduma.db";
 
@@ -31,16 +35,26 @@ public class DatabaseHelper {
 
     public final static String ARTICLE_TABLE_NAME = "Article";
 
+    public final static String DEPUTY_TABLE_NAME = "DeputyDb";
+    public final static String DEPUTYINFO_TABLE_NAME = "DeputyInfoDb";
 
     private final static String ID = "id";
     private final static String NAME = "name";
     private final static String IS_CURRENT = "isCurrent";
+    private final static String POSITION = "position";
+    private final static String FACTIONNAME = "factionName";
+    private final static String FACTIONROLE = "factionRole";
+    private final static String FACTIONREGION = "factionRegion";
+    private final static String BIRTHDATE = "birthdate";
+    private final static String CREDENTIALSSTART = "credentialsStart";
+    private final static String CREDENTIALSEND = "credentialsEnd";
 
-    private final static String SOURCE= "Source";
-    private final static String LINK= "Link";
+    private final static String SOURCE = "Source";
+    private final static String LINK = "Link";
     private final static String TITLE = "Title";
-    private final static String PUBDATE= "PublicationDate";
+    private final static String PUBDATE = "PublicationDate";
     private final static String DESCRIPTION = "Text";
+
 
     private WeakReference<Context> mContext;
 
@@ -72,7 +86,7 @@ public class DatabaseHelper {
     private DatabaseHelper(final Context context) {
         mContext = new WeakReference<Context>(context);
         SQLiteDatabase mSqlite = openOrCreateDatabase();
-        if (mSqlite !=null && mSqlite.getVersion() == 0) {
+        if (mSqlite != null && mSqlite.getVersion() == 0) {
 //            mSqlite.execSQL(DATABASE_CREATE);
 //            mSqlite.setVersion(DATABASE_VERSION);
 //            mSqlite.close();
@@ -144,7 +158,7 @@ public class DatabaseHelper {
     }
 
 
-    public void addArticles(int source, List<Article> articles){
+    public void addArticles(int source, List<Article> articles) {
         SQLiteDatabase mSqlite = openOrCreateDatabase();
         try {
             if (mSqlite != null) {
@@ -172,7 +186,7 @@ public class DatabaseHelper {
         }
     }
 
-    public List<Article> getArticles(int source){
+    public List<Article> getArticles(int source) {
         List<Article> items = new ArrayList<Article>();
         String selectQuery = "SELECT  * FROM " + ARTICLE_TABLE_NAME + " WHERE Source=@source";
 
@@ -180,7 +194,7 @@ public class DatabaseHelper {
         try {
             if (mSqlite != null) {
 
-                Cursor cursor = mSqlite.rawQuery(selectQuery, new String[]{ String.valueOf(source)});
+                Cursor cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(source)});
 
                 if (cursor.moveToFirst()) {
                     do {
@@ -205,6 +219,64 @@ public class DatabaseHelper {
         return items;
     }
 
+    private Deputy getDeputy(Cursor cursor) {
+        Deputy item = new Deputy();
 
+        item.id = cursor.getInt(cursor.getColumnIndex(ID));
+        item.name = cursor.getString(cursor.getColumnIndex(NAME));
+        item.position = cursor.getString(cursor.getColumnIndex(POSITION));
+        item.isCurrent = cursor.getInt(cursor.getColumnIndex(IS_CURRENT)) > 0;
+
+        item.fractionName = cursor.getString(cursor.getColumnIndex(FACTIONNAME));
+        item.fractionRole = cursor.getString(cursor.getColumnIndex(FACTIONROLE));
+        item.fractionRegion = cursor.getString(cursor.getColumnIndex(FACTIONREGION));
+
+        item.birthdate = new Date(cursor.getLong(cursor.getColumnIndex(BIRTHDATE)));
+        item.credentialsStart = new Date(cursor.getLong(cursor.getColumnIndex(CREDENTIALSSTART)));
+        item.credentialsEnd = new Date(cursor.getLong(cursor.getColumnIndex(CREDENTIALSEND)));
+
+        return item;
+    }
+
+    public List<Deputy> search(String searchText, String orderBy, String position, int isCurrent) {
+        List<Deputy> items = new ArrayList<Deputy>();
+        String selectQuery = "SELECT  d.id, d.name, d.position, d.isCurrent, di.birthdate, di.credentialsStart, di.credentialsEnd "
+                + " , di.factionName, di.factionRole, di.factionRegion "
+                + " FROM " + DEPUTY_TABLE_NAME + " d JOIN " + DEPUTYINFO_TABLE_NAME + " di on di.id = d.id ";
+        selectQuery = selectQuery + " where d.position = @position and d.isCurrent = @isCurrent";
+        if (!searchText.isEmpty()) {
+            selectQuery = selectQuery + " and (d.name_lowcase like @search or di.factionName_lowcase like @search or di.factionRole_lowcase like @search or di.factionRegion_lowcase like @search) ";
+        }
+
+        selectQuery = selectQuery + " order by " + orderBy;
+
+        SQLiteDatabase mSqlite = openOrCreateDatabase();
+        try {
+            if (mSqlite != null) {
+
+                Cursor cursor;
+                if (searchText.isEmpty()) {
+                    cursor = mSqlite.rawQuery(selectQuery, new String[]{position, String.valueOf(isCurrent)});
+                } else {
+                    cursor = mSqlite.rawQuery(selectQuery, new String[]{position, String.valueOf(isCurrent), "%" + searchText.toLowerCase() + "%"});
+                }
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Deputy item = getDeputy(cursor);
+                        items.add(item);
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrash.report(e);
+        } finally {
+            if (mSqlite != null && mSqlite.isOpen())
+                mSqlite.close();
+        }
+        return items;
+    }
 
 }
+
+
