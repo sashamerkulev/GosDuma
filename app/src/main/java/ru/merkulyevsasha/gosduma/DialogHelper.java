@@ -1,0 +1,99 @@
+package ru.merkulyevsasha.gosduma;
+
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.RadioButton;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.merkulyevsasha.gosduma.mvp.DeputiesPresenter;
+
+public class DialogHelper {
+
+    public final static int IDD_DEPUTY_SORT = 1;
+    public final static int IDD_DEPUTY_FILTER = 2;
+
+    public static Dialog getDeputySortDialog(final Activity context, int currentItemIndex, final DialogClickListener listener){
+
+        final String[] sortItems = {
+                context.getString(R.string.item_sort_name),
+                context.getString(R.string.item_sort_birtdate),
+                context.getString(R.string.item_sort_fractionname)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.title_sort);
+
+        builder.setSingleChoiceItems(sortItems, currentItemIndex,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        dialog.dismiss();
+
+                        List<Integer> newSort = new ArrayList<Integer>();
+                        newSort.add(item);
+
+                        listener.onClick(newSort);
+                    }
+                });
+
+        return builder.create();
+
+    }
+
+    public static Dialog getDeputyFilterDialog(final Activity context, List<Integer> filterSettings, final DialogClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.title_filter);
+
+        View view = context.getLayoutInflater().inflate(R.layout.dialog_deputy_filter, null); // Получаем layout по его ID
+        builder.setView(view);
+        final RadioButton rb_deputy = (RadioButton)view.findViewById(R.id.radiobox_deputy_gd);
+        final RadioButton rb_member = (RadioButton)view.findViewById(R.id.radiobox_member);
+        final RadioButton rb_working = (RadioButton)view.findViewById(R.id.radiobox_working);
+        final RadioButton rb_not_working = (RadioButton)view.findViewById(R.id.radiobox_not_working);
+
+        final int deputy =  filterSettings.get(0);
+
+        rb_deputy.setChecked(deputy == DeputiesPresenter.DEPUTY_INDEX);
+        rb_member.setChecked(deputy == DeputiesPresenter.MEMBER_INDEX);
+
+        final int working =  filterSettings.get(1);
+        rb_working.setChecked(working == DeputiesPresenter.WORKING_INDEX);
+        rb_not_working.setChecked(working == DeputiesPresenter.NOT_WORKING_INDEX);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() { // Кнопка ОК
+            public void onClick(DialogInterface dialog, int whichButton) {
+                List<Integer> newFilterSettings = new ArrayList<Integer>();
+                if (rb_deputy.isChecked()){
+                    newFilterSettings.add(DeputiesPresenter.DEPUTY_INDEX);
+                } else {
+                    if (rb_member.isChecked()) {
+                        newFilterSettings.add(DeputiesPresenter.MEMBER_INDEX);
+                    }
+                }
+                if (rb_working.isChecked()){
+                    newFilterSettings.add(DeputiesPresenter.WORKING_INDEX);
+                } else {
+                    if (rb_not_working.isChecked()) {
+                        newFilterSettings.add(DeputiesPresenter.NOT_WORKING_INDEX);
+                    }
+                }
+                dialog.dismiss();
+                listener.onClick(newFilterSettings);
+            }
+        });
+
+        return builder.create();
+    }
+
+    public interface DialogClickListener{
+        void onClick(List<Integer> selectItemsIndex);
+    }
+
+}
