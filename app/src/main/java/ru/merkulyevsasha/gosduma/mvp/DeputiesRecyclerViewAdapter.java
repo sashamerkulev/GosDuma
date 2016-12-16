@@ -48,10 +48,10 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
         String fractionName = mItems.get(position).fractionName;
         String fractionRole = mItems.get(position).fractionRole;
 
-        Date birthdate = mItems.get(position).birthdate;
-        if (birthdate != null) {
+        long birthdate = mItems.get(position).birthdate;
+        if (birthdate != 0) {
             DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            holder.mDeputyName.setText(name + " ("+format.format(birthdate)+")");
+            holder.mDeputyName.setText(name + " ("+format.format(new Date(birthdate))+")");
         } else {
             holder.mDeputyName.setText(name);
         }

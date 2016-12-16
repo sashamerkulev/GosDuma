@@ -16,6 +16,7 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.models.ListData;
 
 public class DatabaseHelper {
@@ -48,6 +49,8 @@ public class DatabaseHelper {
     private final static String BIRTHDATE = "birthdate";
     private final static String CREDENTIALSSTART = "credentialsStart";
     private final static String CREDENTIALSEND = "credentialsEnd";
+    private final static String RANKS = "ranks";
+    private final static String DEGRESS = "degrees";
 
     private final static String SOURCE = "Source";
     private final static String LINK = "Link";
@@ -55,6 +58,15 @@ public class DatabaseHelper {
     private final static String PUBDATE = "PublicationDate";
     private final static String DESCRIPTION = "Text";
 
+    private final static String NUMBER = "number";
+    private final static String COMMENTS = "comments";
+    private final static String INTODUCTIONDATE = "introductionDate";
+    private final static String LASTEVENTSOLUTION = "lastEventSolution";
+    private final static String LASTEVENTDATE = "lastEventDate";
+    private final static String LASTEVENTDOCNAME = "lastEventDocName";
+    private final static String LASTEVENTDOCTYPE = "lastEventDocType";
+    private final static String RESPONSIBLENAME = "responsibleName";
+    private final static String TYPE = "type";
 
     private WeakReference<Context> mContext;
 
@@ -231,9 +243,11 @@ public class DatabaseHelper {
         item.fractionRole = cursor.getString(cursor.getColumnIndex(FACTIONROLE));
         item.fractionRegion = cursor.getString(cursor.getColumnIndex(FACTIONREGION));
 
-        item.birthdate = new Date(cursor.getLong(cursor.getColumnIndex(BIRTHDATE)));
-        item.credentialsStart = new Date(cursor.getLong(cursor.getColumnIndex(CREDENTIALSSTART)));
-        item.credentialsEnd = new Date(cursor.getLong(cursor.getColumnIndex(CREDENTIALSEND)));
+        item.birthdate = cursor.getLong(cursor.getColumnIndex(BIRTHDATE));
+        item.credentialsStart = cursor.getLong(cursor.getColumnIndex(CREDENTIALSSTART));
+        item.credentialsEnd = cursor.getLong(cursor.getColumnIndex(CREDENTIALSEND));
+        item.degrees = cursor.getString(cursor.getColumnIndex(DEGRESS));
+        item.ranks = cursor.getString(cursor.getColumnIndex(RANKS));
 
         return item;
     }
@@ -241,7 +255,7 @@ public class DatabaseHelper {
     public List<Deputy> search(String searchText, String orderBy, String position, int isCurrent) {
         List<Deputy> items = new ArrayList<Deputy>();
         String selectQuery = "SELECT  d.id, d.name, d.position, d.isCurrent, di.birthdate, di.credentialsStart, di.credentialsEnd "
-                + " , di.factionName, di.factionRole, di.factionRegion "
+                + " , di.factionName, di.factionRole, di.factionRegion, di.ranks, di.degrees "
                 + " FROM " + DEPUTY_TABLE_NAME + " d JOIN " + DEPUTYINFO_TABLE_NAME + " di on di.id = d.id ";
         selectQuery = selectQuery + " where d.position = @position and d.isCurrent = @isCurrent";
         if (!searchText.isEmpty()) {
@@ -276,6 +290,54 @@ public class DatabaseHelper {
         }
         return items;
     }
+
+    private Law getLaw(Cursor cursor){
+        Law item = new Law();
+
+        item.id = cursor.getInt(cursor.getColumnIndex(ID));
+        item.name = cursor.getString(cursor.getColumnIndex(NAME));
+        item.number = cursor.getString(cursor.getColumnIndex(NUMBER));
+        item.comments = cursor.getString(cursor.getColumnIndex(COMMENTS));
+        item.introductionDate = cursor.getLong(cursor.getColumnIndex(INTODUCTIONDATE));
+        item.lastEventSolution = cursor.getString(cursor.getColumnIndex(LASTEVENTSOLUTION));
+        item.lastEventDate = cursor.getLong(cursor.getColumnIndex(LASTEVENTDATE));
+        item.lastEventDocName = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCNAME));
+        item.lastEventDocType = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCTYPE));
+        item.responsibleName = cursor.getString(cursor.getColumnIndex(RESPONSIBLENAME));
+        item.type = cursor.getString(cursor.getColumnIndex(TYPE));
+
+        return item;
+    }
+
+    public List<Law> getDeputyLaws(int deputyId) {
+        List<Law> items = new ArrayList<Law>();
+        String selectQuery = "select l.id, l.number, l.name, l.comments, l.name_lowcase, l.comments_lowcase, l.introductionDate, l.url, l.transcriptUrl, "
+                + " l.lastEventStageId, l.lastEventPhaseId, l.responsibleId, l.responsibleName, l.responsibleName_lower, l.lastEventSolution, l.lastEventSolution_lowcase, l.type from LawDb l"
+                + " join LawDeputy ld on ld.LawId = l.id"
+                + " where ld.DeputyId = @deputyId ";
+
+        SQLiteDatabase mSqlite = openOrCreateDatabase();
+        try {
+            if (mSqlite != null) {
+
+                Cursor cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(deputyId)});
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Law item = getLaw(cursor);
+                        items.add(item);
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrash.report(e);
+        } finally {
+            if (mSqlite != null && mSqlite.isOpen())
+                mSqlite.close();
+        }
+        return items;
+    }
+
 
 }
 
