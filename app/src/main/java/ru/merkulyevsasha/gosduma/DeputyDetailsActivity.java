@@ -68,30 +68,35 @@ public class DeputyDetailsActivity extends AppCompatActivity
         mDeputy = intent.getParcelableExtra("deputy");
         setTitle(mDeputy.name);
 
+        final StringBuilder position = new StringBuilder();
         final DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         if (mDeputy.credentialsStart > 0) {
-
-            String period = " (период с " + format.format(new Date(mDeputy.credentialsStart));
+            position.append(mDeputy.position);
+            position.append(" (период с ");
+            position.append(format.format(new Date(mDeputy.credentialsStart)));
             if (mDeputy.credentialsEnd > 0) {
-                period = period + " по " + format.format(new Date(mDeputy.credentialsStart));
+                position.append(" по " + format.format(new Date(mDeputy.credentialsStart)));
             }
-            period = period +")";
-
-            mPosition.setText(mDeputy.position + period);
+            position.append(")");
         } else{
-            mPosition.setText(mDeputy.position);
+            position.append(mDeputy.position);
         }
+        mPosition.setText(position.toString());
 
+        final StringBuilder name = new StringBuilder();
         if (mDeputy.birthdate > 0) {
-            mDeputyName.setText(mDeputy.name + " (" + format.format(new Date(mDeputy.birthdate)) + ")");
+            name.append(mDeputy.name);
+            name.append(" (" + format.format(new Date(mDeputy.birthdate)) + ")");
         } else {
-            mDeputyName.setText(mDeputy.name);
+            name.append(mDeputy.name);
         }
+        mDeputyName.setText(name.toString());
 
+        final StringBuilder ranks = new StringBuilder();
         if (mDeputy.degrees.isEmpty()){
             mDeputyRanks.setVisibility(View.GONE);
         } else {
-            String ranks = mDeputy.ranks.isEmpty()? mDeputy.degrees : mDeputy.degrees + " (" + mDeputy.ranks + ")";
+            ranks.append(mDeputy.ranks.isEmpty()? mDeputy.degrees : mDeputy.degrees + " (" + mDeputy.ranks + ")");
             mDeputyRanks.setText(ranks);
         }
 
@@ -103,7 +108,26 @@ public class DeputyDetailsActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, mDeputy.name);
+
+                final StringBuilder message = new StringBuilder();
+
+                message.append(name.toString());
+                message.append("\n");
+                message.append(position.toString());
+                message.append("\n");
+                if (ranks.length() > 0) {
+                    message.append(ranks.toString());
+                    message.append("\n");
+                }
+                message.append(mDeputy.fractionName);
+                message.append("\n");
+                message.append(mDeputy.fractionRole);
+                if (!mDeputy.fractionRegion.isEmpty()){
+                    message.append(" ");
+                    message.append(mDeputy.fractionRegion);
+                }
+                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
             }
