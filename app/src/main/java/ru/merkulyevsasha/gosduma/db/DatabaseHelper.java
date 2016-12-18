@@ -67,6 +67,9 @@ public class DatabaseHelper {
     private final static String LASTEVENTDOCTYPE = "lastEventDocType";
     private final static String RESPONSIBLENAME = "responsibleName";
     private final static String TYPE = "type";
+    private final static String LASTEVENTPHASEID = "lastEventPhaseId";
+    private final static String LASTEVENTSTAGEID = "lastEventStageId";
+    private final static String RESPONSIBLEID = "responsibleId";
 
     private WeakReference<Context> mContext;
 
@@ -300,11 +303,14 @@ public class DatabaseHelper {
         item.comments = cursor.getString(cursor.getColumnIndex(COMMENTS));
         item.introductionDate = cursor.getLong(cursor.getColumnIndex(INTODUCTIONDATE));
         item.lastEventSolution = cursor.getString(cursor.getColumnIndex(LASTEVENTSOLUTION));
-        item.lastEventDate = cursor.getLong(cursor.getColumnIndex(LASTEVENTDATE));
-        item.lastEventDocName = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCNAME));
-        item.lastEventDocType = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCTYPE));
+        //item.lastEventDate = cursor.getLong(cursor.getColumnIndex(LASTEVENTDATE));
+        //item.lastEventDocName = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCNAME));
+        //item.lastEventDocType = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCTYPE));
         item.responsibleName = cursor.getString(cursor.getColumnIndex(RESPONSIBLENAME));
         item.type = cursor.getString(cursor.getColumnIndex(TYPE));
+        item.lastEventPhaseId = cursor.getInt(cursor.getColumnIndex(LASTEVENTPHASEID));
+        item.lastEventStageId = cursor.getInt(cursor.getColumnIndex(LASTEVENTSTAGEID));
+        item.responsibleId = cursor.getInt(cursor.getColumnIndex(RESPONSIBLEID));
 
         return item;
     }

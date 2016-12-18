@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp;
+package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 
 import android.content.Context;
@@ -11,8 +11,10 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.MainActivity;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
+import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
-public class DeputiesPresenter implements PresenterInterface{
+public class DeputiesPresenter implements PresenterInterface {
 
     public final static int NAME_INDEX = 0;
     public final static int BIRTHDATE_INDEX = 1;

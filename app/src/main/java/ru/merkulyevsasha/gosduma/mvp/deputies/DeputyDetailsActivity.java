@@ -1,12 +1,15 @@
-package ru.merkulyevsasha.gosduma;
+package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +22,21 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
-import ru.merkulyevsasha.gosduma.mvp.LawsPresenter;
+import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.laws.LawsPresenter;
+import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class DeputyDetailsActivity extends AppCompatActivity
-    implements ViewInterface{
+    implements ViewInterface,
+    ViewInterface.OnLawClickListener{
 
     @BindView(R.id.textview_deputy_name)
     TextView mDeputyName;
     @BindView(R.id.textview_position)
-    TextView mPosition;
+    TextView mDeputyPosition;
     @BindView(R.id.textview_deputy_fractionName)
     TextView mFractionName;
     @BindView(R.id.textview_deputy_fractionRole)
@@ -39,6 +46,12 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
     @BindView(R.id.fab)
     public FloatingActionButton mFab;
+
+    @BindView(R.id.recyclerview_deputy_laws)
+    public RecyclerView mRecyclerView;
+
+    private LawsRecyclerViewAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
 
     private Deputy mDeputy;
     private LawsPresenter mPresenter;
@@ -81,7 +94,7 @@ public class DeputyDetailsActivity extends AppCompatActivity
         } else{
             position.append(mDeputy.position);
         }
-        mPosition.setText(position.toString());
+        mDeputyPosition.setText(position.toString());
 
         final StringBuilder name = new StringBuilder();
         if (mDeputy.birthdate > 0) {
@@ -102,6 +115,21 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
         mFractionName.setText(mDeputy.fractionName);
         mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);
+
+        List<Law> items = mPresenter.getDeputyLaws(mDeputy.id);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new LawsRecyclerViewAdapter(items, this);
+        mRecyclerView.setAdapter(mAdapter);
+
+//        mAdapter.mItems = items;
+//        mAdapter.notifyDataSetChanged();
+
+//        if (mPosition > 0){
+//            mRecyclerView.scrollToPosition(mPosition);
+//        }
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,8 +161,6 @@ public class DeputyDetailsActivity extends AppCompatActivity
             }
         });
 
-        mPresenter.getDeputyLaws(mDeputy.id);
-
     }
 
 
@@ -153,5 +179,10 @@ public class DeputyDetailsActivity extends AppCompatActivity
     @Override
     public void show(List<Deputy> items) {
 
+    }
+
+    @Override
+    public void onLawClick(Law law) {
+        Snackbar.make(this.findViewById(R.id.details_content), law.name, Snackbar.LENGTH_LONG).show();
     }
 }

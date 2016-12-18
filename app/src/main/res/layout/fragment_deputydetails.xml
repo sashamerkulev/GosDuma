@@ -4,14 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textview_asdasdas"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="bold"
-        android:paddingBottom="4dp"
-        android:paddingTop="4dp"
-        android:gravity="center"
-        />
+        android:orientation="vertical"
+        android:padding="16dp"
+        >
+
+        <TextView
+            android:id="@+id/textview_deputy_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/textview_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/textview_deputy_ranks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/textview_deputy_fractionRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:gravity="left"
+            />
+
+        <TextView
+            android:id="@+id/textview_deputy_fractionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:gravity="left"
+            />
+
+    </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Список законов:"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_deputy_laws"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
 </LinearLayout>

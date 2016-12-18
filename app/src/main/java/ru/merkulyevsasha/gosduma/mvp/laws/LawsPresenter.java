@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp;
+package ru.merkulyevsasha.gosduma.mvp.laws;
 
 
 import android.content.Context;
@@ -8,9 +8,11 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
+import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 
-public class LawsPresenter implements PresenterInterface{
+public class LawsPresenter implements PresenterInterface {
 
     private final Context mContext;
     private final ViewInterface mViewInterface;

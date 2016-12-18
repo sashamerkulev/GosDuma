@@ -42,7 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".DeputyDetailsActivity"
+            android:name=".mvp.deputies.DeputyDetailsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

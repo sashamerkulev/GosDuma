@@ -3,7 +3,6 @@ package ru.merkulyevsasha.gosduma;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.mvp.DeputiesPresenter;
+import ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesPresenter;
 
 public class DialogHelper {
 

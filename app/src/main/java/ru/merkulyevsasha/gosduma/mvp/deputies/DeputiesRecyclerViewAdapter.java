@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp;
+package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -14,26 +14,27 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRecyclerViewAdapter.DeputiesViewHolder> {
 
     public List<Deputy> mItems;
 
-    private final ViewInterface.onDeputyClickListener mDeputyClickListener;
+    private final ViewInterface.OnDeputyClickListener mClickListener;
 
-    public DeputiesRecyclerViewAdapter(List<Deputy> items, ViewInterface.onDeputyClickListener clickListener){
+    public DeputiesRecyclerViewAdapter(List<Deputy> items, ViewInterface.OnDeputyClickListener clickListener){
         mItems = items;
-        mDeputyClickListener = clickListener;
+        mClickListener = clickListener;
     }
 
     @Override
     public DeputiesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.deputy_item, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_deputy_item, parent, false);
 
         return new DeputiesViewHolder(view, new ViewInterface.OnClickListener() {
             @Override
             public void onItemClick(int position) {
-                mDeputyClickListener.onDeputyClick(mItems.get(position));
+                mClickListener.onDeputyClick(mItems.get(position));
             }
         });
     }

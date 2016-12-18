@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp;
+package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,9 +13,10 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 
-public class DeputiesFragment extends Fragment implements ViewInterface{
+public class DeputiesFragment extends Fragment implements ViewInterface {
 
     private final static String KEY_POSITION = "POSITION";
 
@@ -66,7 +67,7 @@ public class DeputiesFragment extends Fragment implements ViewInterface{
 
         List<Deputy> items = mPresenter.getDeputies();
 
-        mAdapter = new DeputiesRecyclerViewAdapter(items, ((ViewInterface.onDeputyClickListener)getActivity()));
+        mAdapter = new DeputiesRecyclerViewAdapter(items, ((ViewInterface.OnDeputyClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPosition > 0){
