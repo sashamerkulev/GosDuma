@@ -1,7 +1,10 @@
 package ru.merkulyevsasha.gosduma.models;
 
 
-public class Law {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Law implements Parcelable{
 
     public int id;
     public String number;
@@ -21,4 +24,57 @@ public class Law {
 
     public String type;
 
+    public Law(){}
+
+    protected Law(Parcel in) {
+        id = in.readInt();
+        number = in.readString();
+        name = in.readString();
+        comments = in.readString();
+        introductionDate = in.readLong();
+        lastEventStageId = in.readInt();
+        lastEventPhaseId = in.readInt();
+        lastEventSolution = in.readString();
+        lastEventDate = in.readLong();
+        lastEventDocName = in.readString();
+        lastEventDocType = in.readString();
+        responsibleId = in.readInt();
+        responsibleName = in.readString();
+        type = in.readString();
+    }
+
+    public static final Creator<Law> CREATOR = new Creator<Law>() {
+        @Override
+        public Law createFromParcel(Parcel in) {
+            return new Law(in);
+        }
+
+        @Override
+        public Law[] newArray(int size) {
+            return new Law[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(number);
+        parcel.writeString(name);
+        parcel.writeString(comments);
+        parcel.writeLong(introductionDate);
+        parcel.writeInt(lastEventStageId);
+        parcel.writeInt(lastEventPhaseId);
+        parcel.writeString(lastEventSolution);
+        parcel.writeLong(lastEventDate);
+        parcel.writeString(lastEventDocName);
+        parcel.writeString(lastEventDocType);
+        parcel.writeInt(responsibleId);
+        parcel.writeString(responsibleName);
+        parcel.writeString(type);
+    }
 }

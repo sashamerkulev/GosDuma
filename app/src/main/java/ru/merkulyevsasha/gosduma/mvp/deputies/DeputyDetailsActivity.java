@@ -3,7 +3,10 @@ package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -31,7 +34,15 @@ import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class DeputyDetailsActivity extends AppCompatActivity
     implements ViewInterface,
-    ViewInterface.OnLawClickListener{
+    ViewInterface.OnLawClickListener,
+        AppBarLayout.OnOffsetChangedListener
+{
+
+    @BindView(R.id.collapsingToolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+
+    @BindView(R.id.appbarlayout)
+    AppBarLayout mAppbarLayout;
 
     @BindView(R.id.textview_deputy_name)
     TextView mDeputyName;
@@ -79,7 +90,12 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         mDeputy = intent.getParcelableExtra("deputy");
-        setTitle(mDeputy.name);
+        //setTitle(mDeputy.name);
+        setTitle("");
+
+        mAppbarLayout.addOnOffsetChangedListener(this);
+
+
 
         final StringBuilder position = new StringBuilder();
         final DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -123,13 +139,6 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
         mAdapter = new LawsRecyclerViewAdapter(items, this);
         mRecyclerView.setAdapter(mAdapter);
-
-//        mAdapter.mItems = items;
-//        mAdapter.notifyDataSetChanged();
-
-//        if (mPosition > 0){
-//            mRecyclerView.scrollToPosition(mPosition);
-//        }
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,5 +193,37 @@ public class DeputyDetailsActivity extends AppCompatActivity
     @Override
     public void onLawClick(Law law) {
         Snackbar.make(this.findViewById(R.id.details_content), law.name, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+            // Collapsed
+            setTitle(mDeputy.name);
+            mCollapsingToolbar.setTitleEnabled(true);
+            mDeputyName.setTextColor(Color.TRANSPARENT);
+            mDeputyPosition.setTextColor(Color.TRANSPARENT);
+            mDeputyRanks.setTextColor(Color.TRANSPARENT);
+            mFractionName.setTextColor(Color.TRANSPARENT);
+            mFractionRole.setTextColor(Color.TRANSPARENT);
+        } else if (verticalOffset == 0) {
+            // Expanded
+            setTitle("");
+            mCollapsingToolbar.setTitleEnabled(false);
+            mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
+        } else {
+            // Somewhere in between
+            setTitle("");
+            mCollapsingToolbar.setTitleEnabled(false);
+            mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
+        }
     }
 }

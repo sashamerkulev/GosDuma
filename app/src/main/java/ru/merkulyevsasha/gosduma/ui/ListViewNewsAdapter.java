@@ -50,7 +50,7 @@ public class ListViewNewsAdapter extends ArrayAdapter<Article> {
 
         Article item = mItems.get(position);
 
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         textViewTopic.setText(format.format(item.PubDate) + " " + item.Title);
 
         return rowView;
