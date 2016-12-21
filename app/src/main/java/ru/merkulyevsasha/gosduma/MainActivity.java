@@ -5,7 +5,6 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,6 +32,7 @@ import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
+import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -43,9 +43,6 @@ public class MainActivity extends AppCompatActivity
         ViewInterface.OnDeputyClickListener,
         ViewInterface.OnLawClickListener
 {
-
-    public final static int IDD_DEPUTY_SORT = 1;
-    public final static int IDD_DEPUTY_FILTER = 2;
 
     private PresenterInterface mPresenter;
 
@@ -263,6 +260,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLawClick(Law law) {
-        Snackbar.make(this.findViewById(R.id.main_content_layout), law.name, Snackbar.LENGTH_LONG).show();
+        Intent activityIntent = new Intent(this, LawDetailsActivity.class);
+        activityIntent.putExtra("law", law);
+        startActivity(activityIntent);
     }
 }

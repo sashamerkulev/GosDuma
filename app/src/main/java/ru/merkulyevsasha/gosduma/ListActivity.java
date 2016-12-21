@@ -3,9 +3,7 @@ package ru.merkulyevsasha.gosduma;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ import ru.merkulyevsasha.gosduma.models.ListData;
 import ru.merkulyevsasha.gosduma.ui.ListViewListDataAdapter;
 
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends BaseActivity {
 
     private HashMap<Integer, String> mListDataTableName = new HashMap<Integer, String>();
 
@@ -57,16 +55,5 @@ public class ListActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 }

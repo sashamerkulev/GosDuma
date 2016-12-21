@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -28,7 +26,7 @@ import ru.merkulyevsasha.gosduma.http.RssService;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.ui.ListViewNewsAdapter;
 
-public class NewsActivity extends AppCompatActivity
+public class NewsActivity extends BaseActivity
         implements AdapterView.OnItemClickListener{
 
     private ListViewNewsAdapter mAdapter;
@@ -107,19 +105,6 @@ public class NewsActivity extends AppCompatActivity
             service.chairman().enqueue(getSubscriber());
         }
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     private Callback<ResponseBody> getSubscriber() {
         return new Callback<ResponseBody>() {

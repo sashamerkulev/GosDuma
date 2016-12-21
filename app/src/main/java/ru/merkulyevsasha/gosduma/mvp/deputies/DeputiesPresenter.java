@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.MainActivity;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
@@ -67,12 +68,12 @@ public class DeputiesPresenter implements PresenterInterface {
 
     @Override
     public int getSortDialogType() {
-        return MainActivity.IDD_DEPUTY_SORT;
+        return DialogHelper.IDD_DEPUTY_SORT;
     }
 
     @Override
     public int getFilterDialogType() {
-        return MainActivity.IDD_DEPUTY_FILTER;
+        return DialogHelper.IDD_DEPUTY_FILTER;
     }
 
     @Override

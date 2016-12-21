@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,17 +23,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsPresenter;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
-public class DeputyDetailsActivity extends AppCompatActivity
+public class DeputyDetailsActivity extends BaseActivity
     implements ViewInterface,
-    ViewInterface.OnLawClickListener,
-        AppBarLayout.OnOffsetChangedListener
+    ViewInterface.OnLawClickListener
 {
 
     @BindView(R.id.collapsingToolbar)
@@ -71,7 +70,7 @@ public class DeputyDetailsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (isLargeLandscape()) {
             finish();
             return;
         }
@@ -90,12 +89,42 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         mDeputy = intent.getParcelableExtra("deputy");
-        //setTitle(mDeputy.name);
         setTitle("");
 
-        mAppbarLayout.addOnOffsetChangedListener(this);
+        mAppbarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    // Collapsed
+                    setTitle(mDeputy.name);
+                    mCollapsingToolbar.setTitleEnabled(true);
+                    mDeputyName.setTextColor(Color.TRANSPARENT);
+                    mDeputyPosition.setTextColor(Color.TRANSPARENT);
+                    mDeputyRanks.setTextColor(Color.TRANSPARENT);
+                    mFractionName.setTextColor(Color.TRANSPARENT);
+                    mFractionRole.setTextColor(Color.TRANSPARENT);
+                } else if (verticalOffset == 0) {
+                    // Expanded
+                    setTitle("");
+                    mCollapsingToolbar.setTitleEnabled(false);
+                    mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                } else {
+                    // Somewhere in between
+                    setTitle("");
+                    mCollapsingToolbar.setTitleEnabled(false);
+                    mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                }
 
-
+            }
+        });
 
         final StringBuilder position = new StringBuilder();
         final DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -172,19 +201,6 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     @Override
     public void show(List<Deputy> items) {
 
@@ -192,38 +208,9 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
     @Override
     public void onLawClick(Law law) {
-        Snackbar.make(this.findViewById(R.id.details_content), law.name, Snackbar.LENGTH_LONG).show();
+        Intent activityIntent = new Intent(this, LawDetailsActivity.class);
+        activityIntent.putExtra("law", law);
+        startActivity(activityIntent);
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-            // Collapsed
-            setTitle(mDeputy.name);
-            mCollapsingToolbar.setTitleEnabled(true);
-            mDeputyName.setTextColor(Color.TRANSPARENT);
-            mDeputyPosition.setTextColor(Color.TRANSPARENT);
-            mDeputyRanks.setTextColor(Color.TRANSPARENT);
-            mFractionName.setTextColor(Color.TRANSPARENT);
-            mFractionRole.setTextColor(Color.TRANSPARENT);
-        } else if (verticalOffset == 0) {
-            // Expanded
-            setTitle("");
-            mCollapsingToolbar.setTitleEnabled(false);
-            mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
-        } else {
-            // Somewhere in between
-            setTitle("");
-            mCollapsingToolbar.setTitleEnabled(false);
-            mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-            mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
-        }
-    }
 }
