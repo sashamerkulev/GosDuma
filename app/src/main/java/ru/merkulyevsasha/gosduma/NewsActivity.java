@@ -48,12 +48,8 @@ public class NewsActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.news_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+
+        initToolbar(R.id.news_toolbar);
 
         Intent intent = getIntent();
         mId = intent.getIntExtra("id", 0);

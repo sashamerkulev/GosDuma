@@ -15,9 +15,9 @@ public class RssService {
     private final RssInterface anInterface;
 
     private RssService(){
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd")
-                .create();
+//        Gson gson = new GsonBuilder()
+//                .setDateFormat("yyyy-MM-dd")
+//                .create();
 
         RxJavaCallAdapterFactory adapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 

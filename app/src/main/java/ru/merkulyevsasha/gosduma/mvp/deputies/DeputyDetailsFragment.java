@@ -53,35 +53,14 @@ public class DeputyDetailsFragment extends Fragment
         TextView mFractionRole = (TextView)v.findViewById(R.id.textview_deputy_fractionRole);
         TextView mDeputyRanks = (TextView)v.findViewById(R.id.textview_deputy_ranks);
 
-        final StringBuilder position = new StringBuilder();
-        final DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        if (mDeputy.credentialsStart > 0) {
-            position.append(mDeputy.position);
-            position.append(" (период с ");
-            position.append(format.format(new Date(mDeputy.credentialsStart)));
-            if (mDeputy.credentialsEnd > 0) {
-                position.append(" по " + format.format(new Date(mDeputy.credentialsStart)));
-            }
-            position.append(")");
-        } else{
-            position.append(mDeputy.position);
-        }
-        mDeputyPosition.setText(position.toString());
+        mDeputyName.setText(mDeputy.getNameWithBirthday());
 
-        final StringBuilder name = new StringBuilder();
-        if (mDeputy.birthdate > 0) {
-            name.append(mDeputy.name);
-            name.append(" (" + format.format(new Date(mDeputy.birthdate)) + ")");
-        } else {
-            name.append(mDeputy.name);
-        }
-        mDeputyName.setText(name.toString());
+        mDeputyPosition.setText(mDeputy.getPositionWithStartAndEndDates());
 
-        final StringBuilder ranks = new StringBuilder();
-        if (mDeputy.degrees.isEmpty()){
+        String ranks = mDeputy.getRanksWithDegrees();
+        if (ranks.isEmpty()){
             mDeputyRanks.setVisibility(View.GONE);
         } else {
-            ranks.append(mDeputy.ranks.isEmpty()? mDeputy.degrees : mDeputy.degrees + " (" + mDeputy.ranks + ")");
             mDeputyRanks.setText(ranks);
         }
 

@@ -19,12 +19,8 @@ public class NewsDetailsActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_newsdetails);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.newsdetails_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+
+        initToolbar(R.id.newsdetails_toolbar);
 
         Intent intent = getIntent();
         final String topic = intent.getStringExtra("topic");

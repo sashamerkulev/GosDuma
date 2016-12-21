@@ -41,21 +41,16 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
 
     @Override
     public void onBindViewHolder(DeputiesViewHolder holder, int position) {
-        String name = mItems.get(position).name;
 
-        String positionName = mItems.get(position).position;
-        boolean isCurrent = mItems.get(position).isCurrent;
+        Deputy deputy = mItems.get(position);
 
-        String fractionName = mItems.get(position).fractionName;
-        String fractionRole = mItems.get(position).fractionRole;
+        String positionName = deputy.position;
+        boolean isCurrent = deputy.isCurrent;
 
-        long birthdate = mItems.get(position).birthdate;
-        if (birthdate != 0) {
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            holder.mDeputyName.setText(name + " ("+format.format(new Date(birthdate))+")");
-        } else {
-            holder.mDeputyName.setText(name);
-        }
+        String fractionName = deputy.fractionName;
+        String fractionRole = deputy.fractionRole;
+
+        holder.mDeputyName.setText(deputy.getNameWithBirthday());
 
         if (isCurrent) {
             holder.mDeputyPosition.setText("Действующий " + positionName);

@@ -23,12 +23,8 @@ public class ListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.list_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+
+        initToolbar(R.id.list_toolbar);
 
         Intent intent = getIntent();
         final int id = intent.getIntExtra("id", 0);

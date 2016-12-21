@@ -3,6 +3,11 @@ package ru.merkulyevsasha.gosduma.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class Deputy implements Parcelable {
@@ -71,5 +76,39 @@ public class Deputy implements Parcelable {
         parcel.writeString(fractionRegion);
         parcel.writeString(degrees);
         parcel.writeString(ranks);
+    }
+
+    public String getNameWithBirthday(){
+        if (birthdate != 0) {
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            return name + " ("+format.format(new Date(birthdate))+")";
+        } else {
+            return name;
+        }
+    }
+
+    public String getPositionWithStartAndEndDates(){
+        final StringBuilder position = new StringBuilder();
+        final DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        if (credentialsStart > 0) {
+            position.append(position);
+            position.append(" (период с ");
+            position.append(format.format(new Date(credentialsStart)));
+            if (credentialsEnd > 0) {
+                position.append(" по " + format.format(new Date(credentialsEnd)));
+            }
+            position.append(")");
+        } else{
+            position.append(position);
+        }
+        return position.toString();
+    }
+
+    public String getRanksWithDegrees(){
+        if (degrees.isEmpty()){
+            return "";
+        } else {
+            return ranks.isEmpty()? degrees : degrees + " (" + ranks + ")";
+        }
     }
 }

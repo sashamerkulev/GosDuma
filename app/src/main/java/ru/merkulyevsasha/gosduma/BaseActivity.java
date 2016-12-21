@@ -1,8 +1,12 @@
 package ru.merkulyevsasha.gosduma;
 
 import android.content.res.Configuration;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -20,6 +24,14 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    protected void initToolbar(int resId){
+        Toolbar toolbar = (Toolbar) findViewById(resId);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -30,6 +42,14 @@ public class BaseActivity extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    protected void setText(String text, TextView textView){
+        if (text == null || text.isEmpty()){
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setText(text);
         }
     }
 

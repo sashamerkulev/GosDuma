@@ -7,21 +7,6 @@
     android:fitsSystemWindows="true"
     >
 
-    <!--<android.support.design.widget.AppBarLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
-        <!--&gt;-->
-
-        <!--<android.support.v7.widget.Toolbar-->
-            <!--android:id="@+id/deputydetails_toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-            <!--/>-->
-
-    <!--</android.support.design.widget.AppBarLayout>-->
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbarlayout"
         android:layout_width="match_parent"
@@ -123,18 +108,6 @@
         android:id="@+id/details_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-
-        <!--<include layout="@layout/fragment_deputydetails" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Список законов:"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--android:layout_marginTop="16dp"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--/>-->
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_deputy_laws"

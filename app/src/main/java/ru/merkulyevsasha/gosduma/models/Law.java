@@ -4,6 +4,10 @@ package ru.merkulyevsasha.gosduma.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Law implements Parcelable{
 
     public int id;
@@ -76,5 +80,19 @@ public class Law implements Parcelable{
         parcel.writeInt(responsibleId);
         parcel.writeString(responsibleName);
         parcel.writeString(type);
+    }
+
+    public String getLawNameWithNumberAndDate(){
+        StringBuilder sb = new StringBuilder();
+        if (introductionDate > 0) {
+            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            sb.append(number);
+            sb.append(" ("+format.format(new Date(introductionDate))+")");
+        } else {
+            sb.append(number);
+        }
+        sb.append(" " + name);
+
+        return sb.toString();
     }
 }

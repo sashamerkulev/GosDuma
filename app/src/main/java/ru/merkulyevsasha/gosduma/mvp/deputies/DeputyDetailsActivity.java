@@ -80,12 +80,7 @@ public class DeputyDetailsActivity extends BaseActivity
         setContentView(R.layout.activity_deputydetails);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.deputydetails_toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
+        initToolbar(R.id.deputydetails_toolbar);
 
         Intent intent = getIntent();
         mDeputy = intent.getParcelableExtra("deputy");
@@ -126,37 +121,11 @@ public class DeputyDetailsActivity extends BaseActivity
             }
         });
 
-        final StringBuilder position = new StringBuilder();
-        final DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        if (mDeputy.credentialsStart > 0) {
-            position.append(mDeputy.position);
-            position.append(" (период с ");
-            position.append(format.format(new Date(mDeputy.credentialsStart)));
-            if (mDeputy.credentialsEnd > 0) {
-                position.append(" по " + format.format(new Date(mDeputy.credentialsStart)));
-            }
-            position.append(")");
-        } else{
-            position.append(mDeputy.position);
-        }
-        mDeputyPosition.setText(position.toString());
+        mDeputyPosition.setText(mDeputy.getPositionWithStartAndEndDates());
 
-        final StringBuilder name = new StringBuilder();
-        if (mDeputy.birthdate > 0) {
-            name.append(mDeputy.name);
-            name.append(" (" + format.format(new Date(mDeputy.birthdate)) + ")");
-        } else {
-            name.append(mDeputy.name);
-        }
-        mDeputyName.setText(name.toString());
+        mDeputyName.setText(mDeputy.getNameWithBirthday());
 
-        final StringBuilder ranks = new StringBuilder();
-        if (mDeputy.degrees.isEmpty()){
-            mDeputyRanks.setVisibility(View.GONE);
-        } else {
-            ranks.append(mDeputy.ranks.isEmpty()? mDeputy.degrees : mDeputy.degrees + " (" + mDeputy.ranks + ")");
-            mDeputyRanks.setText(ranks);
-        }
+        setText(mDeputy.getRanksWithDegrees(), mDeputyRanks);
 
         mFractionName.setText(mDeputy.fractionName);
         mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);
@@ -177,12 +146,12 @@ public class DeputyDetailsActivity extends BaseActivity
 
                 final StringBuilder message = new StringBuilder();
 
-                message.append(name.toString());
+                message.append(mDeputy.getNameWithBirthday());
                 message.append("\n");
-                message.append(position.toString());
+                message.append(mDeputy.getPositionWithStartAndEndDates());
                 message.append("\n");
-                if (ranks.length() > 0) {
-                    message.append(ranks.toString());
+                if (!mDeputy.getRanksWithDegrees().isEmpty()) {
+                    message.append(mDeputy.getRanksWithDegrees());
                     message.append("\n");
                 }
                 message.append(mDeputy.fractionName);

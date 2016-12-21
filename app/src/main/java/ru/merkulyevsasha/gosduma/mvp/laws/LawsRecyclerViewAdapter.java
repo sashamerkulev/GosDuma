@@ -41,23 +41,11 @@ public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<LawsRecyclerV
 
     @Override
     public void onBindViewHolder(LawsRecyclerViewAdapter.LawsViewHolder holder, int position) {
-        String name = mItems.get(position).name;
-        String number = mItems.get(position).number;
-        long date = mItems.get(position).introductionDate;
+
+        Law law = mItems.get(position);
         String responsible = mItems.get(position).responsibleName;
 
-        StringBuilder sb = new StringBuilder();
-
-        if (date > 0) {
-            DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            sb.append(number);
-            sb.append(" ("+format.format(new Date(date))+")");
-        } else {
-            sb.append(number);
-        }
-        sb.append(" " + name);
-
-        holder.mLawName.setText(sb.toString());
+        holder.mLawName.setText(law.getLawNameWithNumberAndDate());
         if (responsible == null || responsible.isEmpty()){
             holder.mResponsible.setVisibility(View.GONE);
         } else {
