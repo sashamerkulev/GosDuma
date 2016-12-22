@@ -22,7 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +60,6 @@
                 android:id="@+id/tv_law_responsible"
                 />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,8 +74,6 @@
 
         </LinearLayout>
 
-
     </ScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>

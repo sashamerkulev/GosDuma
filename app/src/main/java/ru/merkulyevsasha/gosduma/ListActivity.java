@@ -2,8 +2,6 @@ package ru.merkulyevsasha.gosduma;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class ListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        initToolbar(R.id.list_toolbar);
+        initSupportActionBarWithBackButton(R.id.list_toolbar);
 
         Intent intent = getIntent();
         final int id = intent.getIntExtra("id", 0);

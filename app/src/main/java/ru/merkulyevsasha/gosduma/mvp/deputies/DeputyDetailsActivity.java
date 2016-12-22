@@ -2,23 +2,16 @@ package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -80,7 +73,7 @@ public class DeputyDetailsActivity extends BaseActivity
         setContentView(R.layout.activity_deputydetails);
         ButterKnife.bind(this);
 
-        initToolbar(R.id.deputydetails_toolbar);
+        initSupportActionBarWithBackButton(R.id.deputydetails_toolbar);
 
         Intent intent = getIntent();
         mDeputy = intent.getParcelableExtra("deputy");
@@ -125,7 +118,7 @@ public class DeputyDetailsActivity extends BaseActivity
 
         mDeputyName.setText(mDeputy.getNameWithBirthday());
 
-        setText(mDeputy.getRanksWithDegrees(), mDeputyRanks);
+        setTextToTextViewOrGone(mDeputy.getRanksWithDegrees(), mDeputyRanks);
 
         mFractionName.setText(mDeputy.fractionName);
         mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);

@@ -24,7 +24,7 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
-    protected void initToolbar(int resId){
+    protected void initSupportActionBarWithBackButton(int resId){
         Toolbar toolbar = (Toolbar) findViewById(resId);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
@@ -45,7 +45,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void setText(String text, TextView textView){
+    protected void setTextToTextViewOrGone(String text, TextView textView){
         if (text == null || text.isEmpty()){
             textView.setVisibility(View.GONE);
         } else {

@@ -4,8 +4,6 @@ package ru.merkulyevsasha.gosduma;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -49,7 +47,7 @@ public class NewsActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        initToolbar(R.id.news_toolbar);
+        initSupportActionBarWithBackButton(R.id.news_toolbar);
 
         Intent intent = getIntent();
         mId = intent.getIntExtra("id", 0);

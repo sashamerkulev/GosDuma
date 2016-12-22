@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.DialogHelper;
-import ru.merkulyevsasha.gosduma.MainActivity;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;

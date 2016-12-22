@@ -2,8 +2,6 @@ package ru.merkulyevsasha.gosduma;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 
@@ -20,7 +18,7 @@ public class NewsDetailsActivity extends BaseActivity {
 
         setContentView(R.layout.activity_newsdetails);
 
-        initToolbar(R.id.newsdetails_toolbar);
+        initSupportActionBarWithBackButton(R.id.newsdetails_toolbar);
 
         Intent intent = getIntent();
         final String topic = intent.getStringExtra("topic");

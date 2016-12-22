@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,13 +31,11 @@ public class ListViewListDataAdapter extends ArrayAdapter<ListData> {
     @Override
     public void clear() {
         super.clear();
-        //mItems.clear();
     }
 
     @Override
     public void addAll(@NonNull Collection<? extends ListData> collection) {
         super.addAll(collection);
-        //mItems.addAll(collection);
     }
 
     @Override

@@ -2,18 +2,14 @@ package ru.merkulyevsasha.gosduma.mvp.laws;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
@@ -59,7 +55,7 @@ public class LawDetailsActivity extends BaseActivity
         setContentView(R.layout.activity_lawdetails);
         ButterKnife.bind(this);
 
-        initToolbar(R.id.lawdetails_toolbar);
+        initSupportActionBarWithBackButton(R.id.lawdetails_toolbar);
 
         Intent intent = getIntent();
         mLaw = intent.getParcelableExtra("law");
@@ -69,12 +65,14 @@ public class LawDetailsActivity extends BaseActivity
 
         mLawName.setText(mLaw.getLawNameWithNumberAndDate());
 
-        setText(mLaw.comments, mLawComments);
-        setText(mLaw.responsibleName, mLawResponsible);
-        mLawDocname.setText(mLaw.lastEventDocType + " " + mLaw.lastEventDocName);
-        setText(mLaw.lastEventSolution, mLawSolution);
-
-
+        setTextToTextViewOrGone(mLaw.comments, mLawComments);
+        setTextToTextViewOrGone(mLaw.responsibleName, mLawResponsible);
+        if (mLaw.lastEventDocType == null || mLaw.lastEventDocType.isEmpty()){
+            mLawDocname.setVisibility(View.GONE);
+        } else {
+            mLawDocname.setText(mLaw.lastEventDocType + " " + mLaw.lastEventDocName);
+        }
+        setTextToTextViewOrGone(mLaw.lastEventSolution, mLawSolution);
     }
 
     @Override
