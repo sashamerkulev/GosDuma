@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
@@ -44,19 +41,12 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
 
         Deputy deputy = mItems.get(position);
 
-        String positionName = deputy.position;
-        boolean isCurrent = deputy.isCurrent;
-
         String fractionName = deputy.fractionName;
         String fractionRole = deputy.fractionRole;
 
         holder.mDeputyName.setText(deputy.getNameWithBirthday());
 
-        if (isCurrent) {
-            holder.mDeputyPosition.setText("Действующий " + positionName);
-        } else {
-            holder.mDeputyPosition.setText("Не действующий " + positionName);
-        }
+        holder.mDeputyPosition.setText(deputy.getCurrentPosition());
 
         if (!fractionRole.isEmpty()){
             holder.mDeputyFractionName.setText(fractionRole + " ("+fractionName+")");

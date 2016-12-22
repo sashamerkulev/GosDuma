@@ -111,4 +111,12 @@ public class Deputy implements Parcelable {
             return ranks.isEmpty()? degrees : degrees + " (" + ranks + ")";
         }
     }
+
+    public String getCurrentPosition(){
+        if (isCurrent) {
+            return "Действующий " + position;
+        } else {
+            return "Не действующий " + position;
+        }
+    }
 }

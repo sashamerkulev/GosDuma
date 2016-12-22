@@ -43,7 +43,7 @@ public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<LawsRecyclerV
     public void onBindViewHolder(LawsRecyclerViewAdapter.LawsViewHolder holder, int position) {
 
         Law law = mItems.get(position);
-        String responsible = mItems.get(position).responsibleName;
+        String responsible = law.responsibleName;
 
         holder.mLawName.setText(law.getLawNameWithNumberAndDate());
         if (responsible == null || responsible.isEmpty()){
