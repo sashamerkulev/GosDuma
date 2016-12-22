@@ -87,11 +87,14 @@ public class Law implements Parcelable{
         if (introductionDate > 0) {
             DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             sb.append(number);
-            sb.append(" ("+format.format(new Date(introductionDate))+")");
+            sb.append(" (");
+            sb.append(format.format(new Date(introductionDate)));
+            sb.append(")");
         } else {
             sb.append(number);
         }
-        sb.append(" " + name);
+        sb.append(" ");
+        sb.append(name);
 
         return sb.toString();
     }

@@ -3,7 +3,6 @@ package ru.merkulyevsasha.gosduma.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.View;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -95,7 +94,8 @@ public class Deputy implements Parcelable {
             position.append(" (период с ");
             position.append(format.format(new Date(credentialsStart)));
             if (credentialsEnd > 0) {
-                position.append(" по " + format.format(new Date(credentialsEnd)));
+                position.append(" по ");
+                position.append(format.format(new Date(credentialsEnd)));
             }
             position.append(")");
         } else{

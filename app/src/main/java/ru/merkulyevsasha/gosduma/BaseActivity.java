@@ -18,10 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean isLargeLandscape(){
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && isLarge()) {
-            return true;
-        }
-        return false;
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && isLarge();
     }
 
     protected void initSupportActionBarWithBackButton(int resId){

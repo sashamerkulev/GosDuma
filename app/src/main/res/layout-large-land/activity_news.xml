@@ -28,6 +28,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_marginTop="?attr/actionBarSize"
+        android:baselineAligned="false"
         >
 
         <android.support.v4.widget.SwipeRefreshLayout
