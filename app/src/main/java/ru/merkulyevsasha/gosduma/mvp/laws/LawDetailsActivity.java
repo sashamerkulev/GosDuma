@@ -95,10 +95,10 @@ public class LawDetailsActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isLargeLandscape()) {
-            finish();
-            return;
-        }
+//        if (isLargeLandscape()) {
+//            finish();
+//            return;
+//        }
 
         mPresenter = new LawsPresenter(this, this);
 

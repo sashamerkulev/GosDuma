@@ -49,7 +49,31 @@ public class MainActivity extends AppCompatActivity
         , OnLawClickListener
 {
 
+    private final static String KEY_DEPUTY = "DEPUTY";
+    private final static String KEY_LAW = "LAW";
+
+
     private PresenterInterface mPresenter;
+
+    private Law mLaw;
+    private Deputy mDeputy;
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+//        Bundle state = mPresenter.getState();
+//        if (state != null){
+//            outState.putAll(state);
+//        }
+        if (mDeputy != null) {
+            outState.putParcelable(KEY_DEPUTY, mDeputy);
+        }
+        if (mLaw != null) {
+            outState.putParcelable(KEY_LAW, mLaw);
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +115,15 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             setDeputyFragment();
+        } else {
+            if (savedInstanceState.containsKey(KEY_LAW)) {
+                mLaw = savedInstanceState.getParcelable(KEY_LAW);
+            }
+            if (savedInstanceState.containsKey(KEY_DEPUTY)) {
+                mDeputy = savedInstanceState.getParcelable(KEY_DEPUTY);
+                showDeputyDetails(mDeputy);
+            }
         }
-
     }
 
     @Override
@@ -213,25 +244,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onPresenterCreated(PresenterInterface presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void onDeputyClick(Deputy deputy) {
-
-        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
-        if (fl != null){
-            DeputyDetailsFragment fragment = DeputyDetailsFragment.newInstance(deputy);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
-        } else {
-            Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
-            activityIntent.putExtra("deputy", deputy);
-            startActivity(activityIntent);
-        }
-    }
-
-    @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
 
         if (menuItem.getItemId() == R.id.action_sort) {
@@ -274,7 +286,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onPresenterCreated(PresenterInterface presenter) {
+        mPresenter = presenter;
+    }
+
+    private void showDeputyDetails(Deputy deputy){
+        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
+        if (fl != null){
+            DeputyDetailsFragment fragment = DeputyDetailsFragment.newInstance(deputy);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        } else {
+            Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
+            activityIntent.putExtra("deputy", deputy);
+            startActivity(activityIntent);
+        }
+    }
+
+    @Override
+    public void onDeputyClick(Deputy deputy) {
+        mDeputy = deputy;
+        showDeputyDetails(deputy);
+    }
+
+    @Override
     public void onLawClick(Law law) {
+        mLaw = law;
         Intent activityIntent = new Intent(this, LawDetailsActivity.class);
         activityIntent.putExtra("law", law);
         startActivity(activityIntent);

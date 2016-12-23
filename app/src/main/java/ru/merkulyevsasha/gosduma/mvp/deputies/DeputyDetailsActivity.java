@@ -81,6 +81,7 @@ public class DeputyDetailsActivity extends BaseActivity
 
     @Override
     public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
 
         Bundle state = mPresenter.getState();
         if (state != null){

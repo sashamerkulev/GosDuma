@@ -42,6 +42,7 @@ public class DeputiesFragment extends Fragment
 
     @Override
     public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
 
         Bundle state = mPresenter.getState();
         if (state != null){
