@@ -1,10 +1,7 @@
 package ru.merkulyevsasha.gosduma.models;
 
 
-public class ListData {
+public class ListData extends Codifier {
 
-    public int id;
-    public String name;
     public boolean isCurrent;
-
 }

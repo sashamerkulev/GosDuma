@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.models.Article;
+import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.models.ListData;
@@ -344,6 +345,64 @@ public class DatabaseHelper {
         return items;
     }
 
+    private List<Codifier> getCodifiers(String selectQuery, int id) {
+        List<Codifier> items = new ArrayList<Codifier>();
+
+        SQLiteDatabase mSqlite = openOrCreateDatabase();
+        try {
+            if (mSqlite != null) {
+
+                Cursor cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(id)});
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Codifier item = new Codifier();
+                        item.id = cursor.getInt(cursor.getColumnIndex(ID));
+                        item.name = cursor.getString(cursor.getColumnIndex(NAME));
+                        if (item.name == null || item.name.isEmpty())
+                            continue;
+                        items.add(item);
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrash.report(e);
+        } finally {
+            if (mSqlite != null && mSqlite.isOpen())
+                mSqlite.close();
+        }
+        return items;
+    }
+
+    public Codifier getPhaseById(int id) {
+        List<Codifier> items = getCodifiers("select id, name from phase where id = @id", id);
+        return items == null || items.size() == 0? new Codifier() : items.get(0);
+    }
+
+    public Codifier getStageById(int id) {
+        List<Codifier> items = getCodifiers("select id, name from phase where id = @id", id);
+        return items == null || items.size() == 0? new Codifier() : items.get(0);
+    }
+
+    public List<Codifier> getProfileComittees(int id) {
+        return getCodifiers("select c.id, c.name from LawProfile lp left join Committee c on c.id = lp.CommitteeId where lp.LawId = @id", id);
+    }
+
+    public List<Codifier> getCoexecutorCommittees(int id) {
+        return getCodifiers("select c.id, c.name from LawCoexecutor lp left join Committee c on c.id = lp.CommitteeId where lp.LawId = @id", id);
+    }
+
+    public List<Codifier> getLawDeputies(int id) {
+        return getCodifiers("select c.id, c.name from LawDeputy lp left join DeputyDb c on c.id = lp.DeputyId where lp.LawId = @id", id);
+    }
+
+    public List<Codifier> getLawRegionals(int id) {
+        return getCodifiers("select c.id, c.name from LawDepartment lp left join RegionalEntity c on c.id = lp.DepartmentId where lp.LawId = @id", id);
+    }
+
+    public List<Codifier> getLawFederals(int id) {
+        return getCodifiers("select c.id, c.name from LawDepartment lp left join FederalEntity c on c.id = lp.DepartmentId where lp.LawId = @id", id);
+    }
 
 }
 
