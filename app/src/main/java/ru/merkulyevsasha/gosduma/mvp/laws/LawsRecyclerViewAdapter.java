@@ -11,15 +11,16 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<LawsRecyclerViewAdapter.LawsViewHolder>{
 
     public List<Law> mItems;
 
-    private final ViewInterface.OnLawClickListener mClickListener;
+    private final OnLawClickListener mClickListener;
 
-    public LawsRecyclerViewAdapter(List<Law> items, ViewInterface.OnLawClickListener clickListener){
+    public LawsRecyclerViewAdapter(List<Law> items, OnLawClickListener clickListener){
         mItems = items;
         mClickListener = clickListener;
     }

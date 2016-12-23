@@ -25,4 +25,7 @@
     <string name="item_sort_birtdate">По дате рождения</string>
     <string name="item_sort_fractionname">По фракции</string>
     <string name="share_using">Поделиться</string>
+    <string name="item_sort_date">По дате</string>
+    <string name="item_sort_number">По номеру</string>
+    <string name="item_sort_lawname">По наименованию</string>
 </resources>

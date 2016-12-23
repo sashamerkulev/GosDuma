@@ -2,6 +2,7 @@ package ru.merkulyevsasha.gosduma.mvp.laws;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,11 +17,12 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 
 public class LawDetailsActivity extends BaseActivity
-        implements ViewInterface {
+        implements LawsViewInterface {
 
     @BindView(R.id.tv_law_type)
     public TextView mLawType;
@@ -83,6 +85,9 @@ public class LawDetailsActivity extends BaseActivity
     @BindView(R.id.layout_departments)
     public LinearLayout mLayoutDepartments;
 
+    @BindView(R.id.fab)
+    public FloatingActionButton mFab;
+
     private Law mLaw;
     private LawsPresenter mPresenter;
 
@@ -140,6 +145,32 @@ public class LawDetailsActivity extends BaseActivity
         String departments = joinCodifiers(federals);
         setTextToTextViewOrLayoutGone(departments, mLawDepartments, mLayoutDepartments);
 
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+
+                final StringBuilder message = new StringBuilder();
+
+                message.append(mLaw.type);
+                message.append("\n");
+                message.append(mLaw.getLawNameWithNumberAndDate());
+                message.append("\n");
+                if (mLaw.comments != null && !mLaw.comments.isEmpty()) {
+                    message.append(mLaw.comments);
+                    message.append("\n");
+                }
+                if (mLaw.lastEventSolution != null && !mLaw.lastEventSolution.isEmpty()){
+                    message.append(" ");
+                    message.append(mLaw.lastEventSolution);
+                }
+                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
+            }
+        });
     }
 
     private String joinCodifiers(List<Codifier> list){
@@ -156,7 +187,7 @@ public class LawDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void show(List<Deputy> items) {
+    public void show(List<Law> items) {
 
     }
 }

@@ -11,15 +11,17 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
+
 
 public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRecyclerViewAdapter.DeputiesViewHolder> {
 
     public List<Deputy> mItems;
 
-    private final ViewInterface.OnDeputyClickListener mClickListener;
+    private final OnDeputyClickListener mClickListener;
 
-    public DeputiesRecyclerViewAdapter(List<Deputy> items, ViewInterface.OnDeputyClickListener clickListener){
+    public DeputiesRecyclerViewAdapter(List<Deputy> items, OnDeputyClickListener clickListener){
         mItems = items;
         mClickListener = clickListener;
     }

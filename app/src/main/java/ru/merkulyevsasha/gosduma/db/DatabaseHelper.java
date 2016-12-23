@@ -109,6 +109,18 @@ public class DatabaseHelper {
         }
     }
 
+    public static String getSortDirection(int oldSort, int newSort, String direction){
+        if (oldSort == newSort){
+            if (direction.trim().equals(DatabaseHelper.DESC.trim())){
+                return DatabaseHelper.ASC;
+            } else {
+                return DatabaseHelper.DESC;
+            }
+        } else {
+            return DatabaseHelper.ASC;
+        }
+    }
+
     private ListData getListData(Cursor cursor) {
         ListData item = new ListData();
         item.id = cursor.getInt(cursor.getColumnIndex(ID));
@@ -316,18 +328,30 @@ public class DatabaseHelper {
         return item;
     }
 
-    public List<Law> getDeputyLaws(int deputyId) {
+    public List<Law> getDeputyLaws(int deputyId, String searchText, String orderBy) {
         List<Law> items = new ArrayList<Law>();
         String selectQuery = "select l.id, l.number, l.name, l.comments, l.name_lowcase, l.comments_lowcase, l.introductionDate, l.url, l.transcriptUrl, "
                 + " l.lastEventStageId, l.lastEventPhaseId, l.responsibleId, l.responsibleName, l.responsibleName_lower, l.lastEventSolution, l.lastEventSolution_lowcase, l.type from LawDb l"
                 + " join LawDeputy ld on ld.LawId = l.id"
                 + " where ld.DeputyId = @deputyId ";
 
+        if (!searchText.isEmpty()) {
+            selectQuery = selectQuery + " and (l.number like @search or l.comments_lowcase like @search or l.name_lowcase like @search or l.lastEventSolution_lowcase like @search or l.responsibleName_lower like @search) ";
+        }
+
+        selectQuery = selectQuery + " order by " + orderBy;
+
         SQLiteDatabase mSqlite = openOrCreateDatabase();
         try {
             if (mSqlite != null) {
 
-                Cursor cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(deputyId)});
+                Cursor cursor;
+                if (searchText.isEmpty()) {
+                    cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(deputyId)});
+                } else {
+                    cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(deputyId), "%" + searchText.toLowerCase() + "%"});
+                }
+
 
                 if (cursor.moveToFirst()) {
                     do {

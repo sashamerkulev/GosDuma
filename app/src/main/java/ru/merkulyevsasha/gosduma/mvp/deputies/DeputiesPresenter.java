@@ -11,6 +11,7 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
@@ -32,7 +33,7 @@ public class DeputiesPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
     private final Context mContext;
-    private final ViewInterface mViewInterface;
+    private final DeputiesViewInterface mViewInterface;
     private final HashMap<Integer, String> mSortColumn;
     private final HashMap<Integer, String> mFilterDeputyValues;
 
@@ -42,7 +43,7 @@ public class DeputiesPresenter implements PresenterInterface {
     private int mFilterWorking;
     private String mSearchText;
 
-    public DeputiesPresenter(Context context, ViewInterface viewInterface){
+    public DeputiesPresenter(Context context, DeputiesViewInterface viewInterface){
 
         mContext = context;
         mViewInterface = viewInterface;
@@ -104,15 +105,7 @@ public class DeputiesPresenter implements PresenterInterface {
     @Override
     public void sort(List<Integer> oldSort, List<Integer> sort){
         mSort = sort.get(0);
-        if (oldSort.get(0).equals(sort.get(0))){
-            if (mSortDirection.trim().equals(DatabaseHelper.DESC.trim())){
-                mSortDirection = DatabaseHelper.ASC;
-            } else {
-                mSortDirection = DatabaseHelper.DESC;
-            }
-        } else {
-            mSortDirection = DatabaseHelper.ASC;
-        }
+        mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
         mViewInterface.show(getDeputies());
     }
 

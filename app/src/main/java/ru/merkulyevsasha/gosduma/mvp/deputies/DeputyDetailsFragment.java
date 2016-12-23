@@ -15,13 +15,15 @@ import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsPresenter;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 
 
 public class DeputyDetailsFragment extends Fragment
-    implements ViewInterface{
+    implements LawsViewInterface {
 
 
     private LawsRecyclerViewAdapter mAdapter;
@@ -68,7 +70,7 @@ public class DeputyDetailsFragment extends Fragment
         LawsPresenter mPresenter = new LawsPresenter(getActivity(), this);
 
         List<Law> items = mPresenter.getDeputyLaws(mDeputy.id);
-        mAdapter = new LawsRecyclerViewAdapter(items, (ViewInterface.OnLawClickListener)getActivity());;
+        mAdapter = new LawsRecyclerViewAdapter(items, (OnLawClickListener)getActivity());;
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -79,7 +81,7 @@ public class DeputyDetailsFragment extends Fragment
     }
 
     @Override
-    public void show(List<Deputy> items) {
+    public void show(List<Law> items) {
 
     }
 }

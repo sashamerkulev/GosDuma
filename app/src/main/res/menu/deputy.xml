@@ -8,20 +8,15 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         android:icon="@drawable/ic_search_white_24dp"
         android:checkable="false"
+        android:visible="false"
         />
     <item
         android:id="@+id/action_sort"
         android:title="sort"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_sort_white_24dp"
         android:checkable="false"
-        />
-    <item
-        android:id="@+id/action_filter"
-        android:title="filter"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_filter_list_white_24dp"
-        android:checkable="false"
+        android:visible="false"
         />
 
 </menu>

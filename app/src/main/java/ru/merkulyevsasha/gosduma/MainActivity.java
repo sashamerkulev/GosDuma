@@ -14,7 +14,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -31,6 +30,8 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
+import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
@@ -40,12 +41,12 @@ import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
 
 public class MainActivity extends AppCompatActivity
         implements
-        NavigationView.OnNavigationItemSelectedListener,
-        MenuItem.OnMenuItemClickListener,
-        SearchView.OnQueryTextListener,
-        ViewInterface.OnViewListener,
-        ViewInterface.OnDeputyClickListener,
-        ViewInterface.OnLawClickListener
+        NavigationView.OnNavigationItemSelectedListener
+        , MenuItem.OnMenuItemClickListener
+        , SearchView.OnQueryTextListener
+        , ViewInterface.OnPresenterListener
+        , OnDeputyClickListener
+        , OnLawClickListener
 {
 
     private PresenterInterface mPresenter;
@@ -205,6 +206,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        if (newText.isEmpty()){
+            mPresenter.search(newText);
+        }
         return false;
     }
 

@@ -13,10 +13,14 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
+import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 
-public class DeputiesFragment extends Fragment implements ViewInterface {
+public class DeputiesFragment extends Fragment
+        implements
+         DeputiesViewInterface{
 
     private final static String KEY_POSITION = "POSITION";
 
@@ -33,7 +37,7 @@ public class DeputiesFragment extends Fragment implements ViewInterface {
     public void onAttach(Context context) {
         super.onAttach(context);
         mPresenter = new DeputiesPresenter(context, this);
-        ((ViewInterface.OnViewListener)getActivity()).onPresenterCreated(mPresenter);
+        ((ViewInterface.OnPresenterListener)getActivity()).onPresenterCreated(mPresenter);
     }
 
     @Override
@@ -67,7 +71,7 @@ public class DeputiesFragment extends Fragment implements ViewInterface {
 
         List<Deputy> items = mPresenter.getDeputies();
 
-        mAdapter = new DeputiesRecyclerViewAdapter(items, ((ViewInterface.OnDeputyClickListener)getActivity()));
+        mAdapter = new DeputiesRecyclerViewAdapter(items, ((OnDeputyClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPosition > 0){
