@@ -12,7 +12,7 @@
         />
     <item
         android:id="@+id/action_sort"
-        android:title="sort"
+        android:title="@string/title_sort"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_sort_white_24dp"
         android:checkable="false"

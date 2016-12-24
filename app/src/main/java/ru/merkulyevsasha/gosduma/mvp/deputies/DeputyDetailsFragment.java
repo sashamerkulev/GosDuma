@@ -17,22 +17,19 @@ import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
-import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
-import ru.merkulyevsasha.gosduma.mvp.laws.LawsPresenter;
+import ru.merkulyevsasha.gosduma.mvp.laws.DeputyLawsPresenter;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 
 
 public class DeputyDetailsFragment extends Fragment
     implements LawsViewInterface {
 
-
-    private LawsRecyclerViewAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
+    private final static String KEY_DEPUTY = "deputy";
 
     public static DeputyDetailsFragment newInstance(Deputy deputy) {
         DeputyDetailsFragment details = new DeputyDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable("deputy", deputy);
+        args.putParcelable(KEY_DEPUTY, deputy);
         details.setArguments(args);
         return details;
     }
@@ -43,7 +40,7 @@ public class DeputyDetailsFragment extends Fragment
 
         ButterKnife.bind(v);
 
-        final Deputy mDeputy = getArguments().getParcelable("deputy");
+        final Deputy mDeputy = getArguments().getParcelable(KEY_DEPUTY);
 
         TextView mDeputyName = (TextView)v.findViewById(R.id.textview_deputy_name);
         TextView mDeputyPosition = (TextView)v.findViewById(R.id.textview_position);
@@ -65,14 +62,14 @@ public class DeputyDetailsFragment extends Fragment
         mFractionName.setText(mDeputy.fractionName);
         mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);
 
-        RecyclerView mRecyclerView = (RecyclerView)v.findViewById(R.id.recyclerview_deputy_laws);
+        RecyclerView mRecyclerView = (RecyclerView)v.findViewById(R.id.recyclerview_laws);
 
-        LawsPresenter mPresenter = new LawsPresenter(getActivity(), this);
+        DeputyLawsPresenter mPresenter = new DeputyLawsPresenter(getActivity(), this);
 
         List<Law> items = mPresenter.getDeputyLaws(mDeputy.id);
-        mAdapter = new LawsRecyclerViewAdapter(items, (OnLawClickListener)getActivity());;
+        LawsRecyclerViewAdapter mAdapter = new LawsRecyclerViewAdapter(items, (OnLawClickListener) getActivity());
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mRecyclerView.setAdapter(mAdapter);

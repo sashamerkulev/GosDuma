@@ -60,8 +60,8 @@ public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<LawsRecyclerV
 
     public static class LawsViewHolder extends RecyclerView.ViewHolder{
 
-        TextView mLawName;
-        TextView mResponsible;
+        final TextView mLawName;
+        final TextView mResponsible;
 
         public LawsViewHolder(final View itemView, final ViewInterface.OnClickListener clickListener) {
             super(itemView);

@@ -14,9 +14,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -24,7 +22,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
@@ -38,6 +35,7 @@ import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
+import ru.merkulyevsasha.gosduma.mvp.laws.LawsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -57,6 +55,11 @@ public class MainActivity extends AppCompatActivity
 
     private Law mLaw;
     private Deputy mDeputy;
+
+    private MenuItem mFilterItem;
+
+    private MenuItem mSortItem;
+
 
     @Override
     public void onSaveInstanceState(Bundle outState){
@@ -114,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (savedInstanceState == null) {
-            setDeputyFragment();
+            setDeputiesFragment();
         } else {
             if (savedInstanceState.containsKey(KEY_LAW)) {
                 mLaw = savedInstanceState.getParcelable(KEY_LAW);
@@ -145,18 +148,20 @@ public class MainActivity extends AppCompatActivity
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
-        final EditText searchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-            mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(searchTextView, R.drawable.cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-        } catch (Exception e) {}
+//        final EditText searchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+//        try {
+//            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+//            mCursorDrawableRes.setAccessible(true);
+//            mCursorDrawableRes.set(searchTextView, R.drawable.cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+//        } catch (Exception e) {}
 
-        MenuItem filterItem = menu.findItem(R.id.action_filter);
-        filterItem.setOnMenuItemClickListener(this);
+        mFilterItem = menu.findItem(R.id.action_filter);
+        mFilterItem.setOnMenuItemClickListener(this);
 
-        MenuItem sortItem = menu.findItem(R.id.action_sort);
-        sortItem.setOnMenuItemClickListener(this);
+        mSortItem = menu.findItem(R.id.action_sort);
+        mSortItem.setOnMenuItemClickListener(this);
+
+        setVisibleMenuItems();
 
         return true;
     }
@@ -189,11 +194,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         else if (id == R.id.nav_deputies) {
-            showNavFragment(R.id.nav_deputies, item.getTitle().toString());
+            showNavFragment(R.id.nav_deputies);
         } else if (id == R.id.nav_laws) {
-            showNavFragment(R.id.nav_laws, item.getTitle().toString());
+            showNavFragment(R.id.nav_laws);
         } else if (id == R.id.nav_depqueries) {
-            showNavFragment(R.id.nav_depqueries, item.getTitle().toString());
+            showNavFragment(R.id.nav_depqueries);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -216,16 +221,30 @@ public class MainActivity extends AppCompatActivity
         startActivity(id, name, ListActivity.class);
     }
 
-    private void setDeputyFragment(){
+    private void setDeputiesFragment(){
         setTitle(R.string.menu_deputies);
         DeputiesFragment fragment = new DeputiesFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchlist, fragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_searchlist, fragment)
+                .commit();
     }
 
-    private void showNavFragment(int id, String name){
+    private void setLawsFragment(){
+        setTitle(R.string.menu_laws);
+        LawsFragment fragment = new LawsFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_searchlist, fragment)
+                .commit();
+    }
+
+    private void showNavFragment(int id){
 
         if (id == R.id.nav_deputies) {
-            setDeputyFragment();
+            setDeputiesFragment();
+        } else if (id == R.id.nav_laws) {
+            setLawsFragment();
         }
     }
 
@@ -285,9 +304,21 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    private void setVisibleMenuItems(){
+        if (mPresenter != null) {
+            if (mSortItem != null) {
+                mSortItem.setVisible(mPresenter.isSortMenuVisible());
+            }
+            if (mFilterItem != null) {
+                mFilterItem.setVisible(mPresenter.isFilterMenuVisible());
+            }
+        }
+    }
+
     @Override
     public void onPresenterCreated(PresenterInterface presenter) {
         mPresenter = presenter;
+        setVisibleMenuItems();
     }
 
     private void showDeputyDetails(Deputy deputy){

@@ -18,7 +18,16 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        />
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -61,7 +70,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Фаза"
+                    android:text="@string/text_phase"
                     android:layout_weight="1"
                     />
 
@@ -86,7 +95,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Стадия"
+                    android:text="@string/text_stage"
                     android:layout_weight="1"
                     />
 
@@ -111,7 +120,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Комментарий"
+                    android:text="@string/text_comment"
                     android:layout_weight="1"
                     />
 
@@ -136,7 +145,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:text="Отв.комитет"
+                        android:text="@string/text_resp_comittee"
                         android:layout_weight="1"
                     />
                     <TextView
@@ -159,7 +168,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:text="Решение"
+                        android:text="@string/text_solution"
                         android:layout_weight="1"
                     />
 
@@ -183,7 +192,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Профильные комитеты"
+                    android:text="@string/text_prof_comittee"
                     android:layout_weight="1"
                     />
 
@@ -207,7 +216,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Соисп. комитеты"
+                    android:text="@string/text_coexec_comittee"
                     android:layout_weight="1"
                     />
 
@@ -231,7 +240,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Департамент"
+                    android:text="@string/text_department"
                     android:layout_weight="1"
                     />
 
@@ -255,7 +264,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="Депутаты"
+                    android:text="@string/text_deputies"
                     android:layout_weight="1"
                     />
 

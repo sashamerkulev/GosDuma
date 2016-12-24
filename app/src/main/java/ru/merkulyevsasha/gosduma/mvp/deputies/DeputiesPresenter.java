@@ -13,13 +13,13 @@ import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
-import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
+
 
 public class DeputiesPresenter implements PresenterInterface {
 
-    public final static int NAME_INDEX = 0;
-    public final static int BIRTHDATE_INDEX = 1;
-    public final static int FRACTIONNAME_INDEX = 2;
+    private final static int NAME_INDEX = 0;
+    private final static int BIRTHDATE_INDEX = 1;
+    private final static int FRACTIONNAME_INDEX = 2;
 
     public final static int DEPUTY_INDEX = 0;
     public final static int MEMBER_INDEX = 1;
@@ -84,11 +84,21 @@ public class DeputiesPresenter implements PresenterInterface {
     }
 
     @Override
+    public boolean isSortMenuVisible() {
+        return true;
+    }
+
+    @Override
     public List<Integer> getCurrentFilterIndexValue(){
         List<Integer> result = new ArrayList<Integer>();
         result.add(mFilterDeputy);
         result.add(mFilterWorking);
         return result;
+    }
+
+    @Override
+    public boolean isFilterMenuVisible() {
+        return true;
     }
 
     public List<Deputy> getDeputies(){

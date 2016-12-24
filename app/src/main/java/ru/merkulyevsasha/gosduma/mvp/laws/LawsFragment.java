@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp.deputies;
+package ru.merkulyevsasha.gosduma.mvp.laws;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,33 +9,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
-import ru.merkulyevsasha.gosduma.models.Deputy;
-import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
-import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
+import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 
-public class DeputiesFragment extends Fragment
+public class LawsFragment extends Fragment
         implements
-         DeputiesViewInterface{
+        LawsViewInterface {
 
     private final static String KEY_POSITION = "POSITION";
 
-    private DeputiesRecyclerViewAdapter mAdapter;
+    private LawsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mPosition = -1;
 
-    private DeputiesPresenter mPresenter;
+    private LawsPresenter mPresenter;
 
-    public DeputiesFragment(){ }
+    public LawsFragment(){ }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPresenter = new DeputiesPresenter(context, this);
+        mPresenter = new LawsPresenter(context, this);
         ((ViewInterface.OnPresenterListener)getActivity()).onPresenterCreated(mPresenter);
     }
 
@@ -62,16 +63,14 @@ public class DeputiesFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_deputies, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_laws, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_deputies);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_laws);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        List<Deputy> items = mPresenter.getDeputies();
-
-        mAdapter = new DeputiesRecyclerViewAdapter(items, ((OnDeputyClickListener)getActivity()));
+        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), ((OnLawClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
         if (mPosition > 0){
@@ -83,7 +82,7 @@ public class DeputiesFragment extends Fragment
 
 
     @Override
-    public void show(List<Deputy> items){
+    public void show(List<Law> items){
         mAdapter.mItems = items;
         mAdapter.notifyDataSetChanged();
     }

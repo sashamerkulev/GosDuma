@@ -15,7 +15,7 @@ import ru.merkulyevsasha.gosduma.ui.ListViewListDataAdapter;
 
 public class ListActivity extends BaseActivity {
 
-    private HashMap<Integer, String> mListDataTableName = new HashMap<Integer, String>();
+    private final HashMap<Integer, String> mListDataTableName = new HashMap<Integer, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

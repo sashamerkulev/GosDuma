@@ -29,7 +29,7 @@ public class Deputy implements Parcelable {
 
     public Deputy(){}
 
-    protected Deputy(Parcel in) {
+    private Deputy(Parcel in) {
         id = in.readInt();
         birthdate = in.readLong();
         credentialsStart = in.readLong();

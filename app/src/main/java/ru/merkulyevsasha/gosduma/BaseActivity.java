@@ -1,5 +1,6 @@
 package ru.merkulyevsasha.gosduma;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+@SuppressLint("Registered")
 public class BaseActivity extends AppCompatActivity {
 
     private boolean isLarge() {

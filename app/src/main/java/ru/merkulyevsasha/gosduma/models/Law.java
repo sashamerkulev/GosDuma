@@ -30,7 +30,7 @@ public class Law implements Parcelable{
 
     public Law(){}
 
-    protected Law(Parcel in) {
+    private Law(Parcel in) {
         id = in.readInt();
         number = in.readString();
         name = in.readString();

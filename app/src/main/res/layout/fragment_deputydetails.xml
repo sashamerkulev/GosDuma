@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:gravity="left"
+            android:gravity="start"
             />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:gravity="left"
+            android:gravity="start"
             />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:gravity="left"
+            android:gravity="start"
             />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:gravity="left"
+            android:gravity="start"
             />
 
         <TextView
@@ -54,22 +54,13 @@
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:gravity="left"
+            android:gravity="start"
             />
 
     </LinearLayout>
 
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Список законов:"-->
-            <!--android:layout_marginRight="16dp"-->
-            <!--android:layout_marginBottom="16dp"-->
-            <!--android:layout_marginLeft="16dp"-->
-            <!--/>-->
-
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_deputy_laws"
+            android:id="@+id/recyclerview_laws"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="16dp"

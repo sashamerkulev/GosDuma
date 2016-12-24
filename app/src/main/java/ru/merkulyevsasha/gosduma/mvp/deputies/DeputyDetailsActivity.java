@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +15,8 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,10 +28,9 @@ import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
-import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
-import ru.merkulyevsasha.gosduma.mvp.laws.LawsPresenter;
+import ru.merkulyevsasha.gosduma.mvp.laws.DeputyLawDetailsActivity;
+import ru.merkulyevsasha.gosduma.mvp.laws.DeputyLawsPresenter;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
-import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class DeputyDetailsActivity extends BaseActivity
     implements
@@ -64,14 +62,14 @@ public class DeputyDetailsActivity extends BaseActivity
     @BindView(R.id.fab)
     public FloatingActionButton mFab;
 
-    @BindView(R.id.recyclerview_deputy_laws)
+    @BindView(R.id.recyclerview_laws)
     public RecyclerView mRecyclerView;
 
     private LawsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
     private Deputy mDeputy;
-    private LawsPresenter mPresenter;
+    private DeputyLawsPresenter mPresenter;
 
     private MenuItem mSearchItem;
     private MenuItem mSortItem;
@@ -100,7 +98,7 @@ public class DeputyDetailsActivity extends BaseActivity
             return;
         }
 
-        mPresenter = new LawsPresenter(this, this);
+        mPresenter = new DeputyLawsPresenter(this, this);
 
         setContentView(R.layout.activity_deputydetails);
         ButterKnife.bind(this);
@@ -130,33 +128,32 @@ public class DeputyDetailsActivity extends BaseActivity
                     mFractionName.setTextColor(Color.TRANSPARENT);
                     mFractionRole.setTextColor(Color.TRANSPARENT);
 
-                    mMenuItemsVisible = true;
-                    visibleMenuItems(mMenuItemsVisible);
+                    visibleMenuItems(true);
                 } else if (verticalOffset == 0) {
                     // Expanded
                     setTitle("");
                     mCollapsingToolbar.setTitleEnabled(false);
-                    mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
 
-                    mMenuItemsVisible = false;
-                    visibleMenuItems(mMenuItemsVisible);
+                    mDeputyName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mDeputyPosition.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mDeputyRanks.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mFractionName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mFractionRole.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+
+                    visibleMenuItems(false);
 
                 } else {
                     // Somewhere in between
                     setTitle("");
                     mCollapsingToolbar.setTitleEnabled(false);
-                    mDeputyName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mDeputyPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mDeputyRanks.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mFractionName.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    mFractionRole.setTextColor(getResources().getColor(R.color.textColorPrimary));
 
-                    mMenuItemsVisible = false;
-                    visibleMenuItems(mMenuItemsVisible);
+                    mDeputyName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mDeputyPosition.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mDeputyRanks.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mFractionName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+                    mFractionRole.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
+
+                    visibleMenuItems(false);
                 }
 
             }
@@ -228,12 +225,12 @@ public class DeputyDetailsActivity extends BaseActivity
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
         searchView.setOnQueryTextListener(this);
 
-        final EditText searchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        try {
-            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-            mCursorDrawableRes.setAccessible(true);
-            mCursorDrawableRes.set(searchTextView, R.drawable.cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-        } catch (Exception e) {}
+//        final EditText searchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+//        try {
+//            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+//            mCursorDrawableRes.setAccessible(true);
+//            mCursorDrawableRes.set(searchTextView, R.drawable.cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+//        } catch (Exception e) {}
 
         mSortItem = menu.findItem(R.id.action_sort);
         mSortItem.setOnMenuItemClickListener(this);
@@ -242,6 +239,8 @@ public class DeputyDetailsActivity extends BaseActivity
     }
 
     private void visibleMenuItems(boolean visible){
+        mMenuItemsVisible = visible;
+
         if (mSearchItem != null)
             mSearchItem.setVisible(visible);
         if (mSortItem != null)
@@ -251,7 +250,7 @@ public class DeputyDetailsActivity extends BaseActivity
 
     @Override
     public void onLawClick(Law law) {
-        Intent activityIntent = new Intent(this, LawDetailsActivity.class);
+        Intent activityIntent = new Intent(this, DeputyLawDetailsActivity.class);
         activityIntent.putExtra("law", law);
         startActivity(activityIntent);
     }

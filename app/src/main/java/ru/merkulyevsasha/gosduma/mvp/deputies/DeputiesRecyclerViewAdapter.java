@@ -63,9 +63,9 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
 
     public static class DeputiesViewHolder extends RecyclerView.ViewHolder{
 
-        TextView mDeputyName;
-        TextView mDeputyPosition;
-        TextView mDeputyFractionName;
+        final TextView mDeputyName;
+        final TextView mDeputyPosition;
+        final TextView mDeputyFractionName;
 
         public DeputiesViewHolder(final View itemView, final ViewInterface.OnClickListener clickListener) {
             super(itemView);

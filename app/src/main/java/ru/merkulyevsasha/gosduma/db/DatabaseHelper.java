@@ -23,7 +23,7 @@ import ru.merkulyevsasha.gosduma.models.ListData;
 public class DatabaseHelper {
 
     public final static String ASC = " asc";
-    public final static String DESC = " desc";
+    private final static String DESC = " desc";
 
     public final static String DATABASE_NAME = "gosduma.db";
 
@@ -35,10 +35,10 @@ public class DatabaseHelper {
     public final static String OTRAS_TABLE_NAME = "IndustryLegislation";
     public final static String INST_TABLE_NAME = "InstanceView";
 
-    public final static String ARTICLE_TABLE_NAME = "Article";
+    private final static String ARTICLE_TABLE_NAME = "Article";
 
-    public final static String DEPUTY_TABLE_NAME = "DeputyDb";
-    public final static String DEPUTYINFO_TABLE_NAME = "DeputyInfoDb";
+    private final static String DEPUTY_TABLE_NAME = "DeputyDb";
+    private final static String DEPUTYINFO_TABLE_NAME = "DeputyInfoDb";
 
     private final static String ID = "id";
     private final static String NAME = "name";
@@ -237,6 +237,7 @@ public class DatabaseHelper {
                         items.add(item);
                     } while (cursor.moveToNext());
                 }
+                cursor.close();
             }
         } catch (Exception e) {
             FirebaseCrash.report(e);
@@ -369,6 +370,38 @@ public class DatabaseHelper {
         return items;
     }
 
+
+    public List<Law> getLaws(String searchText, String orderBy) {
+        List<Law> items = new ArrayList<Law>();
+        String selectQuery = "select id, number, name, comments, name_lowcase, comments_lowcase, introductionDate, url, transcriptUrl, " +
+                " lastEventStageId, lastEventPhaseId, responsibleId, responsibleName, responsibleName_lower, lastEventSolution, lastEventSolution_lowcase, type from LawDb " +
+                " where name_lowcase like @search or number like @search or responsibleName_lower like @search or lastEventSolution_lowcase like @search or introductionDate like @search";
+
+        selectQuery = selectQuery + " order by " + orderBy;
+
+        SQLiteDatabase mSqlite = openOrCreateDatabase();
+        try {
+            if (mSqlite != null) {
+
+                Cursor cursor = mSqlite.rawQuery(selectQuery, new String[]{"%" + searchText.toLowerCase() + "%"});
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Law item = getLaw(cursor);
+                        items.add(item);
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrash.report(e);
+        } finally {
+            if (mSqlite != null && mSqlite.isOpen())
+                mSqlite.close();
+        }
+        return items;
+    }
+
+
     private List<Codifier> getCodifiers(String selectQuery, int id) {
         List<Codifier> items = new ArrayList<Codifier>();
 
@@ -388,6 +421,7 @@ public class DatabaseHelper {
                         items.add(item);
                     } while (cursor.moveToNext());
                 }
+                cursor.close();
             }
         } catch (Exception e) {
             FirebaseCrash.report(e);

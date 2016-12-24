@@ -9,9 +9,11 @@ public interface PresenterInterface {
 
     int getSortDialogType();
     List<Integer> getCurrentSortIndexValue();
+    boolean isSortMenuVisible();
 
     int getFilterDialogType();
     List<Integer> getCurrentFilterIndexValue();
+    boolean isFilterMenuVisible();
 
     void search(String searchText);
     void sort(List<Integer> oldSort, List<Integer> sort);

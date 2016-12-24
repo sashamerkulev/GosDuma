@@ -28,4 +28,17 @@
     <string name="item_sort_date">По дате</string>
     <string name="item_sort_number">По номеру</string>
     <string name="item_sort_lawname">По наименованию</string>
+    <string name="text_deputy">Депутат ГД</string>
+    <string name="text_member_sf">Член СФ</string>
+    <string name="text_working">Действующий</string>
+    <string name="text_not_working">Не действующий</string>
+    <string name="text_phase">Фаза</string>
+    <string name="text_stage">Стадия</string>
+    <string name="text_comment">Комментарий</string>
+    <string name="text_resp_comittee">Отв.комитет</string>
+    <string name="text_solution">Решение</string>
+    <string name="text_prof_comittee">Профильные комитеты</string>
+    <string name="text_coexec_comittee">Соисп. комитеты</string>
+    <string name="text_department">Департамент</string>
+    <string name="text_deputies">Депутаты</string>
 </resources>

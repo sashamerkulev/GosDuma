@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             />
 
         <TextView
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
         />
 
     </LinearLayout>

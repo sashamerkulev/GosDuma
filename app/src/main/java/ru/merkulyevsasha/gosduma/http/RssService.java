@@ -4,16 +4,12 @@ package ru.merkulyevsasha.gosduma.http;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import rx.schedulers.Schedulers;
 
 public class RssService {
 
     private final RssInterface anInterface;
 
     private RssService(){
-
-        RxJavaCallAdapterFactory adapter = RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io());
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.duma.gov.ru/")

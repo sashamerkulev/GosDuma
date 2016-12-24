@@ -42,6 +42,7 @@ public class ListViewNewsAdapter extends ArrayAdapter<Article> {
         mItems.addAll(collection);
     }
 
+    @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
