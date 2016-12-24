@@ -161,6 +161,40 @@ public class BaseLawDetailsActivity extends BaseActivity
             showAdditionalData();
         }
 
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+
+                final StringBuilder message = new StringBuilder();
+
+                message.append(mLaw.type);
+                message.append("\n");
+                message.append(mLaw.getLawNameWithNumberAndDate());
+                message.append("\n");
+                if (mLaw.comments != null && !mLaw.comments.isEmpty()) {
+                    message.append(BaseLawDetailsActivity.this.getResources().getString(R.string.text_comment));
+                    message.append(mLaw.comments);
+                    message.append("\n");
+                }
+                if (mLaw.lastEventSolution != null && !mLaw.lastEventSolution.isEmpty()){
+                    message.append(BaseLawDetailsActivity.this.getResources().getString(R.string.text_solution));
+                    message.append(mLaw.lastEventSolution);
+                    message.append("\n");
+                }
+                if (mLaw.responsibleName != null && !mLaw.responsibleName.isEmpty()){
+                    message.append(BaseLawDetailsActivity.this.getResources().getString(R.string.text_resp_comittee));
+                    message.append(mLaw.responsibleName);
+                    message.append("\n");
+                }
+                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
+            }
+        });
+
     }
 
     private String joinCodifiers(List<Codifier> list){

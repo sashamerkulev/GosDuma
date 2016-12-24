@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class LawsFragment extends Fragment
         implements
         LawsViewInterface {
 
+    private LinearLayout mEmptyLayout;
+
+    private RecyclerView mRecyclerView;
     private LawsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mPosition = -1;
@@ -65,7 +69,8 @@ public class LawsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_laws, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_laws);
+        mEmptyLayout = (LinearLayout) rootView.findViewById(R.id.layout_empty_page);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_laws);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -73,18 +78,26 @@ public class LawsFragment extends Fragment
         mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), ((OnLawClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
-        if (mPosition > 0){
-            mRecyclerView.scrollToPosition(mPosition);
-        }
+        showData(false);
 
         return rootView;
     }
 
+    private void showData(boolean show){
+        if (show) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void show(List<Law> items){
         mAdapter.mItems = items;
         mAdapter.notifyDataSetChanged();
+        showData(items.size() > 0);
     }
 
 }

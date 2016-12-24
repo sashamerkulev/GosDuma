@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class DeputiesFragment extends Fragment
         implements
          DeputiesViewInterface{
 
+    private LinearLayout mEmptyLayout;
+
+    private RecyclerView mRecyclerView;
     private DeputiesRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mPosition = -1;
@@ -64,7 +68,8 @@ public class DeputiesFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_deputies, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_deputies);
+        mEmptyLayout = (LinearLayout) rootView.findViewById(R.id.layout_empty_search);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_deputies);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -73,19 +78,27 @@ public class DeputiesFragment extends Fragment
 
         mAdapter = new DeputiesRecyclerViewAdapter(items, ((OnDeputyClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
-
-        if (mPosition > 0){
-            mRecyclerView.scrollToPosition(mPosition);
-        }
+        showData(items.size() > 0);
 
         return rootView;
     }
 
 
+    private void showData(boolean show){
+        if (show) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void show(List<Deputy> items){
         mAdapter.mItems = items;
         mAdapter.notifyDataSetChanged();
+        showData(items.size() > 0);
     }
 
 }

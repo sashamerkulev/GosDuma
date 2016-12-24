@@ -3,6 +3,7 @@ package ru.merkulyevsasha.gosduma.mvp.laws;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,11 +27,20 @@ public class LawsPresenter extends BaseLawsPresenter {
         return DatabaseHelper.getInstance(mContext).getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection);
     }
 
-
     @Override
     public void search(String searchText) {
         mSearchText = searchText;
-        mViewInterface.show(getLaws());
+
+        if (searchText.isEmpty()){
+            mViewInterface.show(new ArrayList<Law>());
+        } else {
+            mViewInterface.show(getLaws());
+        }
+    }
+
+    @Override
+    public boolean isSortMenuVisible() {
+        return !mSearchText.isEmpty();
     }
 
     @Override

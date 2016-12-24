@@ -15,6 +15,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -66,6 +67,9 @@ public class DeputyDetailsActivity extends BaseActivity
 
     @BindView(R.id.recyclerview_laws)
     public RecyclerView mRecyclerView;
+
+    @BindView(R.id.layout_empty_search)
+    public LinearLayout mEmptyLayout;
 
     private LawsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -149,6 +153,7 @@ public class DeputyDetailsActivity extends BaseActivity
 
         mAdapter = new LawsRecyclerViewAdapter(items, this);
         mRecyclerView.setAdapter(mAdapter);
+        showData(items.size() > 0);
 
         if (savedInstanceState != null && mMenuItemsVisible) {
             mAppbarLayout.setExpanded(false);
@@ -246,10 +251,21 @@ public class DeputyDetailsActivity extends BaseActivity
         startActivity(activityIntent);
     }
 
+    private void showData(boolean show){
+        if (show) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyLayout.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void show(List<Law> items) {
         mAdapter.mItems = items;
         mAdapter.notifyDataSetChanged();
+        showData(items.size() > 0);
     }
 
     @Override

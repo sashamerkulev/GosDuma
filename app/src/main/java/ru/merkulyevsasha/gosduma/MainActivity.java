@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     private MenuItem mSortItem;
 
 
+    private SearchView mSearchView;
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -84,8 +86,17 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//        toolbar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                mSearchView.setIconified(false);
+//                mSearchView.onActionViewExpanded();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -147,8 +158,8 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setOnQueryTextListener(this);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setOnQueryTextListener(this);
 
         mFilterItem = menu.findItem(R.id.action_filter);
         mFilterItem.setOnMenuItemClickListener(this);
@@ -246,6 +257,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
         mPresenter.search(query);
+        setVisibleMenuItems();
         return false;
     }
 
@@ -253,6 +265,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextChange(String newText) {
         if (newText.isEmpty()){
             mPresenter.search(newText);
+            setVisibleMenuItems();
         }
         return false;
     }
@@ -265,6 +278,18 @@ public class MainActivity extends AppCompatActivity
             int sortDialogType = mPresenter.getSortDialogType();
             if (sortDialogType == DialogHelper.IDD_DEPUTY_SORT) {
                 DialogHelper.getDeputySortDialog(this,
+                        mPresenter.getCurrentSortIndexValue().get(0),
+                        new DialogHelper.DialogClickListener() {
+                            @Override
+                            public void onClick(List<Integer> selectItemsIndex) {
+                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemsIndex);
+                            }
+                        }
+                ).show();
+            }
+
+            if (sortDialogType == DialogHelper.IDD_LAWS_SORT) {
+                DialogHelper.getLawSortDialog(this,
                         mPresenter.getCurrentSortIndexValue().get(0),
                         new DialogHelper.DialogClickListener() {
                             @Override
