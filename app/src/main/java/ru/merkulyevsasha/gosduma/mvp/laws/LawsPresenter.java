@@ -16,7 +16,7 @@ public class LawsPresenter extends BaseLawsPresenter {
     public LawsPresenter(Context context, LawsViewInterface viewInterface) {
         super(context, viewInterface);
 
-        mSortColumn = new HashMap<Integer, String>();
+        mSortColumn = new HashMap<>();
         mSortColumn.put(NAME_INDEX, "name");
         mSortColumn.put(NUMBER_INDEX, "number");
         mSortColumn.put(DATE_INDEX, "introductionDate");

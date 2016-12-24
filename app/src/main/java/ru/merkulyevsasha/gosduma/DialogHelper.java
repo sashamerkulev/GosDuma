@@ -36,7 +36,7 @@ public class DialogHelper {
 
                         dialog.dismiss();
 
-                        List<Integer> newSort = new ArrayList<Integer>();
+                        List<Integer> newSort = new ArrayList<>();
                         newSort.add(item);
 
                         listener.onClick(newSort);
@@ -64,7 +64,7 @@ public class DialogHelper {
 
                         dialog.dismiss();
 
-                        List<Integer> newSort = new ArrayList<Integer>();
+                        List<Integer> newSort = new ArrayList<>();
                         newSort.add(item);
 
                         listener.onClick(newSort);
@@ -98,7 +98,7 @@ public class DialogHelper {
 
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() { // Кнопка ОК
             public void onClick(DialogInterface dialog, int whichButton) {
-                List<Integer> newFilterSettings = new ArrayList<Integer>();
+                List<Integer> newFilterSettings = new ArrayList<>();
                 if (rb_deputy.isChecked()){
                     newFilterSettings.add(DeputiesPresenter.DEPUTY_INDEX);
                 } else {

@@ -26,13 +26,14 @@ import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 public class BaseLawDetailsActivity extends BaseActivity
         implements LawsViewInterface {
 
-    private final static String KEY_BUNDLE_LAW = "LAW";
-    private final static String KEY_BUNDLE_STAGE = "STAGE";
-    private final static String KEY_BUNDLE_PHASE = "PHASE";
-    private final static String KEY_BUNDLE_PROFILE = "PROFILE";
-    private final static String KEY_BUNDLE_COEXEC = "COEXEC";
-    private final static String KEY_BUNDLE_DEPUTIES = "DEPUTIES";
-    private final static String KEY_BUNDLE_DEPARTMENTS = "DEPARTMENTS";
+    public final static String KEY_LAW = "LAW";
+
+    private final static String KEY_STAGE = "STAGE";
+    private final static String KEY_PHASE = "PHASE";
+    private final static String KEY_PROFILE = "PROFILE";
+    private final static String KEY_COEXEC = "COEXEC";
+    private final static String KEY_DEPUTIES = "DEPUTIES";
+    private final static String KEY_DEPARTMENTS = "DEPARTMENTS";
 
 
     @BindView(R.id.tv_law_type)
@@ -116,13 +117,13 @@ public class BaseLawDetailsActivity extends BaseActivity
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_BUNDLE_LAW, mLaw);
-        outState.putString(KEY_BUNDLE_STAGE, mStage);
-        outState.putString(KEY_BUNDLE_PHASE, mPhase);
-        outState.putString(KEY_BUNDLE_PROFILE, mProfile);
-        outState.putString(KEY_BUNDLE_COEXEC, mCoexec);
-        outState.putString(KEY_BUNDLE_DEPUTIES, mDdeputies);
-        outState.putString(KEY_BUNDLE_DEPARTMENTS, mDepartments);
+        outState.putParcelable(KEY_LAW, mLaw);
+        outState.putString(KEY_STAGE, mStage);
+        outState.putString(KEY_PHASE, mPhase);
+        outState.putString(KEY_PROFILE, mProfile);
+        outState.putString(KEY_COEXEC, mCoexec);
+        outState.putString(KEY_DEPUTIES, mDdeputies);
+        outState.putString(KEY_DEPARTMENTS, mDepartments);
     }
 
     void initActivity(Bundle savedInstanceState){
@@ -133,9 +134,9 @@ public class BaseLawDetailsActivity extends BaseActivity
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
-            mLaw = intent.getParcelableExtra("law");
+            mLaw = intent.getParcelableExtra(KEY_LAW);
         } else {
-            mLaw = savedInstanceState.getParcelable(KEY_BUNDLE_LAW);
+            mLaw = savedInstanceState.getParcelable(KEY_LAW);
         }
 
         setTitle("");
@@ -151,12 +152,12 @@ public class BaseLawDetailsActivity extends BaseActivity
             MyAsyncTask task = new MyAsyncTask();
             task.execute();
         } else {
-            mStage = savedInstanceState.getString(KEY_BUNDLE_STAGE);
-            mPhase = savedInstanceState.getString(KEY_BUNDLE_PHASE);
-            mProfile = savedInstanceState.getString(KEY_BUNDLE_PROFILE);
-            mCoexec = savedInstanceState.getString(KEY_BUNDLE_COEXEC);
-            mDdeputies = savedInstanceState.getString(KEY_BUNDLE_DEPUTIES);
-            mDepartments = savedInstanceState.getString(KEY_BUNDLE_DEPARTMENTS);
+            mStage = savedInstanceState.getString(KEY_STAGE);
+            mPhase = savedInstanceState.getString(KEY_PHASE);
+            mProfile = savedInstanceState.getString(KEY_PROFILE);
+            mCoexec = savedInstanceState.getString(KEY_COEXEC);
+            mDdeputies = savedInstanceState.getString(KEY_DEPUTIES);
+            mDepartments = savedInstanceState.getString(KEY_DEPARTMENTS);
             showAdditionalData();
         }
 
@@ -200,12 +201,12 @@ public class BaseLawDetailsActivity extends BaseActivity
         @Override
         protected void onPostExecute(HashMap<String, String> result) {
 
-            mStage = result.get(KEY_BUNDLE_STAGE);
-            mPhase = result.get(KEY_BUNDLE_PHASE);
-            mProfile = result.get(KEY_BUNDLE_PROFILE);
-            mCoexec = result.get(KEY_BUNDLE_COEXEC);
-            mDdeputies = result.get(KEY_BUNDLE_DEPUTIES);
-            mDepartments = result.get(KEY_BUNDLE_DEPARTMENTS);
+            mStage = result.get(KEY_STAGE);
+            mPhase = result.get(KEY_PHASE);
+            mProfile = result.get(KEY_PROFILE);
+            mCoexec = result.get(KEY_COEXEC);
+            mDdeputies = result.get(KEY_DEPUTIES);
+            mDepartments = result.get(KEY_DEPARTMENTS);
 
             showAdditionalData();
             mProgressBar.setVisibility(View.GONE);
@@ -214,30 +215,30 @@ public class BaseLawDetailsActivity extends BaseActivity
         @Override
         protected HashMap<String, String> doInBackground(Void... params) {
 
-            HashMap<String, String> result = new HashMap<String, String>();
+            HashMap<String, String> result = new HashMap<>();
 
             Codifier stage = mPresenter.getStageById(mLaw.lastEventStageId);
-            result.put(KEY_BUNDLE_STAGE, stage.name);
+            result.put(KEY_STAGE, stage.name);
             Codifier phase = mPresenter.getPhaseById(mLaw.lastEventPhaseId);
-            result.put(KEY_BUNDLE_PHASE, phase.name);
+            result.put(KEY_PHASE, phase.name);
 
             List<Codifier> profiles = mPresenter.getProfileComittees(mLaw.id);
             String sprofiles = joinCodifiers(profiles);
-            result.put(KEY_BUNDLE_PROFILE, sprofiles);
+            result.put(KEY_PROFILE, sprofiles);
 
             List<Codifier> coexecutors = mPresenter.getCoexecutorCommittees(mLaw.id);
             String scoexecutors = joinCodifiers(coexecutors);
-            result.put(KEY_BUNDLE_COEXEC, scoexecutors);
+            result.put(KEY_COEXEC, scoexecutors);
 
             List<Codifier> deputies = mPresenter.getLawDeputies(mLaw.id);
             String sdeputies = joinCodifiers(deputies);
-            result.put(KEY_BUNDLE_DEPUTIES, sdeputies);
+            result.put(KEY_DEPUTIES, sdeputies);
 
             List<Codifier> federals = mPresenter.getLawFederals(mLaw.id);
             List<Codifier> regionals = mPresenter.getLawRegionals(mLaw.id);
             federals.addAll(regionals);
             String departments = joinCodifiers(federals);
-            result.put(KEY_BUNDLE_DEPARTMENTS, departments);
+            result.put(KEY_DEPARTMENTS, departments);
 
             return result;
         }

@@ -12,10 +12,13 @@ import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.ListData;
 import ru.merkulyevsasha.gosduma.ui.ListViewListDataAdapter;
 
+import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
+import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
+
 
 public class ListActivity extends BaseActivity {
 
-    private final HashMap<Integer, String> mListDataTableName = new HashMap<Integer, String>();
+    private final HashMap<Integer, String> mListDataTableName = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,8 @@ public class ListActivity extends BaseActivity {
         initSupportActionBarWithBackButton(R.id.list_toolbar);
 
         Intent intent = getIntent();
-        final int id = intent.getIntExtra("id", 0);
-        final String name = intent.getStringExtra("name");
+        final int id = intent.getIntExtra(KEY_ID, 0);
+        final String name = intent.getStringExtra(KEY_NAME);
         setTitle(name);
 
         mListDataTableName.put(R.id.nav_comittee, DatabaseHelper.COMMITTEE_TABLE_NAME);

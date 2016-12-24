@@ -27,17 +27,17 @@ public class DeputyLawDetailsActivity extends BaseLawDetailsActivity  {
                 message.append(mLaw.getLawNameWithNumberAndDate());
                 message.append("\n");
                 if (mLaw.comments != null && !mLaw.comments.isEmpty()) {
-                    message.append("Комментарий: ");
+                    message.append(DeputyLawDetailsActivity.this.getResources().getString(R.string.text_comment));
                     message.append(mLaw.comments);
                     message.append("\n");
                 }
                 if (mLaw.lastEventSolution != null && !mLaw.lastEventSolution.isEmpty()){
-                    message.append("Решение: ");
+                    message.append(DeputyLawDetailsActivity.this.getResources().getString(R.string.text_solution));
                     message.append(mLaw.lastEventSolution);
                     message.append("\n");
                 }
                 if (mLaw.responsibleName != null && !mLaw.responsibleName.isEmpty()){
-                    message.append("Отв.комитет: ");
+                    message.append(DeputyLawDetailsActivity.this.getResources().getString(R.string.text_resp_comittee));
                     message.append(mLaw.responsibleName);
                     message.append("\n");
                 }

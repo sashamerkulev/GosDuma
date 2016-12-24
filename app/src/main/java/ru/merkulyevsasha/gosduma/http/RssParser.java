@@ -36,7 +36,7 @@ public class RssParser {
         }
     }
     private List<Article> parseXML(XmlPullParser parser) throws XmlPullParserException, IOException {
-        List<Article> items = new ArrayList<Article>();
+        List<Article> items = new ArrayList<>();
         int eventType = parser.getEventType();
         Article item = null;
 

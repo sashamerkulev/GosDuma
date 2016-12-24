@@ -81,11 +81,11 @@ public class DatabaseHelper {
         if (mInstance == null) {
             synchronized (DatabaseHelper.class) {
                 if (mInstance == null) {
-                    mInstance = new DatabaseHelper(context);
+                    mInstance = new DatabaseHelper();
                 }
             }
         }
-        mInstance.mContext = new WeakReference<Context>(context);
+        mInstance.mContext = new WeakReference<>(context);
         return mInstance;
     }
 
@@ -99,14 +99,7 @@ public class DatabaseHelper {
         return null;
     }
 
-    private DatabaseHelper(final Context context) {
-        mContext = new WeakReference<Context>(context);
-        SQLiteDatabase mSqlite = openOrCreateDatabase();
-        if (mSqlite != null && mSqlite.getVersion() == 0) {
-//            mSqlite.execSQL(DATABASE_CREATE);
-//            mSqlite.setVersion(DATABASE_VERSION);
-//            mSqlite.close();
-        }
+    private DatabaseHelper() {
     }
 
     public static String getSortDirection(int oldSort, int newSort, String direction){
@@ -133,7 +126,7 @@ public class DatabaseHelper {
     }
 
     public List<ListData> selectAll(String tableName) {
-        List<ListData> items = new ArrayList<ListData>();
+        List<ListData> items = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + tableName;
         SQLiteDatabase mSqlite = openOrCreateDatabase();
         try {
@@ -215,7 +208,7 @@ public class DatabaseHelper {
     }
 
     public List<Article> getArticles(int source) {
-        List<Article> items = new ArrayList<Article>();
+        List<Article> items = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + ARTICLE_TABLE_NAME + " WHERE Source=@source";
 
         SQLiteDatabase mSqlite = openOrCreateDatabase();
@@ -270,7 +263,7 @@ public class DatabaseHelper {
     }
 
     public List<Deputy> search(String searchText, String orderBy, String position, int isCurrent) {
-        List<Deputy> items = new ArrayList<Deputy>();
+        List<Deputy> items = new ArrayList<>();
         String selectQuery = "SELECT  d.id, d.name, d.position, d.isCurrent, di.birthdate, di.credentialsStart, di.credentialsEnd "
                 + " , di.factionName, di.factionRole, di.factionRegion, di.ranks, di.degrees "
                 + " FROM " + DEPUTY_TABLE_NAME + " d JOIN " + DEPUTYINFO_TABLE_NAME + " di on di.id = d.id ";
@@ -330,7 +323,7 @@ public class DatabaseHelper {
     }
 
     public List<Law> getDeputyLaws(int deputyId, String searchText, String orderBy) {
-        List<Law> items = new ArrayList<Law>();
+        List<Law> items = new ArrayList<>();
         String selectQuery = "select l.id, l.number, l.name, l.comments, l.name_lowcase, l.comments_lowcase, l.introductionDate, l.url, l.transcriptUrl, "
                 + " l.lastEventStageId, l.lastEventPhaseId, l.responsibleId, l.responsibleName, l.responsibleName_lower, l.lastEventSolution, l.lastEventSolution_lowcase, l.type from LawDb l"
                 + " join LawDeputy ld on ld.LawId = l.id"
@@ -372,7 +365,7 @@ public class DatabaseHelper {
 
 
     public List<Law> getLaws(String searchText, String orderBy) {
-        List<Law> items = new ArrayList<Law>();
+        List<Law> items = new ArrayList<>();
         String selectQuery = "select id, number, name, comments, name_lowcase, comments_lowcase, introductionDate, url, transcriptUrl, " +
                 " lastEventStageId, lastEventPhaseId, responsibleId, responsibleName, responsibleName_lower, lastEventSolution, lastEventSolution_lowcase, type from LawDb " +
                 " where name_lowcase like @search or number like @search or responsibleName_lower like @search or lastEventSolution_lowcase like @search or introductionDate like @search";
@@ -403,7 +396,7 @@ public class DatabaseHelper {
 
 
     private List<Codifier> getCodifiers(String selectQuery, int id) {
-        List<Codifier> items = new ArrayList<Codifier>();
+        List<Codifier> items = new ArrayList<>();
 
         SQLiteDatabase mSqlite = openOrCreateDatabase();
         try {

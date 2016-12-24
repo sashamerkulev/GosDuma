@@ -18,12 +18,12 @@ import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
+import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_POSITION;
+
 
 public class LawsFragment extends Fragment
         implements
         LawsViewInterface {
-
-    private final static String KEY_POSITION = "POSITION";
 
     private LawsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;

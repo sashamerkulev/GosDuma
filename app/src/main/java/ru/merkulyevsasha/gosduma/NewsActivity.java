@@ -24,8 +24,15 @@ import ru.merkulyevsasha.gosduma.http.RssService;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.ui.ListViewNewsAdapter;
 
+import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
+import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
+import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_POSITION;
+
 public class NewsActivity extends BaseActivity
         implements AdapterView.OnItemClickListener{
+
+    public final static String KEY_TOPIC = "TOPIC";
+    public final static String KEY_DESCRIPTION = "DESCRIPTION";
 
     private ListViewNewsAdapter mAdapter;
 
@@ -35,11 +42,10 @@ public class NewsActivity extends BaseActivity
     private int mPosition = -1;
     private DatabaseHelper mDatabase;
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("position", mPosition);
+        outState.putInt(KEY_POSITION, mPosition);
     }
 
     @Override
@@ -50,8 +56,8 @@ public class NewsActivity extends BaseActivity
         initSupportActionBarWithBackButton(R.id.news_toolbar);
 
         Intent intent = getIntent();
-        mId = intent.getIntExtra("id", 0);
-        final String name = intent.getStringExtra("name");
+        mId = intent.getIntExtra(KEY_ID, 0);
+        final String name = intent.getStringExtra(KEY_NAME);
         setTitle(name);
 
         mRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_listviewnews);
@@ -77,7 +83,7 @@ public class NewsActivity extends BaseActivity
             mAdapter.notifyDataSetChanged();
 
             if (savedInstanceState != null){
-                mPosition = savedInstanceState.getInt("position", -1);
+                mPosition = savedInstanceState.getInt(KEY_POSITION, -1);
                 if (mPosition > 0) {
                     showDetailsOnPosition(mPosition);
                 }
@@ -146,8 +152,8 @@ public class NewsActivity extends BaseActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_newsdetails, fragment).commit();
             } else {
                 Intent activityIntent = new Intent(this, NewsDetailsActivity.class);
-                activityIntent.putExtra("topic", item.Title);
-                activityIntent.putExtra("description", item.Description);
+                activityIntent.putExtra(KEY_TOPIC, item.Title);
+                activityIntent.putExtra(KEY_DESCRIPTION, item.Description);
                 startActivity(activityIntent);
             }
         }

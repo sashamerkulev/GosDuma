@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.DialogHelper;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
@@ -56,14 +57,14 @@ public class DeputiesPresenter implements PresenterInterface {
 
         mSearchText = "";
 
-        mSortColumn = new HashMap<Integer, String>();
+        mSortColumn = new HashMap<>();
         mSortColumn.put(NAME_INDEX, "d.name");
         mSortColumn.put(BIRTHDATE_INDEX, "di.birthdate");
         mSortColumn.put(FRACTIONNAME_INDEX, "di.factionName");
 
-        mFilterDeputyValues= new HashMap<Integer, String>();
-        mFilterDeputyValues.put(DEPUTY_INDEX, "Депутат ГД");
-        mFilterDeputyValues.put(MEMBER_INDEX, "Член СФ");
+        mFilterDeputyValues= new HashMap<>();
+        mFilterDeputyValues.put(DEPUTY_INDEX, context.getResources().getString(R.string.text_deputy));
+        mFilterDeputyValues.put(MEMBER_INDEX, context.getResources().getString(R.string.text_member_sf));
     }
 
     @Override
@@ -78,7 +79,7 @@ public class DeputiesPresenter implements PresenterInterface {
 
     @Override
     public List<Integer> getCurrentSortIndexValue(){
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         result.add(mSort);
         return result;
     }
@@ -90,7 +91,7 @@ public class DeputiesPresenter implements PresenterInterface {
 
     @Override
     public List<Integer> getCurrentFilterIndexValue(){
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         result.add(mFilterDeputy);
         result.add(mFilterWorking);
         return result;

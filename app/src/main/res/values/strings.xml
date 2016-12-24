@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">Государственная дума</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Открыть навигационную панель</string>
+    <string name="navigation_drawer_close">Закрыть навигационную панель</string>
 
-    <string name="action_settings">Settings</string>
     <string name="menu_deputies">Депутаты и Члены СФ</string>
     <string name="menu_laws">Законопроекты</string>
     <string name="menu_deputies_requests">Депутатские запросы</string>
@@ -32,13 +31,13 @@
     <string name="text_member_sf">Член СФ</string>
     <string name="text_working">Действующий</string>
     <string name="text_not_working">Не действующий</string>
-    <string name="text_phase">Фаза</string>
-    <string name="text_stage">Стадия</string>
-    <string name="text_comment">Комментарий</string>
-    <string name="text_resp_comittee">Отв.комитет</string>
-    <string name="text_solution">Решение</string>
-    <string name="text_prof_comittee">Профильные комитеты</string>
-    <string name="text_coexec_comittee">Соисп. комитеты</string>
-    <string name="text_department">Департамент</string>
-    <string name="text_deputies">Депутаты</string>
+    <string name="text_phase">Фаза: </string>
+    <string name="text_stage">Стадия: </string>
+    <string name="text_comment">Комментарий: </string>
+    <string name="text_resp_comittee">Отв. комитет: </string>
+    <string name="text_solution">Решение: </string>
+    <string name="text_prof_comittee">Профильные комитеты: </string>
+    <string name="text_coexec_comittee">Соисп. комитеты: </string>
+    <string name="text_department">Департамент: </string>
+    <string name="text_deputies">Депутаты: </string>
 </resources>

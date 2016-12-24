@@ -37,6 +37,9 @@ import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsFragment;
 
+import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_DEPUTY;
+import static ru.merkulyevsasha.gosduma.mvp.laws.BaseLawDetailsActivity.KEY_LAW;
+
 public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener
@@ -47,9 +50,8 @@ public class MainActivity extends AppCompatActivity
         , OnLawClickListener
 {
 
-    private final static String KEY_DEPUTY = "DEPUTY";
-    private final static String KEY_LAW = "LAW";
-
+    public final static String KEY_ID = "ID";
+    public final static String KEY_NAME = "NAME";
 
     private PresenterInterface mPresenter;
 
@@ -148,13 +150,6 @@ public class MainActivity extends AppCompatActivity
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
-//        final EditText searchTextView = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-//        try {
-//            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
-//            mCursorDrawableRes.setAccessible(true);
-//            mCursorDrawableRes.set(searchTextView, R.drawable.cursor); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-//        } catch (Exception e) {}
-
         mFilterItem = menu.findItem(R.id.action_filter);
         mFilterItem.setOnMenuItemClickListener(this);
 
@@ -208,8 +203,8 @@ public class MainActivity extends AppCompatActivity
 
     private void startActivity(int id, String name, Class<?> cls){
         Intent activityIntent = new Intent(this, cls);
-        activityIntent.putExtra("id", id);
-        activityIntent.putExtra("name", name);
+        activityIntent.putExtra(KEY_ID, id);
+        activityIntent.putExtra(KEY_NAME, name);
         startActivity(activityIntent);
     }
 
@@ -328,7 +323,7 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
-            activityIntent.putExtra("deputy", deputy);
+            activityIntent.putExtra(KEY_DEPUTY, deputy);
             startActivity(activityIntent);
         }
     }
@@ -343,7 +338,7 @@ public class MainActivity extends AppCompatActivity
     public void onLawClick(Law law) {
         mLaw = law;
         Intent activityIntent = new Intent(this, LawDetailsActivity.class);
-        activityIntent.putExtra("law", law);
+        activityIntent.putExtra(KEY_LAW, law);
         startActivity(activityIntent);
     }
 }

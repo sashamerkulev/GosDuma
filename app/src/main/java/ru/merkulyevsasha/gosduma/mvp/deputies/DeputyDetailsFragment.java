@@ -48,6 +48,7 @@ public class DeputyDetailsFragment extends Fragment
         TextView mFractionRole = (TextView)v.findViewById(R.id.textview_deputy_fractionRole);
         TextView mDeputyRanks = (TextView)v.findViewById(R.id.textview_deputy_ranks);
 
+        assert mDeputy != null;
         mDeputyName.setText(mDeputy.getNameWithBirthday());
 
         mDeputyPosition.setText(mDeputy.getPositionWithStartAndEndDates());

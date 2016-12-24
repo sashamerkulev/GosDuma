@@ -40,7 +40,7 @@ public class BaseLawsPresenter implements PresenterInterface {
         mSort = NAME_INDEX;
         mSortDirection = DatabaseHelper.ASC;
 
-        mSortColumn = new HashMap<Integer, String>();
+        mSortColumn = new HashMap<>();
         mSortColumn.put(NAME_INDEX, "l.name");
         mSortColumn.put(NUMBER_INDEX, "l.number");
         mSortColumn.put(DATE_INDEX, "l.introductionDate");
@@ -55,7 +55,7 @@ public class BaseLawsPresenter implements PresenterInterface {
     @Override
     public List<Integer> getCurrentSortIndexValue() {
 
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         result.add(mSort);
         return result;
     }

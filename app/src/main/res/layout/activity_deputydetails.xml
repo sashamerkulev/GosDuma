@@ -124,7 +124,7 @@
         android:id="@+id/fab"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_share_white_24dp"
         app:layout_anchor="@id/details_content"
         app:layout_anchorGravity="bottom|right|end"

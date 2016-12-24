@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import static ru.merkulyevsasha.gosduma.NewsActivity.KEY_DESCRIPTION;
+import static ru.merkulyevsasha.gosduma.NewsActivity.KEY_TOPIC;
+
 
 public class NewsDetailsActivity extends BaseActivity {
 
@@ -21,8 +24,8 @@ public class NewsDetailsActivity extends BaseActivity {
         initSupportActionBarWithBackButton(R.id.newsdetails_toolbar);
 
         Intent intent = getIntent();
-        final String topic = intent.getStringExtra("topic");
-        final String description = intent.getStringExtra("description");
+        final String topic = intent.getStringExtra(KEY_TOPIC);
+        final String description = intent.getStringExtra(KEY_DESCRIPTION);
 
         TextView textViewTopic = (TextView)findViewById(R.id.textview_newsdetailstopic);
         TextView textViewDescription = (TextView)findViewById(R.id.textview_newsdetailsdescription);

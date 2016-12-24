@@ -17,12 +17,12 @@ import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
+import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_POSITION;
+
 
 public class DeputiesFragment extends Fragment
         implements
          DeputiesViewInterface{
-
-    private final static String KEY_POSITION = "POSITION";
 
     private DeputiesRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
