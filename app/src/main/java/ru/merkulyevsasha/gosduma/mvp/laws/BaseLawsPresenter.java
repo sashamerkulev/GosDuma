@@ -11,6 +11,8 @@ import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
+import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesPresenter.KEY_CURRENT_SEARCHTEXT_VALUE;
+
 
 public class BaseLawsPresenter implements PresenterInterface {
 
@@ -98,6 +100,7 @@ public class BaseLawsPresenter implements PresenterInterface {
 
         state.putInt(KEY_CURRENT_SORT_VALUE, mSort);
         state.putString(KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
+        state.putString(KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
 
         return state;
     }
@@ -107,6 +110,7 @@ public class BaseLawsPresenter implements PresenterInterface {
         if (outState != null){
             mSort = outState.getInt(KEY_CURRENT_SORT_VALUE);
             mSortDirection = outState.getString(KEY_CURRENT_SORT_DIRECTIONVALUE);
+            mSearchText = outState.getString(KEY_CURRENT_SEARCHTEXT_VALUE);
         }
     }
 }

@@ -31,7 +31,7 @@ public class DeputiesPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
     private final static String KEY_CURRENT_FILTERDEPUTY_VALUE = "DEPUTY";
     private final static String KEY_CURRENT_FILTERWORKING_VALUE = "WORKING";
-    private final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
+    public final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
     private final Activity mContext;
     private final DeputiesViewInterface mViewInterface;

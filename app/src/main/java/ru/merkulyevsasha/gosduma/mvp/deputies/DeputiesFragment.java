@@ -83,7 +83,6 @@ public class DeputiesFragment extends Fragment
         return rootView;
     }
 
-
     private void showData(boolean show){
         if (show) {
             mRecyclerView.setVisibility(View.VISIBLE);

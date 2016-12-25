@@ -29,7 +29,10 @@ public class LawsPresenter extends BaseLawsPresenter {
         mSortColumn.put(DATE_INDEX, "introductionDate");
     }
 
-    private List<Law> getLaws(){
+    public List<Law> getLaws(){
+        if (mSearchText.isEmpty()) {
+            return new ArrayList<>();
+        }
         return DatabaseHelper.getInstance(mContext).getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection);
     }
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
+import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
@@ -75,10 +76,12 @@ public class LawsFragment extends Fragment
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), ((OnLawClickListener)getActivity()));
+        List<Law> items = mPresenter.getLaws();
+
+        mAdapter = new LawsRecyclerViewAdapter(items, ((OnLawClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
-        showData(false);
+        showData(items.size() > 0);
 
         return rootView;
     }

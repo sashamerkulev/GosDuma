@@ -75,10 +75,6 @@ public class MainActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
 
-//        Bundle state = mPresenter.getState();
-//        if (state != null){
-//            outState.putAll(state);
-//        }
         if (mDeputy != null) {
             outState.putParcelable(KEY_DEPUTY, mDeputy);
         }
@@ -141,6 +137,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             setDeputiesFragment();
         } else {
+
             if (savedInstanceState.containsKey(KEY_LAW)) {
                 mLaw = savedInstanceState.getParcelable(KEY_LAW);
                 showLawDetails(mLaw);
