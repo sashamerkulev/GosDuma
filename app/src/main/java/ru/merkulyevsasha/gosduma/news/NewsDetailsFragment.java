@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma;
+package ru.merkulyevsasha.gosduma.news;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import static ru.merkulyevsasha.gosduma.NewsActivity.KEY_DESCRIPTION;
-import static ru.merkulyevsasha.gosduma.NewsActivity.KEY_TOPIC;
+import ru.merkulyevsasha.gosduma.R;
+
+import static ru.merkulyevsasha.gosduma.news.NewsActivity.KEY_DESCRIPTION;
+import static ru.merkulyevsasha.gosduma.news.NewsActivity.KEY_TOPIC;
 
 
 public class NewsDetailsFragment extends Fragment {

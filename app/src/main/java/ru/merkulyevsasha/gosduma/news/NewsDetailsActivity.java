@@ -1,14 +1,18 @@
-package ru.merkulyevsasha.gosduma;
+package ru.merkulyevsasha.gosduma.news;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import static ru.merkulyevsasha.gosduma.NewsActivity.KEY_DESCRIPTION;
-import static ru.merkulyevsasha.gosduma.NewsActivity.KEY_TOPIC;
+import ru.merkulyevsasha.gosduma.BaseActivity;
+import ru.merkulyevsasha.gosduma.R;
 
+import static ru.merkulyevsasha.gosduma.news.NewsActivity.KEY_DESCRIPTION;
+import static ru.merkulyevsasha.gosduma.news.NewsActivity.KEY_TOPIC;
 
 public class NewsDetailsActivity extends BaseActivity {
+
+    public static boolean ACTIVE = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,8 @@ public class NewsDetailsActivity extends BaseActivity {
             finish();
             return;
         }
+
+        ACTIVE = true;
 
         setContentView(R.layout.activity_newsdetails);
 

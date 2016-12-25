@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
@@ -39,6 +40,7 @@ import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsFragment;
+import ru.merkulyevsasha.gosduma.news.NewsActivity;
 
 import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_DEPUTY;
 import static ru.merkulyevsasha.gosduma.mvp.lawdetails.BaseLawDetailsActivity.KEY_LAW;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity
 
     public final static String KEY_ID = "ID";
     public final static String KEY_NAME = "NAME";
+    public final static String KEY_TITLE = "TITLE";
+    public final static String KEY_SEARCHTEXT = "SEARCHTEXT";
 
     private PresenterInterface mPresenter;
 
@@ -71,6 +75,9 @@ public class MainActivity extends AppCompatActivity
 
     private FrameLayout mFrameLayout;
 
+    private String mTitle;
+    private String mSearchText;
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -81,6 +88,8 @@ public class MainActivity extends AppCompatActivity
         if (mLaw != null) {
             outState.putParcelable(KEY_LAW, mLaw);
         }
+        outState.putString(KEY_TITLE, mTitle);
+        outState.putString(KEY_SEARCHTEXT, mSearchText);
     }
 
 
@@ -112,31 +121,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        AssetManager assetManager = this.getAssets();
-        try {
-            File fileDb = new File(this.getFilesDir(), DatabaseHelper.DATABASE_NAME);
-            if (!fileDb.exists()) {
-
-                InputStream in = assetManager.open(DatabaseHelper.DATABASE_NAME);
-                FileOutputStream out = new FileOutputStream(fileDb);
-
-                byte[] buffer = new byte[1024000];
-                int len;
-                while ((len = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, len);
-                }
-
-                in.close();
-                out.close();
-            }
-
-        } catch (IOException e) {
-            FirebaseCrash.report(e);
-        }
-
         if (savedInstanceState == null) {
             setDeputiesFragment();
         } else {
+            mTitle = savedInstanceState.getString(KEY_TITLE);
+            setTitle(mTitle);
+
+            if (savedInstanceState.containsKey(KEY_SEARCHTEXT)) {
+                mSearchText = savedInstanceState.getString(KEY_SEARCHTEXT);
+            }
 
             if (savedInstanceState.containsKey(KEY_LAW)) {
                 mLaw = savedInstanceState.getParcelable(KEY_LAW);
@@ -185,6 +178,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void searchViewText() {
+        mSearchView.setIconified(false);
+        mSearchView.setVisibility(View.VISIBLE);
+        mSearchView.onActionViewExpanded();
+        mSearchView.setQuery(mSearchText, false);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -193,6 +193,10 @@ public class MainActivity extends AppCompatActivity
         mSearchItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
         mSearchView.setOnQueryTextListener(this);
+
+        if (mSearchText != null && !mSearchText.isEmpty()) {
+            searchViewText();
+        }
 
         mFilterItem = menu.findItem(R.id.action_filter);
         mFilterItem.setOnMenuItemClickListener(this);
@@ -257,11 +261,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startListActivity(int id, String name){
-        startActivity(id, name, ListActivity.class);
+        startActivity(id, name, ListDataActivity.class);
     }
 
     private void setDeputiesFragment(){
-        setTitle(R.string.menu_deputies);
+        mTitle = getString(R.string.menu_deputies);
+        setTitle(mTitle);
         DeputiesFragment fragment = new DeputiesFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -270,7 +275,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setLawsFragment(){
-        setTitle(R.string.menu_laws);
+        mTitle = getString(R.string.menu_laws);
+        setTitle(mTitle);
         LawsFragment fragment = new LawsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
@@ -289,6 +295,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        mSearchText = query;
         mPresenter.search(query);
         setVisibleMenuItems();
         return false;
@@ -297,6 +304,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextChange(String newText) {
         if (newText.isEmpty()){
+            mSearchText = newText;
             mPresenter.search(newText);
             setVisibleMenuItems();
         }
@@ -372,6 +380,8 @@ public class MainActivity extends AppCompatActivity
             Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
             activityIntent.putExtra(KEY_DEPUTY, deputy);
             startActivity(activityIntent);
+            mDeputy = null;
+            mLaw = null;
         }
     }
 
@@ -384,6 +394,8 @@ public class MainActivity extends AppCompatActivity
             Intent activityIntent = new Intent(this, LawDetailsActivity.class);
             activityIntent.putExtra(KEY_LAW, law);
             startActivity(activityIntent);
+            mDeputy = null;
+            mLaw = null;
         }
     }
 

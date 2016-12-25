@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma;
+package ru.merkulyevsasha.gosduma.listdata;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,15 +8,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.merkulyevsasha.gosduma.BaseActivity;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.ListData;
-import ru.merkulyevsasha.gosduma.ui.ListViewListDataAdapter;
 
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
 
 
-public class ListActivity extends BaseActivity {
+public class ListDataActivity extends BaseActivity {
 
     private final HashMap<Integer, String> mListDataTableName = new HashMap<>();
 

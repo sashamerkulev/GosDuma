@@ -1,6 +1,8 @@
-package ru.merkulyevsasha.gosduma;
+package ru.merkulyevsasha.gosduma.news;
 
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,11 +20,12 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.merkulyevsasha.gosduma.BaseActivity;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.http.RssParser;
 import ru.merkulyevsasha.gosduma.http.RssService;
 import ru.merkulyevsasha.gosduma.models.Article;
-import ru.merkulyevsasha.gosduma.ui.ListViewNewsAdapter;
 
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
@@ -30,6 +33,8 @@ import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_P
 
 public class NewsActivity extends BaseActivity
         implements AdapterView.OnItemClickListener{
+
+    public final static int NEWS_ACTIVITYRESULT = 1001;
 
     public final static String KEY_TOPIC = "TOPIC";
     public final static String KEY_DESCRIPTION = "DESCRIPTION";
@@ -143,14 +148,12 @@ public class NewsActivity extends BaseActivity
     private void showDetailsOnPosition(int position){
         Article item = mAdapter.getItem(position);
         if (item != null) {
-
-            mPosition = position;
-
             FrameLayout fl = (FrameLayout) findViewById(R.id.frame_newsdetails);
             if (fl != null){
                 NewsDetailsFragment fragment = NewsDetailsFragment.newInstance(item.Title, item.Description);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_newsdetails, fragment).commit();
             } else {
+                mPosition = -1;
                 Intent activityIntent = new Intent(this, NewsDetailsActivity.class);
                 activityIntent.putExtra(KEY_TOPIC, item.Title);
                 activityIntent.putExtra(KEY_DESCRIPTION, item.Description);
@@ -161,6 +164,9 @@ public class NewsActivity extends BaseActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        mPosition = i;
+
         showDetailsOnPosition(i);
     }
+
 }

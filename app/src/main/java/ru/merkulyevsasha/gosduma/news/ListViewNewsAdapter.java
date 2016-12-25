@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.ui;
+package ru.merkulyevsasha.gosduma.news;
 
 
 import android.annotation.SuppressLint;
