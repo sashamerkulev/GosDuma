@@ -12,4 +12,7 @@ public interface ViewInterface {
         void onPresenterCreated(PresenterInterface presenter);
     }
 
+    void showProgress();
+    void hideProgress();
+
 }

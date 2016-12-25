@@ -1,13 +1,12 @@
 package ru.merkulyevsasha.gosduma.mvp.laws;
 
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
-import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 
@@ -18,8 +17,11 @@ public class DeputyLawsPresenter extends BaseLawsPresenter {
 
     private int mDeputyId;
 
-    public DeputyLawsPresenter(Context context, LawsViewInterface viewInterface){
-        super(context, viewInterface);
+    LawsViewInterface mViewInterface;
+
+    public DeputyLawsPresenter(Activity context, LawsViewInterface viewInterface){
+        super(context);
+        mViewInterface = viewInterface;
     }
 
     public List<Law> getDeputyLaws(int deputyId){
@@ -55,32 +57,5 @@ public class DeputyLawsPresenter extends BaseLawsPresenter {
         }
     }
 
-    public Codifier getPhaseById(int id) {
-        return DatabaseHelper.getInstance(mContext).getPhaseById(id);
-    }
-
-    public Codifier getStageById(int id) {
-        return DatabaseHelper.getInstance(mContext).getStageById(id);
-    }
-
-    public List<Codifier> getProfileComittees(int id) {
-        return DatabaseHelper.getInstance(mContext).getProfileComittees(id);
-    }
-
-    public List<Codifier> getCoexecutorCommittees(int id) {
-        return DatabaseHelper.getInstance(mContext).getCoexecutorCommittees(id);
-    }
-
-    public List<Codifier> getLawDeputies(int id) {
-        return DatabaseHelper.getInstance(mContext).getLawDeputies(id);
-    }
-
-    public List<Codifier> getLawRegionals(int id) {
-        return DatabaseHelper.getInstance(mContext).getLawRegionals(id);
-    }
-
-    public List<Codifier> getLawFederals(int id) {
-        return DatabaseHelper.getInstance(mContext).getLawFederals(id);
-    }
 
 }

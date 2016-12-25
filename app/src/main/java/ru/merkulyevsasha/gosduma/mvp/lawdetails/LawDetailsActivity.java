@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp.laws;
+package ru.merkulyevsasha.gosduma.mvp.lawdetails;
 
 import android.os.Bundle;
 

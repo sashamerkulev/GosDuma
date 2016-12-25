@@ -39,7 +39,7 @@ public class DeputiesFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPresenter = new DeputiesPresenter(context, this);
+        mPresenter = new DeputiesPresenter(getActivity(), this);
         ((ViewInterface.OnPresenterListener)getActivity()).onPresenterCreated(mPresenter);
     }
 

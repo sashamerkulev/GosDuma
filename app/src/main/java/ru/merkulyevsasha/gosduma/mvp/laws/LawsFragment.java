@@ -40,7 +40,7 @@ public class LawsFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPresenter = new LawsPresenter(context, this);
+        mPresenter = new LawsPresenter(getActivity(), this);
         ((ViewInterface.OnPresenterListener)getActivity()).onPresenterCreated(mPresenter);
     }
 

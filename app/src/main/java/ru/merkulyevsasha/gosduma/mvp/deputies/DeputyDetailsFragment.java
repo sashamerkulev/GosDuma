@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
@@ -27,18 +26,16 @@ public class DeputyDetailsFragment extends Fragment
     private final static String KEY_DEPUTY = "deputy";
 
     public static DeputyDetailsFragment newInstance(Deputy deputy) {
-        DeputyDetailsFragment details = new DeputyDetailsFragment();
+        DeputyDetailsFragment fragment = new DeputyDetailsFragment();
         Bundle args = new Bundle();
         args.putParcelable(KEY_DEPUTY, deputy);
-        details.setArguments(args);
-        return details;
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_deputydetails, container, false);
-
-        ButterKnife.bind(v);
 
         final Deputy mDeputy = getArguments().getParcelable(KEY_DEPUTY);
 

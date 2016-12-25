@@ -1,6 +1,6 @@
 package ru.merkulyevsasha.gosduma.mvp.laws;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
-import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
 
@@ -22,18 +21,16 @@ public class BaseLawsPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_SORT_VALUE = "SORT";
     private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
 
-    final Context mContext;
-    final LawsViewInterface mViewInterface;
+    public final Activity mContext;
     HashMap<Integer, String> mSortColumn;
 
     int mSort;
     String mSortDirection;
     String mSearchText;
 
-    BaseLawsPresenter(Context context, LawsViewInterface viewInterface){
+    public BaseLawsPresenter(Activity context){
 
         mContext = context;
-        mViewInterface = viewInterface;
 
         mSearchText = "";
 

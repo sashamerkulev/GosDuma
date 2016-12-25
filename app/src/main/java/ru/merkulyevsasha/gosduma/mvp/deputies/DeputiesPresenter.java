@@ -1,7 +1,7 @@
 package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class DeputiesPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_FILTERWORKING_VALUE = "WORKING";
     private final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
-    private final Context mContext;
+    private final Activity mContext;
     private final DeputiesViewInterface mViewInterface;
     private final HashMap<Integer, String> mSortColumn;
     private final HashMap<Integer, String> mFilterDeputyValues;
@@ -44,7 +44,7 @@ public class DeputiesPresenter implements PresenterInterface {
     private int mFilterWorking;
     private String mSearchText;
 
-    public DeputiesPresenter(Context context, DeputiesViewInterface viewInterface){
+    public DeputiesPresenter(Activity context, DeputiesViewInterface viewInterface){
 
         mContext = context;
         mViewInterface = viewInterface;

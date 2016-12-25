@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp.laws;
+package ru.merkulyevsasha.gosduma.mvp.lawdetails;
 
 
 import android.annotation.SuppressLint;
@@ -20,11 +20,12 @@ import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
+
+import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
 @SuppressLint("Registered")
 public class BaseLawDetailsActivity extends BaseActivity
-        implements LawsViewInterface {
+         {
 
     public final static String KEY_LAW = "LAW";
 
@@ -104,7 +105,7 @@ public class BaseLawDetailsActivity extends BaseActivity
     public ProgressBar mProgressBar;
 
     Law mLaw;
-    private DeputyLawsPresenter mPresenter;
+    private LawDetailsPresenter mPresenter;
 
     private String mStage;
     private String mPhase;
@@ -148,7 +149,7 @@ public class BaseLawDetailsActivity extends BaseActivity
         setTextToTextViewOrLayoutGone(mLaw.responsibleName, mLawResponsible, mLayoutResponsible);
 
         if (savedInstanceState == null) {
-            mPresenter = new DeputyLawsPresenter(this, this);
+            mPresenter = new LawDetailsPresenter(this);
             MyAsyncTask task = new MyAsyncTask();
             task.execute();
         } else {
@@ -218,11 +219,6 @@ public class BaseLawDetailsActivity extends BaseActivity
         setTextToTextViewOrLayoutGone(mCoexec, mLawCoexecComittees, mLayoutCoexecComittees);
         setTextToTextViewOrLayoutGone(mDdeputies, mLawDeputies, mLayoutDeputies);
         setTextToTextViewOrLayoutGone(mDepartments, mLawDepartments, mLayoutDepartments);
-    }
-
-    @Override
-    public void show(List<Law> items) {
-
     }
 
     private class MyAsyncTask extends AsyncTask<Void, Void, HashMap<String, String>> {

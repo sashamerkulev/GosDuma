@@ -1,7 +1,7 @@
 package ru.merkulyevsasha.gosduma.mvp.laws;
 
 
-import android.content.Context;
+import android.app.Activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,12 +10,18 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 
 public class LawsPresenter extends BaseLawsPresenter {
 
-    public LawsPresenter(Context context, LawsViewInterface viewInterface) {
-        super(context, viewInterface);
+    LawsViewInterface mViewInterface;
+
+
+    public LawsPresenter(Activity context, LawsViewInterface viewInterface) {
+        super(context);
+
+        mViewInterface = viewInterface;
 
         mSortColumn = new HashMap<>();
         mSortColumn.put(NAME_INDEX, "name");
@@ -23,18 +29,34 @@ public class LawsPresenter extends BaseLawsPresenter {
         mSortColumn.put(DATE_INDEX, "introductionDate");
     }
 
-    public List<Law> getLaws(){
+    private List<Law> getLaws(){
         return DatabaseHelper.getInstance(mContext).getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection);
+    }
+
+    private void runThread(){
+        ((ViewInterface)mContext).showProgress();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<Law> items = getLaws();
+                mContext.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ViewInterface)mContext).hideProgress();
+                        mViewInterface.show(items);
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override
     public void search(String searchText) {
         mSearchText = searchText;
-
         if (searchText.isEmpty()){
             mViewInterface.show(new ArrayList<Law>());
         } else {
-            mViewInterface.show(getLaws());
+            runThread();
         }
     }
 
@@ -47,7 +69,7 @@ public class LawsPresenter extends BaseLawsPresenter {
     public void sort(List<Integer> oldSort, List<Integer> sort) {
         mSort = sort.get(0);
         mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
-        mViewInterface.show(getLaws());
+        runThread();
     }
 
 }

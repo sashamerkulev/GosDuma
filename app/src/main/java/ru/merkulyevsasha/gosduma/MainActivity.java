@@ -14,7 +14,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.google.firebase.crash.FirebaseCrash;
 
@@ -34,17 +36,19 @@ import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
-import ru.merkulyevsasha.gosduma.mvp.laws.LawDetailsActivity;
+import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsActivity;
+import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsFragment;
 
 import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_DEPUTY;
-import static ru.merkulyevsasha.gosduma.mvp.laws.BaseLawDetailsActivity.KEY_LAW;
+import static ru.merkulyevsasha.gosduma.mvp.lawdetails.BaseLawDetailsActivity.KEY_LAW;
 
 public class MainActivity extends AppCompatActivity
         implements
         NavigationView.OnNavigationItemSelectedListener
         , MenuItem.OnMenuItemClickListener
         , SearchView.OnQueryTextListener
+        , ViewInterface
         , ViewInterface.OnPresenterListener
         , OnDeputyClickListener
         , OnLawClickListener
@@ -59,11 +63,13 @@ public class MainActivity extends AppCompatActivity
     private Deputy mDeputy;
 
     private MenuItem mFilterItem;
-
     private MenuItem mSortItem;
-
-
+    private MenuItem mSearchItem;
     private SearchView mSearchView;
+
+    private ProgressBar mProgress;
+
+    private FrameLayout mFrameLayout;
 
     @Override
     public void onSaveInstanceState(Bundle outState){
@@ -97,6 +103,9 @@ public class MainActivity extends AppCompatActivity
 //                mSearchView.onActionViewExpanded();
 //            }
 //        });
+
+        mProgress = (ProgressBar) findViewById(R.id.progressBar);
+        mFrameLayout = (FrameLayout) findViewById(R.id.frame_searchlist);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -134,6 +143,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             if (savedInstanceState.containsKey(KEY_LAW)) {
                 mLaw = savedInstanceState.getParcelable(KEY_LAW);
+                showLawDetails(mLaw);
             }
             if (savedInstanceState.containsKey(KEY_DEPUTY)) {
                 mDeputy = savedInstanceState.getParcelable(KEY_DEPUTY);
@@ -153,12 +163,38 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void showProgress(){
+        mFilterItem.setVisible(false);
+        mSortItem.setVisible(false);
+        mFrameLayout.setVisibility(View.GONE);
+        mProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress(){
+        mFrameLayout.setVisibility(View.VISIBLE);
+        mProgress.setVisibility(View.GONE);
+        setVisibleMenuItems();
+    }
+
+    private void setVisibleMenuItems(){
+        if (mPresenter != null) {
+            if (mSortItem != null) {
+                mSortItem.setVisible(mPresenter.isSortMenuVisible() && mProgress.getVisibility() == View.GONE);
+            }
+            if (mFilterItem != null) {
+                mFilterItem.setVisible(mPresenter.isFilterMenuVisible() && mProgress.getVisibility() == View.GONE);
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
         mSearchView.setOnQueryTextListener(this);
 
         mFilterItem = menu.findItem(R.id.action_filter);
@@ -324,17 +360,6 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    private void setVisibleMenuItems(){
-        if (mPresenter != null) {
-            if (mSortItem != null) {
-                mSortItem.setVisible(mPresenter.isSortMenuVisible());
-            }
-            if (mFilterItem != null) {
-                mFilterItem.setVisible(mPresenter.isFilterMenuVisible());
-            }
-        }
-    }
-
     @Override
     public void onPresenterCreated(PresenterInterface presenter) {
         mPresenter = presenter;
@@ -353,6 +378,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void showLawDetails(Law law){
+        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
+        if (fl != null){
+            LawDetailsFragment fragment = LawDetailsFragment.newInstance(law);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        } else {
+            Intent activityIntent = new Intent(this, LawDetailsActivity.class);
+            activityIntent.putExtra(KEY_LAW, law);
+            startActivity(activityIntent);
+        }
+    }
+
+
     @Override
     public void onDeputyClick(Deputy deputy) {
         mDeputy = deputy;
@@ -362,8 +400,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLawClick(Law law) {
         mLaw = law;
-        Intent activityIntent = new Intent(this, LawDetailsActivity.class);
-        activityIntent.putExtra(KEY_LAW, law);
-        startActivity(activityIntent);
+        showLawDetails(law);
     }
 }
