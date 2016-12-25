@@ -10,14 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
-import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
-import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_POSITION;

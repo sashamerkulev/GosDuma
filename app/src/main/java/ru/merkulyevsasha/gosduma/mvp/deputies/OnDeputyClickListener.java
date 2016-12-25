@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp;
+package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 import ru.merkulyevsasha.gosduma.models.Deputy;
 

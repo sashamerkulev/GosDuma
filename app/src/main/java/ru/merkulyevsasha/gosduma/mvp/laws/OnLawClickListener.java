@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp;
+package ru.merkulyevsasha.gosduma.mvp.laws;
 
 import ru.merkulyevsasha.gosduma.models.Law;
 

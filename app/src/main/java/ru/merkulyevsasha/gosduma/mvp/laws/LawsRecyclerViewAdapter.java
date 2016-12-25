@@ -11,7 +11,6 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<LawsRecyclerViewAdapter.LawsViewHolder>{

@@ -14,8 +14,6 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
-import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
-import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_POSITION;

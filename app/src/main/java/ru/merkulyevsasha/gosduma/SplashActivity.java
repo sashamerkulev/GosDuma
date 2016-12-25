@@ -19,7 +19,7 @@ import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final static int MAX_PROGRESS = 100;
+    private final static int MAX_PROGRESS = 200;
 
     private ProgressBar mProgress;
 
@@ -94,6 +94,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
             mProgress.setProgress(values[0]);
         }
     }

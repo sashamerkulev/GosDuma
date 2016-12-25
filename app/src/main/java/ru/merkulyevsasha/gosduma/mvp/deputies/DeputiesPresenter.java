@@ -12,7 +12,6 @@ import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
-import ru.merkulyevsasha.gosduma.mvp.DeputiesViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
 

@@ -30,13 +30,14 @@ import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.mvp.OnDeputyClickListener;
-import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
+import ru.merkulyevsasha.gosduma.mvp.deputies.OnDeputyClickListener;
+import ru.merkulyevsasha.gosduma.mvp.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
+import ru.merkulyevsasha.gosduma.mvp.deputiesrequests.DepitiesRequestsFragment;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsFragment;
@@ -284,12 +285,24 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    private void setDeputiesRequestsFragment(){
+        mTitle = getString(R.string.menu_deputies_requests);
+        setTitle(mTitle);
+        DepitiesRequestsFragment fragment = new DepitiesRequestsFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_searchlist, fragment)
+                .commit();
+    }
+
     private void showNavFragment(int id){
 
         if (id == R.id.nav_deputies) {
             setDeputiesFragment();
         } else if (id == R.id.nav_laws) {
             setLawsFragment();
+        } else if (id == R.id.nav_depqueries) {
+            setDeputiesRequestsFragment();
         }
     }
 
