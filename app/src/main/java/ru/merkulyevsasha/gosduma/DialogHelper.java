@@ -18,6 +18,7 @@ public class DialogHelper {
     public final static int IDD_DEPUTY_SORT = 1;
     public final static int IDD_DEPUTY_FILTER = 2;
     public final static int IDD_LAWS_SORT = 3;
+    public final static int IDD_DEPUTY_REQUEST_SORT = 4;
 
     public static Dialog getDeputySortDialog(final Activity context, int currentItemIndex, final DialogClickListener listener){
 

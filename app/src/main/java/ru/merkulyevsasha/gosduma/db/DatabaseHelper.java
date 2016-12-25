@@ -17,6 +17,7 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.models.ListData;
 
@@ -63,14 +64,20 @@ public class DatabaseHelper {
     private final static String COMMENTS = "comments";
     private final static String INTODUCTIONDATE = "introductionDate";
     private final static String LASTEVENTSOLUTION = "lastEventSolution";
-    private final static String LASTEVENTDATE = "lastEventDate";
-    private final static String LASTEVENTDOCNAME = "lastEventDocName";
-    private final static String LASTEVENTDOCTYPE = "lastEventDocType";
     private final static String RESPONSIBLENAME = "responsibleName";
     private final static String TYPE = "type";
     private final static String LASTEVENTPHASEID = "lastEventPhaseId";
     private final static String LASTEVENTSTAGEID = "lastEventStageId";
     private final static String RESPONSIBLEID = "responsibleId";
+
+    private final static String REQUESTID = "requestId";
+    private final static String DOCUMENTNUMBER = "documentNumber";
+    private final static String INITIATOR = "initiator";
+    private final static String REQUESTDATE = "requestDate";
+    private final static String RESOLUTION = "resolution";
+    private final static String SIGNEDBY_NAME = "signedBy_name";
+    private final static String ANSWER = "answer";
+    private final static String ADDRESSEE_NAME = "addressee_name";
 
     private WeakReference<Context> mContext;
 
@@ -346,7 +353,6 @@ public class DatabaseHelper {
                     cursor = mSqlite.rawQuery(selectQuery, new String[]{String.valueOf(deputyId), "%" + searchText.toLowerCase() + "%"});
                 }
 
-
                 if (cursor.moveToFirst()) {
                     do {
                         Law item = getLaw(cursor);
@@ -362,7 +368,6 @@ public class DatabaseHelper {
         }
         return items;
     }
-
 
     public List<Law> getLaws(String searchText, String orderBy) {
         List<Law> items = new ArrayList<>();
@@ -394,6 +399,56 @@ public class DatabaseHelper {
         return items;
     }
 
+    public List<DeputyRequest> getDeputyRequests(String searchText, String orderBy) {
+        List<DeputyRequest> items = new ArrayList<>();
+        String selectQuery = "select requestId, initiator, requestDate, name, controlDate, signedDate, documentNumber, resolution, " +
+                " answer, signedBy_id, signedBy_name, addressee_id, addressee_name from DeputyRequestDb ";
+
+        if (!searchText.isEmpty()) {
+            selectQuery = selectQuery + " where initiator_lowcase like @search or name_lowcase like @search or resolution_lowcase like @search or " +
+                    " answer_lowcase like @search or signedBy_name_lowcase like @search or addressee_name_lowcase like @search or " +
+                    " documentNumber like @search or requestDate like @search";
+        }
+
+        selectQuery = selectQuery + " order by " + orderBy;
+
+        SQLiteDatabase mSqlite = openOrCreateDatabase();
+        try {
+            if (mSqlite != null) {
+
+                Cursor cursor;
+                if (searchText.isEmpty()) {
+                    cursor = mSqlite.rawQuery(selectQuery, null);
+                } else {
+                    cursor = mSqlite.rawQuery(selectQuery, new String[]{"%" + searchText.toLowerCase() + "%"});
+                }
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        DeputyRequest item = new DeputyRequest();
+
+                        item.requestId = cursor.getInt(cursor.getColumnIndex(REQUESTID));
+                        item.name = cursor.getString(cursor.getColumnIndex(NAME));
+                        item.documentNumber = cursor.getString(cursor.getColumnIndex(DOCUMENTNUMBER));
+                        item.initiator = cursor.getString(cursor.getColumnIndex(INITIATOR));
+                        item.requestDate = cursor.getLong(cursor.getColumnIndex(REQUESTDATE));
+                        item.resolution = cursor.getString(cursor.getColumnIndex(RESOLUTION));
+                        item.signedBy_name = cursor.getString(cursor.getColumnIndex(SIGNEDBY_NAME));
+                        item.answer = cursor.getString(cursor.getColumnIndex(ANSWER));
+                        item.addressee_name = cursor.getString(cursor.getColumnIndex(ADDRESSEE_NAME));
+
+                        items.add(item);
+                    } while (cursor.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrash.report(e);
+        } finally {
+            if (mSqlite != null && mSqlite.isOpen())
+                mSqlite.close();
+        }
+        return items;
+    }
 
     private List<Codifier> getCodifiers(String selectQuery, int id) {
         List<Codifier> items = new ArrayList<>();

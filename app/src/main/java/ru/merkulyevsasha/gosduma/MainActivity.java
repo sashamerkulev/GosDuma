@@ -1,7 +1,6 @@
 package ru.merkulyevsasha.gosduma;
 
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -18,32 +17,29 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.google.firebase.crash.FirebaseCrash;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.deputies.OnDeputyClickListener;
+import ru.merkulyevsasha.gosduma.mvp.deputyrequests.DeputyRequestDetailsActivity;
+import ru.merkulyevsasha.gosduma.mvp.deputyrequests.OnDeputyRequestsClickListener;
 import ru.merkulyevsasha.gosduma.mvp.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsFragment;
-import ru.merkulyevsasha.gosduma.mvp.deputiesrequests.DepitiesRequestsFragment;
+import ru.merkulyevsasha.gosduma.mvp.deputyrequests.DeputyRequestsFragment;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.news.NewsActivity;
 
 import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_DEPUTY;
+import static ru.merkulyevsasha.gosduma.mvp.deputyrequests.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
 import static ru.merkulyevsasha.gosduma.mvp.lawdetails.BaseLawDetailsActivity.KEY_LAW;
 
 public class MainActivity extends AppCompatActivity
@@ -55,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         , ViewInterface.OnPresenterListener
         , OnDeputyClickListener
         , OnLawClickListener
+        , OnDeputyRequestsClickListener
 {
 
     public final static String KEY_ID = "ID";
@@ -66,6 +63,7 @@ public class MainActivity extends AppCompatActivity
 
     private Law mLaw;
     private Deputy mDeputy;
+    private DeputyRequest mDeputyRequest;
 
     private MenuItem mFilterItem;
     private MenuItem mSortItem;
@@ -88,6 +86,9 @@ public class MainActivity extends AppCompatActivity
         }
         if (mLaw != null) {
             outState.putParcelable(KEY_LAW, mLaw);
+        }
+        if (mDeputyRequest != null) {
+            outState.putParcelable(KEY_DEPUTYREQUEST, mDeputyRequest);
         }
         outState.putString(KEY_TITLE, mTitle);
         outState.putString(KEY_SEARCHTEXT, mSearchText);
@@ -139,6 +140,10 @@ public class MainActivity extends AppCompatActivity
             if (savedInstanceState.containsKey(KEY_DEPUTY)) {
                 mDeputy = savedInstanceState.getParcelable(KEY_DEPUTY);
                 showDeputyDetails(mDeputy);
+            }
+            if (savedInstanceState.containsKey(KEY_DEPUTYREQUEST)) {
+                mDeputyRequest = savedInstanceState.getParcelable(KEY_DEPUTYREQUEST);
+                showDeputyRequestDetails(mDeputyRequest);
             }
         }
     }
@@ -285,10 +290,10 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
-    private void setDeputiesRequestsFragment(){
+    private void setDeputyRequestsFragment(){
         mTitle = getString(R.string.menu_deputies_requests);
         setTitle(mTitle);
-        DepitiesRequestsFragment fragment = new DepitiesRequestsFragment();
+        DeputyRequestsFragment fragment = new DeputyRequestsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_searchlist, fragment)
@@ -302,7 +307,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_laws) {
             setLawsFragment();
         } else if (id == R.id.nav_depqueries) {
-            setDeputiesRequestsFragment();
+            setDeputyRequestsFragment();
         }
     }
 
@@ -395,6 +400,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(activityIntent);
             mDeputy = null;
             mLaw = null;
+            mDeputyRequest = null;
         }
     }
 
@@ -409,9 +415,24 @@ public class MainActivity extends AppCompatActivity
             startActivity(activityIntent);
             mDeputy = null;
             mLaw = null;
+            mDeputyRequest = null;
         }
     }
 
+    private void showDeputyRequestDetails(DeputyRequest deputyRequest){
+        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
+        if (fl != null){
+//            LawDetailsFragment fragment = LawDetailsFragment.newInstance(deputyRequest);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        } else {
+            Intent activityIntent = new Intent(this, DeputyRequestDetailsActivity.class);
+            activityIntent.putExtra(KEY_DEPUTYREQUEST, deputyRequest);
+            startActivity(activityIntent);
+            mDeputy = null;
+            mLaw = null;
+            mDeputyRequest = null;
+        }
+    }
 
     @Override
     public void onDeputyClick(Deputy deputy) {
@@ -423,5 +444,11 @@ public class MainActivity extends AppCompatActivity
     public void onLawClick(Law law) {
         mLaw = law;
         showLawDetails(law);
+    }
+
+    @Override
+    public void onDeputyRequestwClick(DeputyRequest deputyRequest) {
+        mDeputyRequest = deputyRequest;
+        showDeputyRequestDetails(deputyRequest);
     }
 }

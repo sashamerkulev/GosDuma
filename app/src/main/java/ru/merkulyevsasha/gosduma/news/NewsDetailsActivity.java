@@ -12,8 +12,6 @@ import static ru.merkulyevsasha.gosduma.news.NewsActivity.KEY_TOPIC;
 
 public class NewsDetailsActivity extends BaseActivity {
 
-    public static boolean ACTIVE = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +20,6 @@ public class NewsDetailsActivity extends BaseActivity {
             finish();
             return;
         }
-
-        ACTIVE = true;
 
         setContentView(R.layout.activity_newsdetails);
 
