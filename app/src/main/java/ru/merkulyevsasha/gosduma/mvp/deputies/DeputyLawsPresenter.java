@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.mvp.laws;
+package ru.merkulyevsasha.gosduma.mvp.deputies;
 
 
 import android.app.Activity;
@@ -9,6 +9,7 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.mvp.laws.BaseLawsPresenter;
 
 
 public class DeputyLawsPresenter extends BaseLawsPresenter {

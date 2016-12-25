@@ -16,7 +16,6 @@ import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
-import ru.merkulyevsasha.gosduma.mvp.laws.DeputyLawsPresenter;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 
 

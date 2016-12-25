@@ -31,7 +31,6 @@ import ru.merkulyevsasha.gosduma.mvp.LawsViewInterface;
 import ru.merkulyevsasha.gosduma.mvp.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.BaseLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.lawdetails.DeputyLawDetailsActivity;
-import ru.merkulyevsasha.gosduma.mvp.laws.DeputyLawsPresenter;
 import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrGone;
