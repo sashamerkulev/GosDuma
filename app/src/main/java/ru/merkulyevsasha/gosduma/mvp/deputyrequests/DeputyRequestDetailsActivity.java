@@ -77,7 +77,7 @@ public class DeputyRequestDetailsActivity extends BaseActivity {
 
         Intent intent = getIntent();
         mDeputyRequest = intent.getParcelableExtra(KEY_DEPUTYREQUEST);
-        setTitle("");
+        setTitle(R.string.menu_deputies_requests);
 
         mDeputyrequestName.setText(mDeputyRequest.getNameWithNumberAndDate());
 

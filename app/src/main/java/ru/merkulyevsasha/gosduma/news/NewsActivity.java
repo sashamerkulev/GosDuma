@@ -34,8 +34,6 @@ import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputyDetailsActivity.KEY_P
 public class NewsActivity extends BaseActivity
         implements AdapterView.OnItemClickListener{
 
-    public final static int NEWS_ACTIVITYRESULT = 1001;
-
     public final static String KEY_TOPIC = "TOPIC";
     public final static String KEY_DESCRIPTION = "DESCRIPTION";
 
@@ -44,6 +42,7 @@ public class NewsActivity extends BaseActivity
     private SwipeRefreshLayout mRefreshLayout;
 
     private int mId = -1;
+    private String mName = "";
     private int mPosition = -1;
     private DatabaseHelper mDatabase;
 
@@ -62,8 +61,8 @@ public class NewsActivity extends BaseActivity
 
         Intent intent = getIntent();
         mId = intent.getIntExtra(KEY_ID, 0);
-        final String name = intent.getStringExtra(KEY_NAME);
-        setTitle(name);
+        mName = intent.getStringExtra(KEY_NAME);
+        setTitle(mName);
 
         mRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_listviewnews);
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -157,6 +156,7 @@ public class NewsActivity extends BaseActivity
                 Intent activityIntent = new Intent(this, NewsDetailsActivity.class);
                 activityIntent.putExtra(KEY_TOPIC, item.Title);
                 activityIntent.putExtra(KEY_DESCRIPTION, item.Description);
+                activityIntent.putExtra(KEY_NAME, mName);
                 startActivity(activityIntent);
             }
         }

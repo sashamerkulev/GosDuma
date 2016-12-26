@@ -11,12 +11,16 @@
         android:id="@+id/tv_law_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         />
 
     <TextView
         android:id="@+id/tv_law_responsible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         />
 
 </LinearLayout>

@@ -177,6 +177,7 @@
         android:src="@drawable/ic_share_white_24dp"
         app:layout_anchor="@id/scrollview_content"
         app:layout_anchorGravity="bottom|right|end"
+        app:backgroundTint="@color/colorPrimary"
         />
 
 </android.support.design.widget.CoordinatorLayout>

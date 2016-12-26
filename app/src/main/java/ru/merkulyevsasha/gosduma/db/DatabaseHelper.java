@@ -317,9 +317,6 @@ public class DatabaseHelper {
         item.comments = cursor.getString(cursor.getColumnIndex(COMMENTS));
         item.introductionDate = cursor.getLong(cursor.getColumnIndex(INTODUCTIONDATE));
         item.lastEventSolution = cursor.getString(cursor.getColumnIndex(LASTEVENTSOLUTION));
-        //item.lastEventDate = cursor.getLong(cursor.getColumnIndex(LASTEVENTDATE));
-        //item.lastEventDocName = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCNAME));
-        //item.lastEventDocType = cursor.getString(cursor.getColumnIndex(LASTEVENTDOCTYPE));
         item.responsibleName = cursor.getString(cursor.getColumnIndex(RESPONSIBLENAME));
         item.type = cursor.getString(cursor.getColumnIndex(TYPE));
         item.lastEventPhaseId = cursor.getInt(cursor.getColumnIndex(LASTEVENTPHASEID));
@@ -359,6 +356,7 @@ public class DatabaseHelper {
                         items.add(item);
                     } while (cursor.moveToNext());
                 }
+                cursor.close();
             }
         } catch (Exception e) {
             FirebaseCrash.report(e);
@@ -389,6 +387,7 @@ public class DatabaseHelper {
                         items.add(item);
                     } while (cursor.moveToNext());
                 }
+                cursor.close();
             }
         } catch (Exception e) {
             FirebaseCrash.report(e);
@@ -440,6 +439,7 @@ public class DatabaseHelper {
                         items.add(item);
                     } while (cursor.moveToNext());
                 }
+                cursor.close();
             }
         } catch (Exception e) {
             FirebaseCrash.report(e);
