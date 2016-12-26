@@ -244,14 +244,20 @@ public class MainActivity extends AppCompatActivity
 
         else if (id == R.id.nav_deputies) {
             showNavFragment(R.id.nav_deputies);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.nav_laws) {
             showNavFragment(R.id.nav_laws);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.nav_depqueries) {
             showNavFragment(R.id.nav_depqueries);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
