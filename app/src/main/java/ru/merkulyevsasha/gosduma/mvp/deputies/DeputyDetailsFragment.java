@@ -34,7 +34,7 @@ public class DeputyDetailsFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_deputydetails, container, false);
+        View v = inflater.inflate(R.layout.fragment_deputy_details, container, false);
 
         final Deputy mDeputy = getArguments().getParcelable(KEY_DEPUTY);
 

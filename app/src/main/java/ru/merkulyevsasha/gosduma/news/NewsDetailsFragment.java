@@ -27,7 +27,7 @@ public class NewsDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_newsdetails, container, false);
+        View v = inflater.inflate(R.layout.fragment_news_details, container, false);
 
         TextView textViewTopic = (TextView)v.findViewById(R.id.textview_newsdetailstopic);
         TextView textViewDescription = (TextView)v.findViewById(R.id.textview_newsdetailsdescription);

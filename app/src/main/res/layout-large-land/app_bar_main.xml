@@ -30,6 +30,14 @@
         android:baselineAligned="false"
         >
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+
         <FrameLayout
             android:id="@+id/frame_searchlist"
             android:layout_width="0dp"

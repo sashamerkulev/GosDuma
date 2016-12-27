@@ -24,17 +24,16 @@ import ru.merkulyevsasha.gosduma.models.Law;
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
 @SuppressLint("Registered")
-public class BaseLawDetailsActivity extends BaseActivity
-         {
+public class BaseLawDetailsActivity extends BaseActivity  {
 
     public final static String KEY_LAW = "LAW";
 
-    private final static String KEY_STAGE = "STAGE";
-    private final static String KEY_PHASE = "PHASE";
-    private final static String KEY_PROFILE = "PROFILE";
-    private final static String KEY_COEXEC = "COEXEC";
-    private final static String KEY_DEPUTIES = "DEPUTIES";
-    private final static String KEY_DEPARTMENTS = "DEPARTMENTS";
+    public final static String KEY_STAGE = "STAGE";
+    public final static String KEY_PHASE = "PHASE";
+    public final static String KEY_PROFILE = "PROFILE";
+    public final static String KEY_COEXEC = "COEXEC";
+    public final static String KEY_DEPUTIES = "DEPUTIES";
+    public final static String KEY_DEPARTMENTS = "DEPARTMENTS";
 
 
     @BindView(R.id.tv_law_type)

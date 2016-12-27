@@ -28,7 +28,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
 
-        <include layout="@layout/fragment_newsdetails" />
+        <include layout="@layout/fragment_news_details" />
 
     </LinearLayout>
 

@@ -76,6 +76,34 @@ public class DialogHelper {
 
     }
 
+    public static Dialog getDeputyRequestsSortDialog(final Activity context, int currentItemIndex, final DialogClickListener listener){
+
+        final String[] sortItems = {
+                context.getString(R.string.item_sort_lawname),
+                context.getString(R.string.item_sort_date),
+                context.getString(R.string.item_sort_initiator)};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.title_sort);
+
+        builder.setSingleChoiceItems(sortItems, currentItemIndex,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        dialog.dismiss();
+
+                        List<Integer> newSort = new ArrayList<>();
+                        newSort.add(item);
+
+                        listener.onClick(newSort);
+                    }
+                });
+
+        return builder.create();
+
+    }
+
 
     public static Dialog getDeputyFilterDialog(final Activity context, List<Integer> filterSettings, final DialogClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

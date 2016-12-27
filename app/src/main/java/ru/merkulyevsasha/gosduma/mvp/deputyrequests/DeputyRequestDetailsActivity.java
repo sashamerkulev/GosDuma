@@ -70,7 +70,7 @@ public class DeputyRequestDetailsActivity extends BaseActivity {
             return;
         }
 
-        setContentView(R.layout.activity_deputyrequestdetails);
+        setContentView(R.layout.activity_deputyrequest_details);
         ButterKnife.bind(this);
 
         initSupportActionBarWithBackButton(R.id.deputyrequestdetails_toolbar);
@@ -94,6 +94,24 @@ public class DeputyRequestDetailsActivity extends BaseActivity {
                 sendIntent.setAction(Intent.ACTION_SEND);
 
                 final StringBuilder message = new StringBuilder();
+
+                message.append(mDeputyRequest.getNameWithNumberAndDate());
+                message.append("\n");
+                if (mDeputyRequest.initiator!= null && !mDeputyRequest.initiator.isEmpty()){
+                    message.append(getString(R.string.text_initiator));
+                    message.append(mDeputyRequest.initiator);
+                    message.append("\n");
+                }
+                if (mDeputyRequest.answer!= null && !mDeputyRequest.answer.isEmpty()){
+                    message.append(getString(R.string.text_answer));
+                    message.append(mDeputyRequest.answer);
+                    message.append("\n");
+                }
+                if (mDeputyRequest.resolution!= null && !mDeputyRequest.resolution.isEmpty()){
+                    message.append(getString(R.string.text_resolution));
+                    message.append(mDeputyRequest.resolution);
+                    message.append("\n");
+                }
 
                 sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
 

@@ -107,7 +107,7 @@ public class DeputyDetailsActivity extends BaseActivity
 
         mPresenter = new DeputyLawsPresenter(this, this);
 
-        setContentView(R.layout.activity_deputydetails);
+        setContentView(R.layout.activity_deputy_details);
         ButterKnife.bind(this);
 
         initSupportActionBarWithBackButton(R.id.deputydetails_toolbar);

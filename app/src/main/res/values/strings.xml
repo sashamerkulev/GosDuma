@@ -27,6 +27,7 @@
     <string name="item_sort_date">По дате</string>
     <string name="item_sort_number">По номеру</string>
     <string name="item_sort_lawname">По наименованию</string>
+    <string name="item_sort_initiator">По инициатору</string>
     <string name="text_deputy">Депутат ГД</string>
     <string name="text_member_sf">Член СФ</string>
     <string name="text_working">Действующий</string>
@@ -41,9 +42,9 @@
     <string name="text_department">Департамент: </string>
     <string name="text_deputies">Депутаты: </string>
     <string name="text_nothing_found">Ничего не найдено!</string>
-    <string name="text_initiator">Инициатор</string>
-    <string name="text_answer">Ответ</string>
-    <string name="text_resolution">Резолюция</string>
-    <string name="text_signedby">Подписан</string>
-    <string name="text_addressee">Адресован</string>
+    <string name="text_initiator">Инициатор: </string>
+    <string name="text_answer">Ответ: </string>
+    <string name="text_resolution">Резолюция: </string>
+    <string name="text_signedby">Подписан: </string>
+    <string name="text_addressee">Адресован: </string>
 </resources>

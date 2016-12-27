@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,7 +26,9 @@ import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.mvp.deputies.OnDeputyClickListener;
 import ru.merkulyevsasha.gosduma.mvp.deputyrequests.DeputyRequestDetailsActivity;
+import ru.merkulyevsasha.gosduma.mvp.deputyrequests.DeputyRequestDetailsFragment;
 import ru.merkulyevsasha.gosduma.mvp.deputyrequests.OnDeputyRequestsClickListener;
+import ru.merkulyevsasha.gosduma.mvp.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.mvp.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     public final static String KEY_NAME = "NAME";
     public final static String KEY_TITLE = "TITLE";
     public final static String KEY_SEARCHTEXT = "SEARCHTEXT";
+    public final static String KEY_ITEMID = "ITEMID";
 
     private PresenterInterface mPresenter;
 
@@ -77,6 +81,11 @@ public class MainActivity extends AppCompatActivity
     private String mTitle;
     private String mSearchText;
 
+    private int mItemId;
+
+    private Fragment mFragment;
+    private FrameLayout mFrameLayoutDetails;
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -92,6 +101,7 @@ public class MainActivity extends AppCompatActivity
         }
         outState.putString(KEY_TITLE, mTitle);
         outState.putString(KEY_SEARCHTEXT, mSearchText);
+        outState.putInt(KEY_ITEMID, mItemId);
     }
 
 
@@ -102,14 +112,11 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                mSearchView.setIconified(false);
-//                mSearchView.onActionViewExpanded();
-//            }
-//        });
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchViewText();            }
+        });
 
         mProgress = (ProgressBar) findViewById(R.id.progressBar);
         mFrameLayout = (FrameLayout) findViewById(R.id.frame_searchlist);
@@ -123,9 +130,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mFrameLayoutDetails = (FrameLayout) findViewById(R.id.frame_searchdetails);
+        hideFragmentDetails();
+
         if (savedInstanceState == null) {
+            mItemId = R.id.nav_deputies;
             setDeputiesFragment();
         } else {
+            mItemId = savedInstanceState.getInt(KEY_ITEMID);
             mTitle = savedInstanceState.getString(KEY_TITLE);
             setTitle(mTitle);
 
@@ -133,15 +145,15 @@ public class MainActivity extends AppCompatActivity
                 mSearchText = savedInstanceState.getString(KEY_SEARCHTEXT);
             }
 
-            if (savedInstanceState.containsKey(KEY_LAW)) {
+            if (savedInstanceState.containsKey(KEY_LAW) && mItemId == R.id.nav_laws) {
                 mLaw = savedInstanceState.getParcelable(KEY_LAW);
                 showLawDetails(mLaw);
             }
-            if (savedInstanceState.containsKey(KEY_DEPUTY)) {
+            if (savedInstanceState.containsKey(KEY_DEPUTY) && mItemId == R.id.nav_deputies) {
                 mDeputy = savedInstanceState.getParcelable(KEY_DEPUTY);
                 showDeputyDetails(mDeputy);
             }
-            if (savedInstanceState.containsKey(KEY_DEPUTYREQUEST)) {
+            if (savedInstanceState.containsKey(KEY_DEPUTYREQUEST) && mItemId == R.id.nav_depqueries) {
                 mDeputyRequest = savedInstanceState.getParcelable(KEY_DEPUTYREQUEST);
                 showDeputyRequestDetails(mDeputyRequest);
             }
@@ -185,9 +197,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void searchViewText() {
-        mSearchView.setIconified(false);
-        mSearchView.setVisibility(View.VISIBLE);
-        mSearchView.onActionViewExpanded();
+        mSearchItem.expandActionView();
         mSearchView.setQuery(mSearchText, false);
     }
 
@@ -198,11 +208,10 @@ public class MainActivity extends AppCompatActivity
 
         mSearchItem = menu.findItem(R.id.action_search);
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
-        mSearchView.setOnQueryTextListener(this);
-
         if (mSearchText != null && !mSearchText.isEmpty()) {
             searchViewText();
         }
+        mSearchView.setOnQueryTextListener(this);
 
         mFilterItem = menu.findItem(R.id.action_filter);
         mFilterItem.setOnMenuItemClickListener(this);
@@ -218,47 +227,60 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
+        mItemId = item.getItemId();
 
-        if (id == R.id.nav_news_gd) {
+        mLaw = null;
+        mDeputy = null;
+        mDeputyRequest = null;
+
+        if (mItemId == R.id.nav_news_gd) {
             startNewsActivity(R.id.nav_news_gd, item.getTitle().toString());
-        } else if (id == R.id.nav_news_preds) {
+        } else if (mItemId == R.id.nav_news_preds) {
             startNewsActivity(R.id.nav_news_preds, item.getTitle().toString());
         }
 
-        else if (id == R.id.nav_comittee) {
+        else if (mItemId == R.id.nav_comittee) {
             startListActivity(R.id.nav_comittee, item.getTitle().toString());
-        } else if (id == R.id.nav_blocks) {
+        } else if (mItemId == R.id.nav_blocks) {
             startListActivity(R.id.nav_blocks, item.getTitle().toString());
-        } else if (id == R.id.nav_otras) {
+        } else if (mItemId == R.id.nav_otras) {
             startListActivity(R.id.nav_otras, item.getTitle().toString());
-        } else if (id == R.id.nav_reg) {
+        } else if (mItemId == R.id.nav_reg) {
             startListActivity(R.id.nav_reg, item.getTitle().toString());
-        } else if (id == R.id.nav_fed) {
+        } else if (mItemId == R.id.nav_fed) {
             startListActivity(R.id.nav_fed, item.getTitle().toString());
-        } else if (id == R.id.nav_stad) {
+        } else if (mItemId == R.id.nav_stad) {
             startListActivity(R.id.nav_stad, item.getTitle().toString());
-        } else if (id == R.id.nav_inst) {
+        } else if (mItemId == R.id.nav_inst) {
             startListActivity(R.id.nav_inst, item.getTitle().toString());
         }
 
-        else if (id == R.id.nav_deputies) {
+        else if (mItemId == R.id.nav_deputies) {
+            hideFragmentDetails();
             showNavFragment(R.id.nav_deputies);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (id == R.id.nav_laws) {
+            closeDrawer();
+        } else if (mItemId == R.id.nav_laws) {
+            hideFragmentDetails();
             showNavFragment(R.id.nav_laws);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (id == R.id.nav_depqueries) {
+            closeDrawer();
+        } else if (mItemId == R.id.nav_depqueries) {
+            hideFragmentDetails();
             showNavFragment(R.id.nav_depqueries);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer();
         }
 
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void closeDrawer(){
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    private void hideFragmentDetails(){
+        if (mFrameLayoutDetails != null) {
+            mFrameLayoutDetails.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void startActivity(int id, String name, Class<?> cls){
@@ -365,6 +387,19 @@ public class MainActivity extends AppCompatActivity
                 ).show();
             }
 
+            if (sortDialogType == DialogHelper.IDD_DEPUTY_REQUEST_SORT) {
+                DialogHelper.getDeputyRequestsSortDialog(this,
+                        mPresenter.getCurrentSortIndexValue().get(0),
+                        new DialogHelper.DialogClickListener() {
+                            @Override
+                            public void onClick(List<Integer> selectItemsIndex) {
+                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemsIndex);
+                            }
+                        }
+                ).show();
+            }
+
+
             return false;
         }
 
@@ -396,47 +431,47 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showDeputyDetails(Deputy deputy){
-        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
-        if (fl != null){
-            DeputyDetailsFragment fragment = DeputyDetailsFragment.newInstance(deputy);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        if (mFrameLayoutDetails != null){
+            mFrameLayoutDetails.setVisibility(View.VISIBLE);
+            mFragment = DeputyDetailsFragment.newInstance(deputy);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, mFragment)
+                    .addToBackStack(null).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
             activityIntent.putExtra(KEY_DEPUTY, deputy);
             startActivity(activityIntent);
-            mDeputy = null;
-            mLaw = null;
-            mDeputyRequest = null;
         }
     }
 
     private void showLawDetails(Law law){
-        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
-        if (fl != null){
-            LawDetailsFragment fragment = LawDetailsFragment.newInstance(law);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        if (mFrameLayoutDetails != null && mDeputy == null){
+            mFrameLayoutDetails.setVisibility(View.VISIBLE);
+            mFragment = LawDetailsFragment.newInstance(law);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, mFragment)
+                    .addToBackStack(null).commit();
         } else {
-            Intent activityIntent = new Intent(this, LawDetailsActivity.class);
-            activityIntent.putExtra(KEY_LAW, law);
-            startActivity(activityIntent);
-            mDeputy = null;
-            mLaw = null;
-            mDeputyRequest = null;
+            if (mDeputy == null) {
+                Intent activityIntent = new Intent(this, LawDetailsActivity.class);
+                activityIntent.putExtra(KEY_LAW, law);
+                startActivity(activityIntent);
+            } else {
+                Intent activityIntent = new Intent(this, DeputyLawDetailsActivity.class);
+                activityIntent.putExtra(KEY_LAW, law);
+                startActivity(activityIntent);
+            }
         }
     }
 
     private void showDeputyRequestDetails(DeputyRequest deputyRequest){
-        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_searchdetails);
-        if (fl != null){
-//            LawDetailsFragment fragment = LawDetailsFragment.newInstance(deputyRequest);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment).commit();
+        if (mFrameLayoutDetails != null){
+            mFrameLayoutDetails.setVisibility(View.VISIBLE);
+            mFragment = DeputyRequestDetailsFragment.newInstance(deputyRequest);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, mFragment)
+                    .addToBackStack(null).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyRequestDetailsActivity.class);
             activityIntent.putExtra(KEY_DEPUTYREQUEST, deputyRequest);
             startActivity(activityIntent);
-            mDeputy = null;
-            mLaw = null;
-            mDeputyRequest = null;
         }
     }
 
