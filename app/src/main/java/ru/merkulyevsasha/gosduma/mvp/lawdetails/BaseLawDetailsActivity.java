@@ -23,6 +23,7 @@ import ru.merkulyevsasha.gosduma.models.Law;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
+@SuppressWarnings("WeakerAccess")
 @SuppressLint("Registered")
 public class BaseLawDetailsActivity extends BaseActivity  {
 
@@ -103,7 +104,7 @@ public class BaseLawDetailsActivity extends BaseActivity  {
     @BindView(R.id.progressBar)
     public ProgressBar mProgressBar;
 
-    Law mLaw;
+    private Law mLaw;
     private LawDetailsPresenter mPresenter;
 
     private String mStage;

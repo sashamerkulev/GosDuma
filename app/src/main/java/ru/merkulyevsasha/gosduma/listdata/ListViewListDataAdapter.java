@@ -16,7 +16,7 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.ListData;
 
 
-public class ListViewListDataAdapter extends ArrayAdapter<ListData> {
+class ListViewListDataAdapter extends ArrayAdapter<ListData> {
 
     private final Context mContext;
     private final List<ListData> mItems;

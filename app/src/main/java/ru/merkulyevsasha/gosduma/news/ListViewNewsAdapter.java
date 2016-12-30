@@ -18,7 +18,7 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Article;
 
-public class ListViewNewsAdapter extends ArrayAdapter<Article> {
+class ListViewNewsAdapter extends ArrayAdapter<Article> {
 
     private final Context mContext;
     private final List<Article> mItems;

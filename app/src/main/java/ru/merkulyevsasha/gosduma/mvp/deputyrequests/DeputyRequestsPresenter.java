@@ -13,6 +13,7 @@ import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
+
 public class DeputyRequestsPresenter implements PresenterInterface {
 
     private final static int NAME_INDEX = 0;
@@ -21,7 +22,7 @@ public class DeputyRequestsPresenter implements PresenterInterface {
 
     private final static String KEY_CURRENT_SORT_VALUE = "SORT";
     private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
-    public final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
+    private final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
     private final Activity mContext;
     private final DeputyRequestsViewInterface mViewInterface;

@@ -35,6 +35,7 @@ import ru.merkulyevsasha.gosduma.mvp.laws.LawsRecyclerViewAdapter;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrGone;
 
+@SuppressWarnings("WeakerAccess")
 public class DeputyDetailsActivity extends BaseActivity
     implements
      OnLawClickListener
@@ -47,20 +48,27 @@ public class DeputyDetailsActivity extends BaseActivity
     private final static String KEY_MENUITEMSVISIBLE = "MENUITEMSVISIBLE";
 
     @BindView(R.id.collapsingToolbar)
+    public
     CollapsingToolbarLayout mCollapsingToolbar;
 
     @BindView(R.id.appbarlayout)
+    public
     AppBarLayout mAppbarLayout;
 
     @BindView(R.id.textview_deputy_name)
+    public
     TextView mDeputyName;
     @BindView(R.id.textview_position)
+    public
     TextView mDeputyPosition;
     @BindView(R.id.textview_deputy_fractionName)
+    public
     TextView mFractionName;
     @BindView(R.id.textview_deputy_fractionRole)
+    public
     TextView mFractionRole;
     @BindView(R.id.textview_deputy_ranks)
+    public
     TextView mDeputyRanks;
 
     @BindView(R.id.fab)

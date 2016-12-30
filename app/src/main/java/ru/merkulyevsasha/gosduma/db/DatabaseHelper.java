@@ -41,6 +41,11 @@ public class DatabaseHelper {
     private final static String DEPUTY_TABLE_NAME = "DeputyDb";
     private final static String DEPUTYINFO_TABLE_NAME = "DeputyInfoDb";
 
+    private final static String LAW_TABLE_NAME = "LawDb";
+    private final static String LAWDEPUTY_TABLE_NAME = "LawDeputy";
+
+    private final static String DEPUTYREQUEST_TABLE_NAME = "DeputyRequestDb";
+
     private final static String ID = "id";
     private final static String NAME = "name";
     private final static String IS_CURRENT = "isCurrent";
@@ -321,16 +326,17 @@ public class DatabaseHelper {
         item.type = cursor.getString(cursor.getColumnIndex(TYPE));
         item.lastEventPhaseId = cursor.getInt(cursor.getColumnIndex(LASTEVENTPHASEID));
         item.lastEventStageId = cursor.getInt(cursor.getColumnIndex(LASTEVENTSTAGEID));
-        item.responsibleId = cursor.getInt(cursor.getColumnIndex(RESPONSIBLEID));
+        //item.responsibleId = cursor.getInt(cursor.getColumnIndex(RESPONSIBLEID));
 
         return item;
     }
 
     public List<Law> getDeputyLaws(int deputyId, String searchText, String orderBy) {
         List<Law> items = new ArrayList<>();
-        String selectQuery = "select l.id, l.number, l.name, l.comments, l.name_lowcase, l.comments_lowcase, l.introductionDate, l.url, l.transcriptUrl, "
-                + " l.lastEventStageId, l.lastEventPhaseId, l.responsibleId, l.responsibleName, l.responsibleName_lower, l.lastEventSolution, l.lastEventSolution_lowcase, l.type from LawDb l"
-                + " join LawDeputy ld on ld.LawId = l.id"
+        String selectQuery = "select l.id, l.number, l.name, l.comments, l.name_lowcase, l.comments_lowcase, l.introductionDate,  "
+                + " l.lastEventStageId, l.lastEventPhaseId, l.responsibleName, l.responsibleName_lower, l.lastEventSolution, l.lastEventSolution_lowcase, l.type "
+                +" from "+LAW_TABLE_NAME+" l"
+                + " join "+LAWDEPUTY_TABLE_NAME+" ld on ld.LawId = l.id"
                 + " where ld.DeputyId = @deputyId ";
 
         if (!searchText.isEmpty()) {
@@ -369,8 +375,9 @@ public class DatabaseHelper {
 
     public List<Law> getLaws(String searchText, String orderBy) {
         List<Law> items = new ArrayList<>();
-        String selectQuery = "select id, number, name, comments, name_lowcase, comments_lowcase, introductionDate, url, transcriptUrl, " +
-                " lastEventStageId, lastEventPhaseId, responsibleId, responsibleName, responsibleName_lower, lastEventSolution, lastEventSolution_lowcase, type from LawDb " +
+        String selectQuery = "select id, number, name, comments, name_lowcase, comments_lowcase, introductionDate,  " +
+                " lastEventStageId, lastEventPhaseId, responsibleName, responsibleName_lower, lastEventSolution, lastEventSolution_lowcase, type "
+                +" from "+LAW_TABLE_NAME +
                 " where name_lowcase like @search or number like @search or responsibleName_lower like @search or lastEventSolution_lowcase like @search or introductionDate like @search";
 
         selectQuery = selectQuery + " order by " + orderBy;
@@ -400,13 +407,15 @@ public class DatabaseHelper {
 
     public List<DeputyRequest> getDeputyRequests(String searchText, String orderBy) {
         List<DeputyRequest> items = new ArrayList<>();
-        String selectQuery = "select requestId, initiator, requestDate, name, controlDate, signedDate, documentNumber, resolution, " +
-                " answer, signedBy_id, signedBy_name, addressee_id, addressee_name from DeputyRequestDb ";
+        String selectQuery = "select requestId, initiator, requestDate, name,  " +
+                " documentNumber, resolution,  answer,  signedBy_name, " +
+                " addressee_name " +
+                " from " + DEPUTYREQUEST_TABLE_NAME;
 
         if (!searchText.isEmpty()) {
             selectQuery = selectQuery + " where initiator_lowcase like @search or name_lowcase like @search or resolution_lowcase like @search or " +
                     " answer_lowcase like @search or signedBy_name_lowcase like @search or addressee_name_lowcase like @search or " +
-                    " documentNumber like @search or requestDate like @search";
+                    " documentNumber like @search ";
         }
 
         selectQuery = selectQuery + " order by " + orderBy;
@@ -486,7 +495,7 @@ public class DatabaseHelper {
     }
 
     public Codifier getStageById(int id) {
-        List<Codifier> items = getCodifiers("select id, name from phase where id = @id", id);
+        List<Codifier> items = getCodifiers("select id, name from StageViewDb where id = @id", id);
         return items == null || items.size() == 0? new Codifier() : items.get(0);
     }
 

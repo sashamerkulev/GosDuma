@@ -5,7 +5,7 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 
 
-public interface  DeputiesViewInterface {
+interface  DeputiesViewInterface {
 
     void show(List<Deputy> items);
 }

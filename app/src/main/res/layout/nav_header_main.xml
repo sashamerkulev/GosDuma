@@ -13,6 +13,7 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@drawable/gd"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/app_name"
         />
 
     <TextView

@@ -14,7 +14,7 @@ import ru.merkulyevsasha.gosduma.mvp.ViewInterface;
 
 public class LawsPresenter extends BaseLawsPresenter {
 
-    LawsViewInterface mViewInterface;
+    private final LawsViewInterface mViewInterface;
 
 
     public LawsPresenter(Activity context, LawsViewInterface viewInterface) {

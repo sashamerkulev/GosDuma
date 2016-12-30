@@ -19,11 +19,11 @@ public class Law implements Parcelable{
     public int lastEventStageId;
     public int lastEventPhaseId;
     public String lastEventSolution;
-    public long lastEventDate;
-    public String lastEventDocName;
-    public String lastEventDocType;
+    private long lastEventDate;
+    private String lastEventDocName;
+    private String lastEventDocType;
 
-    public int responsibleId;
+    private int responsibleId;
     public String responsibleName;
 
     public String type;

@@ -18,7 +18,7 @@ public class DeputyLawsPresenter extends BaseLawsPresenter {
 
     private int mDeputyId;
 
-    LawsViewInterface mViewInterface;
+    private final LawsViewInterface mViewInterface;
 
     public DeputyLawsPresenter(Activity context, LawsViewInterface viewInterface){
         super(context);

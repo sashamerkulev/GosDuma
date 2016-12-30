@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity
 
     public final static String KEY_ID = "ID";
     public final static String KEY_NAME = "NAME";
-    public final static String KEY_TITLE = "TITLE";
-    public final static String KEY_SEARCHTEXT = "SEARCHTEXT";
-    public final static String KEY_ITEMID = "ITEMID";
+    private final static String KEY_TITLE = "TITLE";
+    private final static String KEY_SEARCHTEXT = "SEARCHTEXT";
+    private final static String KEY_ITEMID = "ITEMID";
 
     private PresenterInterface mPresenter;
 

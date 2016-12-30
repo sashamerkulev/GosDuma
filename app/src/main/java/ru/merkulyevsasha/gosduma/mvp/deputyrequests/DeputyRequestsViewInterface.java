@@ -5,7 +5,7 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 
 
-public interface DeputyRequestsViewInterface {
+interface DeputyRequestsViewInterface {
 
     void show(List<DeputyRequest> items);
 

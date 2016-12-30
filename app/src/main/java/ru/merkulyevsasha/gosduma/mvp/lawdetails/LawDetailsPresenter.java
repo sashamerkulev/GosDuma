@@ -10,7 +10,7 @@ import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.mvp.laws.BaseLawsPresenter;
 
 
-public class LawDetailsPresenter extends BaseLawsPresenter {
+class LawDetailsPresenter extends BaseLawsPresenter {
 
     public LawDetailsPresenter(Activity context) {
         super(context);

@@ -12,28 +12,28 @@ public class DeputyRequest implements Parcelable{
 
     public int requestId;
     public String initiator;
-    public String initiator_lowcase;
+    private String initiator_lowcase;
     public long requestDate;
     public String name;
-    public String name_lowcase;
-    public String controlDate;
-    public String signedDate;
+    private String name_lowcase;
+    private String controlDate;
+    private String signedDate;
     public String documentNumber;
     public String resolution;
     public String answer;
-    public String resolution_lowcase;
-    public String answer_lowcase;
+    private String resolution_lowcase;
+    private String answer_lowcase;
 
-    public int signedBy_id;
+    private int signedBy_id;
     public String signedBy_name;
-    public String signedBy_name_lowcase;
-    public int addressee_id;
+    private String signedBy_name_lowcase;
+    private int addressee_id;
     public String addressee_name;
-    public String addressee_name_lowcase;
+    private String addressee_name_lowcase;
 
     public DeputyRequest(){}
 
-    protected DeputyRequest(Parcel in) {
+    private DeputyRequest(Parcel in) {
         requestId = in.readInt();
         initiator = in.readString();
         initiator_lowcase = in.readString();

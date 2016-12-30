@@ -28,11 +28,6 @@ import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone
 
 public class LawDetailsFragment extends Fragment{
 
-    private TextView mLawType;
-    private TextView mLawName;
-    private TextView mLawComments;
-    private TextView mLawResponsible;
-    private TextView mLawSolution;
     private TextView mLawStage;
     private TextView mLawPhase;
     private TextView mLawCoexecComittees;
@@ -40,11 +35,8 @@ public class LawDetailsFragment extends Fragment{
     private TextView mLawDeputies;
     private TextView mLawDepartments;
 
-    private LinearLayout mLayoutComments;
     private LinearLayout mLayoutPhase;
     private LinearLayout mLayoutStage;
-    private LinearLayout mLayoutResponsible;
-    private LinearLayout mLayoutSolution;
     private LinearLayout mLayoutCoexecComittees;
     private LinearLayout mLayoutProfileComittees;
     private LinearLayout mLayoutDeputies;
@@ -57,7 +49,7 @@ public class LawDetailsFragment extends Fragment{
     private String mDdeputies;
     private String mDepartments;
 
-    Law mLaw;
+    private Law mLaw;
     private LawDetailsPresenter mPresenter;
 
     public static LawDetailsFragment newInstance(Law law) {
@@ -76,11 +68,11 @@ public class LawDetailsFragment extends Fragment{
 
         assert mLaw != null;
 
-        mLawType = (TextView)v.findViewById(R.id.tv_law_type);
-        mLawName = (TextView)v.findViewById(R.id.tv_law_name);
-        mLawComments = (TextView)v.findViewById(R.id.tv_law_comments);
-        mLawResponsible = (TextView)v.findViewById(R.id.tv_law_responsible);
-        mLawSolution = (TextView)v.findViewById(R.id.tv_law_solution);
+        TextView mLawType = (TextView) v.findViewById(R.id.tv_law_type);
+        TextView mLawName = (TextView) v.findViewById(R.id.tv_law_name);
+        TextView mLawComments = (TextView) v.findViewById(R.id.tv_law_comments);
+        TextView mLawResponsible = (TextView) v.findViewById(R.id.tv_law_responsible);
+        TextView mLawSolution = (TextView) v.findViewById(R.id.tv_law_solution);
         mLawStage = (TextView)v.findViewById(R.id.tv_law_stage);
         mLawPhase = (TextView)v.findViewById(R.id.tv_law_phase);
         mLawCoexecComittees = (TextView)v.findViewById(R.id.tv_law_coexeccomittees);
@@ -88,11 +80,11 @@ public class LawDetailsFragment extends Fragment{
         mLawDeputies = (TextView)v.findViewById(R.id.tv_law_deputies);
         mLawDepartments = (TextView)v.findViewById(R.id.tv_law_departments);
 
-        mLayoutComments = (LinearLayout)v.findViewById(R.id.layout_comments);
+        LinearLayout mLayoutComments = (LinearLayout) v.findViewById(R.id.layout_comments);
         mLayoutPhase = (LinearLayout)v.findViewById(R.id.layout_phase);
         mLayoutStage = (LinearLayout)v.findViewById(R.id.layout_stage);
-        mLayoutResponsible = (LinearLayout)v.findViewById(R.id.layout_responsible);
-        mLayoutSolution = (LinearLayout)v.findViewById(R.id.layout_solution);
+        LinearLayout mLayoutResponsible = (LinearLayout) v.findViewById(R.id.layout_responsible);
+        LinearLayout mLayoutSolution = (LinearLayout) v.findViewById(R.id.layout_solution);
         mLayoutCoexecComittees = (LinearLayout)v.findViewById(R.id.layout_coexeccomittees);
         mLayoutProfileComittees = (LinearLayout)v.findViewById(R.id.layout_profilecomittees);
         mLayoutDeputies = (LinearLayout)v.findViewById(R.id.layout_deputies);

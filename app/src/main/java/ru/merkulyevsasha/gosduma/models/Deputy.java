@@ -105,10 +105,10 @@ public class Deputy implements Parcelable {
     }
 
     public String getRanksWithDegrees(){
-        if (degrees.isEmpty()){
+        if (degrees == null || degrees.isEmpty()){
             return "";
         } else {
-            return ranks.isEmpty()? degrees : degrees + " (" + ranks + ")";
+            return ranks == null || ranks.isEmpty()? degrees : degrees + " (" + ranks + ")";
         }
     }
 

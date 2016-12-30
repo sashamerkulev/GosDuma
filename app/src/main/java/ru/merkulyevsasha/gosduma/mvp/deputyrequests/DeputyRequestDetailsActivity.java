@@ -17,27 +17,34 @@ import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
 
+@SuppressWarnings("WeakerAccess")
 public class DeputyRequestDetailsActivity extends BaseActivity {
 
 
     public final static String KEY_DEPUTYREQUEST = "DEPUTYREQUEST";
 
     @BindView(R.id.tv_deputyrequest_name)
+    public
     TextView mDeputyrequestName;
 
     @BindView(R.id.tv_deputyrequest_initiator)
+    public
     TextView mDeputyrequestInitiator;
 
     @BindView(R.id.tv_deputyrequest_answer)
+    public
     TextView mDeputyrequestAnswer;
 
     @BindView(R.id.tv_deputyrequest_resolution)
+    public
     TextView mDeputyrequestResolution;
 
     @BindView(R.id.tv_deputyrequest_signed)
+    public
     TextView mDeputyrequestSignedBy;
 
     @BindView(R.id.tv_deputyrequest_addressee)
+    public
     TextView mDeputyrequestAddressee;
 
 

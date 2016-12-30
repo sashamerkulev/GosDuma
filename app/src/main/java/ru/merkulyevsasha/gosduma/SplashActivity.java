@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    class CopyDbTask extends AsyncTask<Void, Integer, Void> {
+    private class CopyDbTask extends AsyncTask<Void, Integer, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -71,6 +71,8 @@ public class SplashActivity extends AppCompatActivity {
                                 Thread.sleep(10);
                                 publishProgress(progress++);
                             } catch(Exception e) {
+                                e.printStackTrace();
+                                FirebaseCrash.report(e);
                             }
                         }
                     }

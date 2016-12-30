@@ -23,14 +23,14 @@ public class BaseLawsPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_SORT_VALUE = "SORT";
     private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
 
-    public final Activity mContext;
-    public HashMap<Integer, String> mSortColumn;
+    protected final Activity mContext;
+    protected HashMap<Integer, String> mSortColumn;
 
-    public int mSort;
-    public String mSortDirection;
-    public String mSearchText;
+    protected int mSort;
+    protected String mSortDirection;
+    protected String mSearchText;
 
-    public BaseLawsPresenter(Activity context){
+    protected BaseLawsPresenter(Activity context){
 
         mContext = context;
 
