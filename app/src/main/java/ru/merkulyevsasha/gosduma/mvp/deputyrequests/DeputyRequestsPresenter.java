@@ -81,7 +81,7 @@ public class DeputyRequestsPresenter implements PresenterInterface {
     }
 
     public List<DeputyRequest> getDeputyRequests(){
-        return DatabaseHelper.getInstance(mContext).getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection);
+        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection);
     }
 
     @Override

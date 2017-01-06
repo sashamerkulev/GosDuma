@@ -76,7 +76,7 @@ public class NewsActivity extends BaseActivity
 
         mListView.setOnItemClickListener(this);
 
-        mDatabase = DatabaseHelper.getInstance(this);
+        mDatabase = DatabaseHelper.getInstance(DatabaseHelper.getDbPath(this));
 
         List<Article> articles = mDatabase.getArticles(mId);
         if (articles.size() > 0){

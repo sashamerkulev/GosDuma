@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Государственная дума</string>
+    <string name="app_name">Государственная дума РФ</string>
 
     <string name="navigation_drawer_open">Открыть навигационную панель</string>
     <string name="navigation_drawer_close">Закрыть навигационную панель</string>

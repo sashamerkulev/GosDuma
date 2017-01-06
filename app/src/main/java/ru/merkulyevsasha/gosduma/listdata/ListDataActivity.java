@@ -41,7 +41,7 @@ public class ListDataActivity extends BaseActivity {
         mListDataTableName.put(R.id.nav_stad, DatabaseHelper.STAD_TABLE_NAME);
         mListDataTableName.put(R.id.nav_inst, DatabaseHelper.INST_TABLE_NAME);
 
-        DatabaseHelper db = DatabaseHelper.getInstance(this);
+        DatabaseHelper db = DatabaseHelper.getInstance(DatabaseHelper.getDbPath(this));
         List<ListData> data = db.selectAll(mListDataTableName.get(id));
 
         ListView mListView = (ListView) findViewById(R.id.listview_listdata);

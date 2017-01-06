@@ -102,7 +102,7 @@ public class DeputiesPresenter implements PresenterInterface {
     }
 
     public List<Deputy> getDeputies(){
-        return DatabaseHelper.getInstance(mContext).search(mSearchText, mSortColumn.get(mSort) + mSortDirection,
+        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).search(mSearchText, mSortColumn.get(mSort) + mSortDirection,
                 mFilterDeputyValues.get(mFilterDeputy), mFilterWorking);
     }
 

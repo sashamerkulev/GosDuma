@@ -32,7 +32,7 @@ public class LawsPresenter extends BaseLawsPresenter {
         if (mSearchText.isEmpty()) {
             return new ArrayList<>();
         }
-        return DatabaseHelper.getInstance(mContext).getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection);
+        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection);
     }
 
     private void runThread(){

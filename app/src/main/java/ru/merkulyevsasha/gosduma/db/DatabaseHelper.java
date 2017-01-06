@@ -84,34 +84,34 @@ public class DatabaseHelper {
     private final static String ANSWER = "answer";
     private final static String ADDRESSEE_NAME = "addressee_name";
 
-    private WeakReference<Context> mContext;
+    private String mDbPath;
+
+    public static String getDbPath(Context context){
+        File fileDb = new File(context.getFilesDir(), DATABASE_NAME);
+        return fileDb.getPath();
+    }
 
     // https://habrahabr.ru/post/27108/
     private static volatile DatabaseHelper mInstance;
 
-    public static DatabaseHelper getInstance(final Context context) {
+    public static DatabaseHelper getInstance(final String dbPath) {
         if (mInstance == null) {
             synchronized (DatabaseHelper.class) {
                 if (mInstance == null) {
-                    mInstance = new DatabaseHelper();
+                    mInstance = new DatabaseHelper(dbPath);
                 }
             }
         }
-        mInstance.mContext = new WeakReference<>(context);
         return mInstance;
     }
 
     private SQLiteDatabase openOrCreateDatabase() {
-        Context context = mContext.get();
-        if (context != null) {
-            File fileDb = new File(context.getFilesDir(), DATABASE_NAME);
-            //noinspection ResultOfMethodCallIgnored
-            return SQLiteDatabase.openOrCreateDatabase(fileDb.getPath(), null);
-        }
-        return null;
+        //noinspection ResultOfMethodCallIgnored
+        return SQLiteDatabase.openOrCreateDatabase(mDbPath, null);
     }
 
-    private DatabaseHelper() {
+    private DatabaseHelper(final String dbPath) {
+        mDbPath = dbPath;
     }
 
     public static String getSortDirection(int oldSort, int newSort, String direction){
