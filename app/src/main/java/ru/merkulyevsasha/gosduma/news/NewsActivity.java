@@ -59,7 +59,7 @@ public class NewsActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        ((GosDumaApp)getApplication()).getComponent().inject(this);
+        GosDumaApp.getComponent().inject(this);
 
         initSupportActionBarWithBackButton(R.id.news_toolbar);
 

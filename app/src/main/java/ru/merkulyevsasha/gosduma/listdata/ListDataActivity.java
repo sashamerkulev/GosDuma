@@ -32,7 +32,7 @@ public class ListDataActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        ((GosDumaApp)getApplication()).getComponent().inject(this);
+        GosDumaApp.getComponent().inject(this);
 
         initSupportActionBarWithBackButton(R.id.list_toolbar);
 

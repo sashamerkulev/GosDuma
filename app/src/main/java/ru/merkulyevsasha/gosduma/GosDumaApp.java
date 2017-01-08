@@ -10,7 +10,7 @@ import ru.merkulyevsasha.gosduma.dagger.DbModule;
 
 public class GosDumaApp extends Application {
 
-    DbComponent component;
+    private static DbComponent component;
 
     @Override
     public void onCreate() {
@@ -21,7 +21,7 @@ public class GosDumaApp extends Application {
                 .build();
     }
 
-    public DbComponent getComponent() {
+    public static DbComponent getComponent() {
         return component;
     }
 
