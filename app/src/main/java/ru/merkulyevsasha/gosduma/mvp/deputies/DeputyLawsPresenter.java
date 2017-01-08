@@ -27,7 +27,7 @@ public class DeputyLawsPresenter extends BaseLawsPresenter {
 
     public List<Law> getDeputyLaws(int deputyId){
         mDeputyId = deputyId;
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getDeputyLaws(deputyId, mSearchText, mSortColumn.get(mSort) + mSortDirection);
+        return mDatabase.getDeputyLaws(deputyId, mSearchText, mSortColumn.get(mSort) + mSortDirection);
     }
 
     @Override

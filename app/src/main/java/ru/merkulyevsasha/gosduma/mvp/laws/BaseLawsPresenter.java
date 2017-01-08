@@ -9,12 +9,13 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.mvp.BasePresenter;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
 import static ru.merkulyevsasha.gosduma.mvp.deputies.DeputiesPresenter.KEY_CURRENT_SEARCHTEXT_VALUE;
 
 
-public class BaseLawsPresenter implements PresenterInterface {
+public class BaseLawsPresenter extends BasePresenter implements PresenterInterface {
 
     final static int NAME_INDEX = 0;
     final static int NUMBER_INDEX = 1;
@@ -31,6 +32,7 @@ public class BaseLawsPresenter implements PresenterInterface {
     protected String mSearchText;
 
     protected BaseLawsPresenter(Activity context){
+        super(context);
 
         mContext = context;
 

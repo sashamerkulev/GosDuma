@@ -5,7 +5,6 @@ import android.app.Activity;
 
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Codifier;
 import ru.merkulyevsasha.gosduma.mvp.laws.BaseLawsPresenter;
 
@@ -17,30 +16,30 @@ class LawDetailsPresenter extends BaseLawsPresenter {
     }
 
     public Codifier getPhaseById(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getPhaseById(id);
+        return mDatabase.getPhaseById(id);
     }
 
     public Codifier getStageById(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getStageById(id);
+        return mDatabase.getStageById(id);
     }
 
     public List<Codifier> getProfileComittees(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getProfileComittees(id);
+        return mDatabase.getProfileComittees(id);
     }
 
     public List<Codifier> getCoexecutorCommittees(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getCoexecutorCommittees(id);
+        return mDatabase.getCoexecutorCommittees(id);
     }
 
     public List<Codifier> getLawDeputies(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getLawDeputies(id);
+        return mDatabase.getLawDeputies(id);
     }
 
     public List<Codifier> getLawRegionals(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getLawRegionals(id);
+        return mDatabase.getLawRegionals(id);
     }
 
     public List<Codifier> getLawFederals(int id) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getLawFederals(id);
+        return mDatabase.getLawFederals(id);
     }
 }

@@ -12,10 +12,11 @@ import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.mvp.BasePresenter;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
 
-public class DeputiesPresenter implements PresenterInterface {
+public class DeputiesPresenter extends BasePresenter implements PresenterInterface {
 
     private final static int NAME_INDEX = 0;
     private final static int BIRTHDATE_INDEX = 1;
@@ -32,7 +33,6 @@ public class DeputiesPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_FILTERWORKING_VALUE = "WORKING";
     public final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
-    private final Activity mContext;
     private final DeputiesViewInterface mViewInterface;
     private final HashMap<Integer, String> mSortColumn;
     private final HashMap<Integer, String> mFilterDeputyValues;
@@ -44,8 +44,8 @@ public class DeputiesPresenter implements PresenterInterface {
     private String mSearchText;
 
     public DeputiesPresenter(Activity context, DeputiesViewInterface viewInterface){
+        super(context);
 
-        mContext = context;
         mViewInterface = viewInterface;
 
         mSort = NAME_INDEX;
@@ -102,7 +102,7 @@ public class DeputiesPresenter implements PresenterInterface {
     }
 
     public List<Deputy> getDeputies(){
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).search(mSearchText, mSortColumn.get(mSort) + mSortDirection,
+        return mDatabase.search(mSearchText, mSortColumn.get(mSort) + mSortDirection,
                 mFilterDeputyValues.get(mFilterDeputy), mFilterWorking);
     }
 

@@ -11,10 +11,11 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
+import ru.merkulyevsasha.gosduma.mvp.BasePresenter;
 import ru.merkulyevsasha.gosduma.mvp.PresenterInterface;
 
 
-public class DeputyRequestsPresenter implements PresenterInterface {
+public class DeputyRequestsPresenter extends BasePresenter implements PresenterInterface {
 
     private final static int NAME_INDEX = 0;
     private final static int REQUESTDATE_INDEX = 1;
@@ -24,7 +25,6 @@ public class DeputyRequestsPresenter implements PresenterInterface {
     private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
     private final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
-    private final Activity mContext;
     private final DeputyRequestsViewInterface mViewInterface;
     private final HashMap<Integer, String> mSortColumn;
 
@@ -33,8 +33,8 @@ public class DeputyRequestsPresenter implements PresenterInterface {
     private String mSearchText;
 
     public DeputyRequestsPresenter(Activity context, DeputyRequestsViewInterface viewInterface){
+        super(context);
 
-        mContext = context;
         mViewInterface = viewInterface;
 
         mSort = NAME_INDEX;
@@ -81,7 +81,7 @@ public class DeputyRequestsPresenter implements PresenterInterface {
     }
 
     public List<DeputyRequest> getDeputyRequests(){
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(mContext)).getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection);
+        return mDatabase.getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection);
     }
 
     @Override
