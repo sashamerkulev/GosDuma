@@ -22,12 +22,14 @@ class ListViewNewsAdapter extends ArrayAdapter<Article> {
 
     private final Context mContext;
     private final List<Article> mItems;
+    private final LayoutInflater mInflater;
 
     public ListViewNewsAdapter(Context context, List<Article> items) {
         super(context, R.layout.listview_newsitem);
 
         mItems = items;
         mContext = context;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -45,16 +47,19 @@ class ListViewNewsAdapter extends ArrayAdapter<Article> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.listview_newsitem, parent, false);
-        TextView textViewTopic = (TextView) rowView.findViewById(R.id.textview_topic);
+
+        if (convertView == null){
+            convertView = mInflater.inflate(R.layout.listview_newsitem, parent, false);
+        }
+
+        TextView textViewTopic = (TextView) convertView.findViewById(R.id.textview_topic);
 
         Article item = mItems.get(position);
 
         DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         textViewTopic.setText(format.format(item.PubDate) + " " + item.Title);
 
-        return rowView;
+        return convertView;
     }
 
 

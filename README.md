@@ -12,4 +12,6 @@
 
 В некоторых Activity, с большим количеством widget в layout используется ButterKnife [http://jakewharton.github.io/butterknife/].
 
+Проект в стадии добавления Dagger2.
+
 Подключен Firebase Crash Reporting.

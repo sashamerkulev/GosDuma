@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.firebase.crash.FirebaseCrash;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -94,11 +93,11 @@ public class DatabaseHelper {
     // https://habrahabr.ru/post/27108/
     private static volatile DatabaseHelper mInstance;
 
-    public static DatabaseHelper getInstance(final String dbPath) {
+    public static DatabaseHelper getInstance(final String databasePath) {
         if (mInstance == null) {
             synchronized (DatabaseHelper.class) {
                 if (mInstance == null) {
-                    mInstance = new DatabaseHelper(dbPath);
+                    mInstance = new DatabaseHelper(databasePath);
                 }
             }
         }
@@ -106,7 +105,6 @@ public class DatabaseHelper {
     }
 
     private SQLiteDatabase openOrCreateDatabase() {
-        //noinspection ResultOfMethodCallIgnored
         return SQLiteDatabase.openOrCreateDatabase(mDbPath, null);
     }
 

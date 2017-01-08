@@ -114,6 +114,8 @@ public class BaseLawDetailsActivity extends BaseActivity  {
     private String mDdeputies;
     private String mDepartments;
 
+    private ReadLawDetailsAsyncTask mTask;
+
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -150,8 +152,8 @@ public class BaseLawDetailsActivity extends BaseActivity  {
 
         if (savedInstanceState == null) {
             mPresenter = new LawDetailsPresenter(this);
-            MyAsyncTask task = new MyAsyncTask();
-            task.execute();
+            mTask = new ReadLawDetailsAsyncTask();
+            mTask.execute();
         } else {
             mStage = savedInstanceState.getString(KEY_STAGE);
             mPhase = savedInstanceState.getString(KEY_PHASE);
@@ -198,6 +200,12 @@ public class BaseLawDetailsActivity extends BaseActivity  {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mTask.cancel(true);
+    }
+
     private String joinCodifiers(List<Codifier> list){
         StringBuilder sb = new StringBuilder();
 
@@ -221,7 +229,7 @@ public class BaseLawDetailsActivity extends BaseActivity  {
         setTextToTextViewOrLayoutGone(mDepartments, mLawDepartments, mLayoutDepartments);
     }
 
-    private class MyAsyncTask extends AsyncTask<Void, Void, HashMap<String, String>> {
+    private class ReadLawDetailsAsyncTask extends AsyncTask<Void, Void, HashMap<String, String>> {
 
         @Override
         protected void onPreExecute() {
@@ -231,15 +239,17 @@ public class BaseLawDetailsActivity extends BaseActivity  {
         @Override
         protected void onPostExecute(HashMap<String, String> result) {
 
-            mStage = result.get(KEY_STAGE);
-            mPhase = result.get(KEY_PHASE);
-            mProfile = result.get(KEY_PROFILE);
-            mCoexec = result.get(KEY_COEXEC);
-            mDdeputies = result.get(KEY_DEPUTIES);
-            mDepartments = result.get(KEY_DEPARTMENTS);
+            if (!this.isCancelled()) {
+                mStage = result.get(KEY_STAGE);
+                mPhase = result.get(KEY_PHASE);
+                mProfile = result.get(KEY_PROFILE);
+                mCoexec = result.get(KEY_COEXEC);
+                mDdeputies = result.get(KEY_DEPUTIES);
+                mDepartments = result.get(KEY_DEPARTMENTS);
 
-            showAdditionalData();
-            mProgressBar.setVisibility(View.GONE);
+                showAdditionalData();
+                mProgressBar.setVisibility(View.GONE);
+            }
         }
 
         @Override

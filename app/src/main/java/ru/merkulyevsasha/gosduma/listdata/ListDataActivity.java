@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import ru.merkulyevsasha.gosduma.BaseActivity;
+import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.ListData;
@@ -21,10 +24,15 @@ public class ListDataActivity extends BaseActivity {
 
     private final HashMap<Integer, String> mListDataTableName = new HashMap<>();
 
+    @Inject
+    public DatabaseHelper mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        ((GosDumaApp)getApplication()).getComponent().inject(this);
 
         initSupportActionBarWithBackButton(R.id.list_toolbar);
 
@@ -41,8 +49,7 @@ public class ListDataActivity extends BaseActivity {
         mListDataTableName.put(R.id.nav_stad, DatabaseHelper.STAD_TABLE_NAME);
         mListDataTableName.put(R.id.nav_inst, DatabaseHelper.INST_TABLE_NAME);
 
-        DatabaseHelper db = DatabaseHelper.getInstance(DatabaseHelper.getDbPath(this));
-        List<ListData> data = db.selectAll(mListDataTableName.get(id));
+        List<ListData> data = mDatabase.selectAll(mListDataTableName.get(id));
 
         ListView mListView = (ListView) findViewById(R.id.listview_listdata);
         ListViewListDataAdapter mAdapter = new ListViewListDataAdapter(this, new ArrayList<ListData>());

@@ -14,11 +14,14 @@ import com.google.firebase.crash.FirebaseCrash;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.merkulyevsasha.gosduma.BaseActivity;
+import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.http.RssParser;
@@ -42,7 +45,8 @@ public class NewsActivity extends BaseActivity
     private int mId = -1;
     private String mName = "";
     private int mPosition = -1;
-    private DatabaseHelper mDatabase;
+    @Inject
+    public DatabaseHelper mDatabase;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -54,6 +58,8 @@ public class NewsActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+
+        ((GosDumaApp)getApplication()).getComponent().inject(this);
 
         initSupportActionBarWithBackButton(R.id.news_toolbar);
 
@@ -75,8 +81,6 @@ public class NewsActivity extends BaseActivity
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(this);
-
-        mDatabase = DatabaseHelper.getInstance(DatabaseHelper.getDbPath(this));
 
         List<Article> articles = mDatabase.getArticles(mId);
         if (articles.size() > 0){
