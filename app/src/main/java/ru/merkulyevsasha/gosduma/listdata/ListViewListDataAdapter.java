@@ -20,12 +20,14 @@ class ListViewListDataAdapter extends ArrayAdapter<ListData> {
 
     private final Context mContext;
     private final List<ListData> mItems;
+    private final LayoutInflater mInflater;
 
     public ListViewListDataAdapter(Context context, List<ListData> items) {
         super(context, R.layout.listview_newsitem, items);
 
         mItems = items;
         mContext = context;
+        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -41,15 +43,18 @@ class ListViewListDataAdapter extends ArrayAdapter<ListData> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("ViewHolder") View rowView = inflater.inflate(R.layout.listview_newsitem, parent, false);
-        TextView textViewTopic = (TextView) rowView.findViewById(R.id.textview_topic);
+
+        if (convertView == null){
+            convertView = mInflater.inflate(R.layout.listview_newsitem, parent, false);
+            convertView.setTag(convertView.findViewById(R.id.textview_topic));
+        }
+        TextView textViewTopic = (TextView) convertView.getTag();
 
         ListData item = mItems.get(position);
 
         textViewTopic.setText(item.name);
 
-        return rowView;
+        return convertView;
     }
 
 }

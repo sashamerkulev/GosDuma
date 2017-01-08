@@ -50,9 +50,10 @@ class ListViewNewsAdapter extends ArrayAdapter<Article> {
 
         if (convertView == null){
             convertView = mInflater.inflate(R.layout.listview_newsitem, parent, false);
+            convertView.setTag(convertView.findViewById(R.id.textview_topic));
         }
 
-        TextView textViewTopic = (TextView) convertView.findViewById(R.id.textview_topic);
+        TextView textViewTopic = (TextView) convertView.getTag();
 
         Article item = mItems.get(position);
 
