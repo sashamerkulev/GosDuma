@@ -35,7 +35,7 @@ public class DeputyRequestsFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPresenter = new DeputyRequestsPresenter(getActivity(), this);
+        mPresenter = new DeputyRequestsPresenter(this);
         ((ViewInterface.OnPresenterListener)getActivity()).onPresenterCreated(mPresenter);
     }
 

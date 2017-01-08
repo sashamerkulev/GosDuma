@@ -44,7 +44,7 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
     private String mSearchText;
 
     public DeputiesPresenter(Activity context, DeputiesViewInterface viewInterface){
-        super(context);
+        super();
 
         mViewInterface = viewInterface;
 

@@ -32,7 +32,7 @@ public class BaseLawsPresenter extends BasePresenter implements PresenterInterfa
     protected String mSearchText;
 
     protected BaseLawsPresenter(Activity context){
-        super(context);
+        super();
 
         mContext = context;
 

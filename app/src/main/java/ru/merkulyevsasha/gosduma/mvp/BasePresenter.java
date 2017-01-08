@@ -1,8 +1,6 @@
 package ru.merkulyevsasha.gosduma.mvp;
 
 
-import android.content.Context;
-
 import javax.inject.Inject;
 
 import ru.merkulyevsasha.gosduma.GosDumaApp;
@@ -14,7 +12,7 @@ public class BasePresenter {
     @Inject
     public DatabaseHelper mDatabase;
 
-    public BasePresenter(Context context){
+    public BasePresenter(){
 
         GosDumaApp.getComponent().inject(this);
     }

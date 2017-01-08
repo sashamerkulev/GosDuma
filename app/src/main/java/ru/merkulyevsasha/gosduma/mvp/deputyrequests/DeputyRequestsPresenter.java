@@ -32,8 +32,8 @@ public class DeputyRequestsPresenter extends BasePresenter implements PresenterI
     private String mSortDirection;
     private String mSearchText;
 
-    public DeputyRequestsPresenter(Activity context, DeputyRequestsViewInterface viewInterface){
-        super(context);
+    public DeputyRequestsPresenter(DeputyRequestsViewInterface viewInterface){
+        super();
 
         mViewInterface = viewInterface;
 
