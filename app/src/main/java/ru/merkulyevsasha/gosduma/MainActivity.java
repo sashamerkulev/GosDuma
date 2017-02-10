@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
+import ru.merkulyevsasha.apprate.AppRateRequester;
 import ru.merkulyevsasha.gosduma.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
@@ -158,6 +159,8 @@ public class MainActivity extends AppCompatActivity
                 showDeputyRequestDetails(mDeputyRequest);
             }
         }
+
+        AppRateRequester.Run(this, BuildConfig.APPLICATION_ID);
     }
 
     @Override

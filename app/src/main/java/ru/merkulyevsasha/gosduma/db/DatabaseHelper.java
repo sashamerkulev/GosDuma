@@ -479,6 +479,7 @@ public class DatabaseHelper {
                 cursor.close();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             FirebaseCrash.report(e);
         } finally {
             if (mSqlite != null && mSqlite.isOpen())
@@ -498,11 +499,11 @@ public class DatabaseHelper {
     }
 
     public List<Codifier> getProfileComittees(int id) {
-        return getCodifiers("select c.id, c.name from LawProfile lp left join Committee c on c.id = lp.CommitteeId where lp.LawId = @id", id);
+        return getCodifiers("select c.id, c.name from LawProfile lp left join Committee c on c.id = lp.ComitteeId where lp.LawId = @id", id);
     }
 
     public List<Codifier> getCoexecutorCommittees(int id) {
-        return getCodifiers("select c.id, c.name from LawCoexecutor lp left join Committee c on c.id = lp.CommitteeId where lp.LawId = @id", id);
+        return getCodifiers("select c.id, c.name from LawCoexecutor lp left join Committee c on c.id = lp.ComitteeId where lp.LawId = @id", id);
     }
 
     public List<Codifier> getLawDeputies(int id) {

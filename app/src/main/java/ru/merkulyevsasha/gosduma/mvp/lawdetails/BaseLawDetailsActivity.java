@@ -201,8 +201,8 @@ public class BaseLawDetailsActivity extends BaseActivity  {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         mTask.cancel(true);
     }
 
@@ -239,17 +239,18 @@ public class BaseLawDetailsActivity extends BaseActivity  {
         @Override
         protected void onPostExecute(HashMap<String, String> result) {
 
-            if (!this.isCancelled()) {
-                mStage = result.get(KEY_STAGE);
-                mPhase = result.get(KEY_PHASE);
-                mProfile = result.get(KEY_PROFILE);
-                mCoexec = result.get(KEY_COEXEC);
-                mDdeputies = result.get(KEY_DEPUTIES);
-                mDepartments = result.get(KEY_DEPARTMENTS);
+            if (isCancelled())
+                return;
 
-                showAdditionalData();
-                mProgressBar.setVisibility(View.GONE);
-            }
+            mStage = result.get(KEY_STAGE);
+            mPhase = result.get(KEY_PHASE);
+            mProfile = result.get(KEY_PROFILE);
+            mCoexec = result.get(KEY_COEXEC);
+            mDdeputies = result.get(KEY_DEPUTIES);
+            mDepartments = result.get(KEY_DEPARTMENTS);
+
+            showAdditionalData();
+            mProgressBar.setVisibility(View.GONE);
         }
 
         @Override
@@ -257,23 +258,35 @@ public class BaseLawDetailsActivity extends BaseActivity  {
 
             HashMap<String, String> result = new HashMap<>();
 
+            if (isCancelled())
+                return result;
             Codifier stage = mPresenter.getStageById(mLaw.lastEventStageId);
             result.put(KEY_STAGE, stage.name);
+            if (isCancelled())
+                return result;
             Codifier phase = mPresenter.getPhaseById(mLaw.lastEventPhaseId);
             result.put(KEY_PHASE, phase.name);
 
+            if (isCancelled())
+                return result;
             List<Codifier> profiles = mPresenter.getProfileComittees(mLaw.id);
             String sprofiles = joinCodifiers(profiles);
             result.put(KEY_PROFILE, sprofiles);
 
+            if (isCancelled())
+                return result;
             List<Codifier> coexecutors = mPresenter.getCoexecutorCommittees(mLaw.id);
             String scoexecutors = joinCodifiers(coexecutors);
             result.put(KEY_COEXEC, scoexecutors);
 
+            if (isCancelled())
+                return result;
             List<Codifier> deputies = mPresenter.getLawDeputies(mLaw.id);
             String sdeputies = joinCodifiers(deputies);
             result.put(KEY_DEPUTIES, sdeputies);
 
+            if (isCancelled())
+                return result;
             List<Codifier> federals = mPresenter.getLawFederals(mLaw.id);
             List<Codifier> regionals = mPresenter.getLawRegionals(mLaw.id);
             federals.addAll(regionals);

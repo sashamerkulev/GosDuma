@@ -1,1 +1,3 @@
-include ':app'
+include ':app', ':apprate'
+
+project(':apprate').projectDir = new File('../News/apprate')
