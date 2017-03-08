@@ -10,17 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
-import ru.merkulyevsasha.gosduma.presentation.ViewInterface;
+import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_POSITION;
 
 
-public class DeputyRequestsFragment extends Fragment implements DeputyRequestsViewInterface, MvpFragment {
+public class DeputyRequestsFragment extends Fragment implements DeputyRequestsView, MvpFragment {
 
 
     private LinearLayout mEmptyLayout;
@@ -29,14 +33,16 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     private DeputyRequestsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
-    private DeputyRequestsPresenter mPresenter;
+    @Inject
+    DeputyRequestsPresenter mPresenter;
+
     private int mPosition = -1;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mPresenter = new DeputyRequestsPresenter(this);
-        ((ViewInterface.OnPresenterListener)getActivity()).onPresenterCreated(mPresenter);
+
+        GosDumaApp.getComponent().inject(this);
     }
 
     @Override
@@ -70,84 +76,130 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        List<DeputyRequest> items = mPresenter.getDeputyRequests();
-
-        mAdapter = new DeputyRequestsRecyclerViewAdapter(items, ((OnDeputyRequestsClickListener)getActivity()));
+        mAdapter = new DeputyRequestsRecyclerViewAdapter(new ArrayList<DeputyRequest>(), ((OnDeputyRequestsClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
-        showData(items.size() > 0);
 
         return rootView;
     }
 
-    private void showData(boolean show){
-        if (show) {
-            mRecyclerView.setVisibility(View.VISIBLE);
-            mEmptyLayout.setVisibility(View.GONE);
-        } else {
-            mRecyclerView.setVisibility(View.GONE);
-            mEmptyLayout.setVisibility(View.VISIBLE);
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mPresenter != null) {
+            mPresenter.onStop();
         }
     }
 
     @Override
-    public void show(List<DeputyRequest> items){
-        mAdapter.mItems = items;
-        mAdapter.notifyDataSetChanged();
-        showData(items.size() > 0);
+    public void onStart() {
+        super.onStart();
+        if (mPresenter != null) {
+            mPresenter.onStart(this);
+            mPresenter.load();
+        }
+    }
+
+    @Override
+    public void showData(final List<DeputyRequest> items){
+        if (isAdded()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.mItems = items;
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mEmptyLayout.setVisibility(View.GONE);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void showDataEmptyMessage() {
+        if (isAdded()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mEmptyLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @Override
     public int getSortDialogType() {
-        return 0;
+        return mPresenter.getSortDialogType();
     }
 
     @Override
     public List<Integer> getCurrentSortIndexValue() {
-        return null;
+        return mPresenter.getCurrentSortIndexValue();
     }
 
     @Override
     public boolean isSortMenuVisible() {
-        return false;
+        return mPresenter.isSortMenuVisible();
     }
 
     @Override
     public int getFilterDialogType() {
-        return 0;
+        return mPresenter.getFilterDialogType();
     }
 
     @Override
     public List<Integer> getCurrentFilterIndexValue() {
-        return null;
+        return mPresenter.getCurrentFilterIndexValue();
     }
 
     @Override
     public boolean isFilterMenuVisible() {
-        return false;
+        return mPresenter.isFilterMenuVisible();
     }
 
     @Override
     public void search(String searchText) {
-
+        mPresenter.search(searchText);
     }
 
     @Override
     public void sort(List<Integer> oldSort, List<Integer> sort) {
-
+        mPresenter.sort(oldSort, sort);
     }
 
     @Override
     public void filter(List<Integer> filter) {
-
+        mPresenter.filter(filter);
     }
 
     @Override
     public Bundle getState() {
-        return null;
+        return mPresenter.getState();
     }
 
     @Override
     public void restoreState(Bundle outState) {
+        mPresenter.restoreState(outState);
+    }
 
+    @Override
+    public void showMessage(int resId) {
+        if (isAdded()){
+            ((MvpView)getActivity()).showMessage(resId);
+        }
+    }
+
+    @Override
+    public void hideProgress() {
+        if (isAdded()){
+            ((MvpView)getActivity()).hideProgress();
+        }
+    }
+
+    @Override
+    public void showProgress() {
+        if (isAdded()){
+            ((MvpView)getActivity()).showProgress();
+        }
     }
 }

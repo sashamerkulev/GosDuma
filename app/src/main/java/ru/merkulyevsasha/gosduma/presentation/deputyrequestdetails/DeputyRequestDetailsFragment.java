@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.presentation.deputyrequests;
+package ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +12,6 @@ import butterknife.BindView;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 
-import static ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
 
@@ -55,7 +54,7 @@ public class DeputyRequestDetailsFragment extends Fragment {
     public static DeputyRequestDetailsFragment newInstance(DeputyRequest deputyRequest) {
         DeputyRequestDetailsFragment fragment = new DeputyRequestDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(KEY_DEPUTYREQUEST, deputyRequest);
+        args.putParcelable(DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST, deputyRequest);
         fragment.setArguments(args);
         return fragment;
     }
@@ -64,7 +63,7 @@ public class DeputyRequestDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_deputyrequest_details, container, false);
 
-        final DeputyRequest mDeputyRequest = getArguments().getParcelable(KEY_DEPUTYREQUEST);
+        final DeputyRequest mDeputyRequest = getArguments().getParcelable(DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST);
 
         assert mDeputyRequest != null;
 

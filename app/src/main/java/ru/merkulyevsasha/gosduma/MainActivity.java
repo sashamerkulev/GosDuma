@@ -23,14 +23,14 @@ import java.util.List;
 import ru.merkulyevsasha.apprate.AppRateRequester;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesView;
+import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestsView;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsActivity;
-import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsFragment;
-import ru.merkulyevsasha.gosduma.presentation.deputyrequests.OnDeputyRequestsClickListener;
+import ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.presentation.PresenterInterface;
@@ -44,7 +44,7 @@ import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 
 import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_DEPUTY;
-import static ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
+import static ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
 import static ru.merkulyevsasha.gosduma.presentation.lawdetails.BaseLawDetailsActivity.KEY_LAW;
 
 public class MainActivity extends AppCompatActivity
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         , ViewInterface.OnPresenterListener
         , DeputiesView.OnDeputyClickListener
         , LawsView.OnLawClickListener
-        , OnDeputyRequestsClickListener
+        , DeputyRequestsView.OnDeputyRequestsClickListener
 {
 
     public final static String KEY_ID = "ID";

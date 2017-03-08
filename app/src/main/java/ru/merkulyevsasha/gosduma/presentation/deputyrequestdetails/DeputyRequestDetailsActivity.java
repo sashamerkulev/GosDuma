@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.presentation.deputyrequests;
+package ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails;
 
 
 import android.content.Intent;

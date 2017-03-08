@@ -18,9 +18,9 @@ public class DeputyRequestsRecyclerViewAdapter extends RecyclerView.Adapter<Depu
 
     public List<DeputyRequest> mItems;
 
-    private final OnDeputyRequestsClickListener mClickListener;
+    private final DeputyRequestsView.OnDeputyRequestsClickListener mClickListener;
 
-    public DeputyRequestsRecyclerViewAdapter(List<DeputyRequest> items, OnDeputyRequestsClickListener clickListener){
+    public DeputyRequestsRecyclerViewAdapter(List<DeputyRequest> items, DeputyRequestsView.OnDeputyRequestsClickListener clickListener){
         mItems = items;
         mClickListener = clickListener;
     }
