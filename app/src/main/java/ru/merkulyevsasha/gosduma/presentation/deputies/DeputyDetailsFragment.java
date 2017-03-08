@@ -14,13 +14,13 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
 
 
 public class DeputyDetailsFragment extends Fragment
-    implements LawsViewInterface {
+    implements LawsView {
 
     private final static String KEY_DEPUTY = "deputy";
 
@@ -75,7 +75,27 @@ public class DeputyDetailsFragment extends Fragment
     }
 
     @Override
-    public void show(List<Law> items) {
+    public void showMessage(int resId) {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void showData(List<Law> items) {
+
+    }
+
+    @Override
+    public void showDataEmptyMessage() {
 
     }
 }

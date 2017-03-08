@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import java.util.List;
 
 import ru.merkulyevsasha.apprate.AppRateRequester;
+import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
@@ -64,7 +65,9 @@ public class MainActivity extends AppCompatActivity
     private final static String KEY_SEARCHTEXT = "SEARCHTEXT";
     private final static String KEY_ITEMID = "ITEMID";
 
-    private PresenterInterface mPresenter;
+    //private PresenterInterface mPresenter;
+
+    private MvpFragment mFragment;
 
     private Law mLaw;
     private Deputy mDeputy;
@@ -84,7 +87,6 @@ public class MainActivity extends AppCompatActivity
 
     private int mItemId;
 
-    private Fragment mFragment;
     private FrameLayout mFrameLayoutDetails;
 
     @Override
@@ -135,8 +137,10 @@ public class MainActivity extends AppCompatActivity
         hideFragmentDetails();
 
         if (savedInstanceState == null) {
-            mItemId = R.id.nav_deputies;
-            setDeputiesFragment();
+            //mItemId = R.id.nav_deputies;
+            //setDeputiesFragment();
+            mItemId = R.id.nav_laws;
+            setLawsFragment();
         } else {
             mItemId = savedInstanceState.getInt(KEY_ITEMID);
             mTitle = savedInstanceState.getString(KEY_TITLE);
@@ -175,26 +179,41 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void showProgress(){
-        mFilterItem.setVisible(false);
-        mSortItem.setVisible(false);
-        mFrameLayout.setVisibility(View.GONE);
-        mProgress.setVisibility(View.VISIBLE);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mFilterItem.setVisible(false);
+                mSortItem.setVisible(false);
+                mFrameLayout.setVisibility(View.GONE);
+                mProgress.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
     public void hideProgress(){
-        mFrameLayout.setVisibility(View.VISIBLE);
-        mProgress.setVisibility(View.GONE);
-        setVisibleMenuItems();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mFrameLayout.setVisibility(View.VISIBLE);
+                mProgress.setVisibility(View.GONE);
+                setVisibleMenuItems();
+            }
+        });
+    }
+
+    @Override
+    public void showMessage(int resId) {
+
     }
 
     private void setVisibleMenuItems(){
-        if (mPresenter != null) {
+        if (mFragment != null) {
             if (mSortItem != null) {
-                mSortItem.setVisible(mPresenter.isSortMenuVisible() && mProgress.getVisibility() == View.GONE);
+                mSortItem.setVisible(mFragment.isSortMenuVisible() && mProgress.getVisibility() == View.GONE);
             }
             if (mFilterItem != null) {
-                mFilterItem.setVisible(mPresenter.isFilterMenuVisible() && mProgress.getVisibility() == View.GONE);
+                mFilterItem.setVisible(mFragment.isFilterMenuVisible() && mProgress.getVisibility() == View.GONE);
             }
         }
     }
@@ -304,30 +323,30 @@ public class MainActivity extends AppCompatActivity
     private void setDeputiesFragment(){
         mTitle = getString(R.string.menu_deputies);
         setTitle(mTitle);
-        DeputiesFragment fragment = new DeputiesFragment();
+        mFragment = new DeputiesFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_searchlist, fragment)
+                .replace(R.id.frame_searchlist, (Fragment)mFragment)
                 .commit();
     }
 
     private void setLawsFragment(){
         mTitle = getString(R.string.menu_laws);
         setTitle(mTitle);
-        LawsFragment fragment = new LawsFragment();
+        mFragment = new LawsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_searchlist, fragment)
+                .replace(R.id.frame_searchlist, (Fragment)mFragment)
                 .commit();
     }
 
     private void setDeputyRequestsFragment(){
         mTitle = getString(R.string.menu_deputies_requests);
         setTitle(mTitle);
-        DeputyRequestsFragment fragment = new DeputyRequestsFragment();
+        mFragment = new DeputyRequestsFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_searchlist, fragment)
+                .replace(R.id.frame_searchlist, (Fragment)mFragment)
                 .commit();
     }
 
@@ -345,7 +364,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextSubmit(String query) {
         mSearchText = query;
-        mPresenter.search(query);
+        mFragment.search(query);
         setVisibleMenuItems();
         return false;
     }
@@ -354,7 +373,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextChange(String newText) {
         if (newText.isEmpty()){
             mSearchText = newText;
-            mPresenter.search(newText);
+            mFragment.search(newText);
             setVisibleMenuItems();
         }
         return false;
@@ -365,14 +384,14 @@ public class MainActivity extends AppCompatActivity
 
         if (menuItem.getItemId() == R.id.action_sort) {
 
-            int sortDialogType = mPresenter.getSortDialogType();
+            int sortDialogType = mFragment.getSortDialogType();
             if (sortDialogType == DialogHelper.IDD_DEPUTY_SORT) {
                 DialogHelper.getDeputySortDialog(this,
-                        mPresenter.getCurrentSortIndexValue().get(0),
+                        mFragment.getCurrentSortIndexValue().get(0),
                         new DialogHelper.DialogClickListener() {
                             @Override
                             public void onClick(List<Integer> selectItemsIndex) {
-                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemsIndex);
+                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemsIndex);
                             }
                         }
                 ).show();
@@ -380,11 +399,11 @@ public class MainActivity extends AppCompatActivity
 
             if (sortDialogType == DialogHelper.IDD_LAWS_SORT) {
                 DialogHelper.getLawSortDialog(this,
-                        mPresenter.getCurrentSortIndexValue().get(0),
+                        mFragment.getCurrentSortIndexValue().get(0),
                         new DialogHelper.DialogClickListener() {
                             @Override
                             public void onClick(List<Integer> selectItemsIndex) {
-                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemsIndex);
+                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemsIndex);
                             }
                         }
                 ).show();
@@ -392,11 +411,11 @@ public class MainActivity extends AppCompatActivity
 
             if (sortDialogType == DialogHelper.IDD_DEPUTY_REQUEST_SORT) {
                 DialogHelper.getDeputyRequestsSortDialog(this,
-                        mPresenter.getCurrentSortIndexValue().get(0),
+                        mFragment.getCurrentSortIndexValue().get(0),
                         new DialogHelper.DialogClickListener() {
                             @Override
                             public void onClick(List<Integer> selectItemsIndex) {
-                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemsIndex);
+                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemsIndex);
                             }
                         }
                 ).show();
@@ -408,14 +427,14 @@ public class MainActivity extends AppCompatActivity
 
         if (menuItem.getItemId() == R.id.action_filter) {
 
-            int filterDialogType = mPresenter.getFilterDialogType();
+            int filterDialogType = mFragment.getFilterDialogType();
             if (filterDialogType == DialogHelper.IDD_DEPUTY_FILTER){
                 DialogHelper.getDeputyFilterDialog(this,
-                        mPresenter.getCurrentFilterIndexValue(),
+                        mFragment.getCurrentFilterIndexValue(),
                         new DialogHelper.DialogClickListener() {
                             @Override
                             public void onClick(List<Integer> selectItemsIndex) {
-                                mPresenter.filter(selectItemsIndex);
+                                mFragment.filter(selectItemsIndex);
                             }
                         }
                 ).show();
@@ -429,15 +448,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onPresenterCreated(PresenterInterface presenter) {
-        mPresenter = presenter;
+//        mPresenter = presenter;
         setVisibleMenuItems();
     }
 
     private void showDeputyDetails(Deputy deputy){
         if (mFrameLayoutDetails != null){
             mFrameLayoutDetails.setVisibility(View.VISIBLE);
-            mFragment = DeputyDetailsFragment.newInstance(deputy);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, mFragment)
+            Fragment fragment = DeputyDetailsFragment.newInstance(deputy);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment)
                     .addToBackStack(null).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
@@ -449,8 +468,8 @@ public class MainActivity extends AppCompatActivity
     private void showLawDetails(Law law){
         if (mFrameLayoutDetails != null && mDeputy == null){
             mFrameLayoutDetails.setVisibility(View.VISIBLE);
-            mFragment = LawDetailsFragment.newInstance(law);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, mFragment)
+            Fragment fragment = LawDetailsFragment.newInstance(law);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment)
                     .addToBackStack(null).commit();
         } else {
             if (mDeputy == null) {
@@ -468,8 +487,8 @@ public class MainActivity extends AppCompatActivity
     private void showDeputyRequestDetails(DeputyRequest deputyRequest){
         if (mFrameLayoutDetails != null){
             mFrameLayoutDetails.setVisibility(View.VISIBLE);
-            mFragment = DeputyRequestDetailsFragment.newInstance(deputyRequest);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, mFragment)
+            Fragment fragment = DeputyRequestDetailsFragment.newInstance(deputyRequest);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment)
                     .addToBackStack(null).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyRequestDetailsActivity.class);

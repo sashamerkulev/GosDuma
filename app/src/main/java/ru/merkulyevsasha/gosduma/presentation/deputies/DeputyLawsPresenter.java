@@ -8,7 +8,7 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.laws.BaseLawsPresenter;
 
 
@@ -18,9 +18,9 @@ public class DeputyLawsPresenter extends BaseLawsPresenter {
 
     private int mDeputyId;
 
-    private final LawsViewInterface mViewInterface;
+    private final LawsView mViewInterface;
 
-    public DeputyLawsPresenter(Activity context, LawsViewInterface viewInterface){
+    public DeputyLawsPresenter(Activity context, LawsView viewInterface){
         super(context);
         mViewInterface = viewInterface;
     }
@@ -33,14 +33,14 @@ public class DeputyLawsPresenter extends BaseLawsPresenter {
     @Override
     public void search(String searchText) {
         mSearchText = searchText;
-        mViewInterface.show(getDeputyLaws(mDeputyId));
+        mViewInterface.showData(getDeputyLaws(mDeputyId));
     }
 
     @Override
     public void sort(List<Integer> oldSort, List<Integer> sort) {
         mSort = sort.get(0);
         mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
-        mViewInterface.show(getDeputyLaws(mDeputyId));
+        mViewInterface.showData(getDeputyLaws(mDeputyId));
     }
 
     @Override

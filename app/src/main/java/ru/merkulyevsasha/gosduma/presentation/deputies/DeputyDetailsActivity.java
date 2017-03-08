@@ -27,7 +27,7 @@ import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsViewInterface;
+import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.BaseLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
@@ -41,7 +41,7 @@ public class DeputyDetailsActivity extends BaseActivity
      OnLawClickListener
         , MenuItem.OnMenuItemClickListener
         , SearchView.OnQueryTextListener
-    , LawsViewInterface
+    , LawsView
 {
     public final static String KEY_DEPUTY = "DEPUTY";
     public final static String KEY_POSITION = "POSITION";
@@ -271,10 +271,15 @@ public class DeputyDetailsActivity extends BaseActivity
     }
 
     @Override
-    public void show(List<Law> items) {
+    public void showData(List<Law> items) {
         mAdapter.mItems = items;
         mAdapter.notifyDataSetChanged();
         showData(items.size() > 0);
+    }
+
+    @Override
+    public void showDataEmptyMessage() {
+
     }
 
     @Override
@@ -313,5 +318,20 @@ public class DeputyDetailsActivity extends BaseActivity
         }
 
         return false;
+    }
+
+    @Override
+    public void showMessage(int resId) {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
     }
 }

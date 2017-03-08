@@ -14,14 +14,13 @@ import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.ViewInterface;
 
 import static ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsActivity.KEY_POSITION;
 
 
-public class DeputiesFragment extends Fragment
-        implements
-         DeputiesViewInterface{
+public class DeputiesFragment extends Fragment implements DeputiesViewInterface, MvpFragment {
 
     private LinearLayout mEmptyLayout;
 
@@ -96,4 +95,58 @@ public class DeputiesFragment extends Fragment
         showData(items.size() > 0);
     }
 
+    @Override
+    public int getSortDialogType() {
+        return 0;
+    }
+
+    @Override
+    public List<Integer> getCurrentSortIndexValue() {
+        return null;
+    }
+
+    @Override
+    public boolean isSortMenuVisible() {
+        return false;
+    }
+
+    @Override
+    public int getFilterDialogType() {
+        return 0;
+    }
+
+    @Override
+    public List<Integer> getCurrentFilterIndexValue() {
+        return null;
+    }
+
+    @Override
+    public boolean isFilterMenuVisible() {
+        return false;
+    }
+
+    @Override
+    public void search(String searchText) {
+
+    }
+
+    @Override
+    public void sort(List<Integer> oldSort, List<Integer> sort) {
+
+    }
+
+    @Override
+    public void filter(List<Integer> filter) {
+
+    }
+
+    @Override
+    public Bundle getState() {
+        return null;
+    }
+
+    @Override
+    public void restoreState(Bundle outState) {
+
+    }
 }

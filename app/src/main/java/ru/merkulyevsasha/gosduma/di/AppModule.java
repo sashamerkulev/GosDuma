@@ -2,6 +2,9 @@ package ru.merkulyevsasha.gosduma.di;
 
 import android.content.Context;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -22,5 +25,10 @@ public class AppModule {
         return mAppContext;
     }
 
+    @Singleton
+    @Provides
+    ExecutorService providesExecutorService() {
+        return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() );
+    }
 
 }

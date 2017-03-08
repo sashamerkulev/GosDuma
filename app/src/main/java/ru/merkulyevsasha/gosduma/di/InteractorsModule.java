@@ -1,12 +1,17 @@
 package ru.merkulyevsasha.gosduma.di;
 
 
+import java.util.concurrent.ExecutorService;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.merkulyevsasha.gosduma.data.LawsRepository;
 import ru.merkulyevsasha.gosduma.data.ListDataRepository;
 import ru.merkulyevsasha.gosduma.data.NewsRepository;
+import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
+import ru.merkulyevsasha.gosduma.domain.LawsInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.ListDataInteractor;
 import ru.merkulyevsasha.gosduma.domain.ListDataInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
@@ -27,5 +32,10 @@ public class InteractorsModule {
         return new ListDataInteractorImpl(repo);
     }
 
+    @Singleton
+    @Provides
+    LawsInteractor providesLawsInteractor(ExecutorService serv, LawsRepository repo) {
+        return new LawsInteractorImpl(serv, repo);
+    }
 
 }

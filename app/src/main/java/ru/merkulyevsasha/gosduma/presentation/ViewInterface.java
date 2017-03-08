@@ -2,7 +2,7 @@ package ru.merkulyevsasha.gosduma.presentation;
 
 
 
-public interface ViewInterface {
+public interface ViewInterface extends MvpView {
 
     interface OnClickListener {
         void onItemClick(int position);
@@ -11,8 +11,5 @@ public interface ViewInterface {
     interface OnPresenterListener {
         void onPresenterCreated(PresenterInterface presenter);
     }
-
-    void showProgress();
-    void hideProgress();
 
 }
