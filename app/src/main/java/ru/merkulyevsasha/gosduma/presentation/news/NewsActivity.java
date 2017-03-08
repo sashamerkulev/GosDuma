@@ -3,6 +3,7 @@ package ru.merkulyevsasha.gosduma.presentation.news;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,6 +37,7 @@ public class NewsActivity extends BaseActivity
     private ListViewNewsAdapter mAdapter;
 
     private SwipeRefreshLayout mRefreshLayout;
+    private View root;
 
     private int mId = -1;
     private String mName = "";
@@ -65,6 +67,8 @@ public class NewsActivity extends BaseActivity
         mId = intent.getIntExtra(KEY_ID, 0);
         mName = intent.getStringExtra(KEY_NAME);
         setTitle(mName);
+
+        root = findViewById(R.id.root);
 
         mRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_listviewnews);
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
@@ -154,24 +158,44 @@ public class NewsActivity extends BaseActivity
     }
 
     @Override
-    public void showMessage(String message) {
-
+    public void showMessage(final int resId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(root, resId, Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
     public void hideProgress() {
-        mRefreshLayout.setRefreshing(false);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void showProgress() {
-        mRefreshLayout.setRefreshing(true);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(true);
+            }
+        });
     }
 
     @Override
-    public void showNews(List<Article> articles) {
-        mAdapter.clear();
-        mAdapter.addAll(articles);
-        mAdapter.notifyDataSetChanged();
+    public void showNews(final List<Article> articles) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.clear();
+                mAdapter.addAll(articles);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }

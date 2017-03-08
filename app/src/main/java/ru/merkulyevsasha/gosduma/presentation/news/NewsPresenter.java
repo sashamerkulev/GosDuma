@@ -4,11 +4,7 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.merkulyevsasha.gosduma.data.http.RssParser;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
@@ -35,39 +31,22 @@ public class NewsPresenter implements MvpPresenter {
         view = null;
     }
 
-    private Callback<ResponseBody> getSubscriber(final int id) {
-        return new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    try {
-                        RssParser parser = new RssParser();
-                        List<Article> result = parser.parseXml(response.body().string());
-
-                        inter.saveToCache(id, result);
-
-                        view.hideProgress();
-                        view.showNews(result);
-                    }
-                    catch(Exception e){
-                        view.hideProgress();
-                        FirebaseCrash.report(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                FirebaseCrash.report(t);
-                view.hideProgress();
-            }
-        };
-
-    }
-
     public void refresh(int id){
         view.showProgress();
-        inter.news(id).enqueue(getSubscriber(id));
+        inter.loadNews(id, new NewsInteractor.NewsCallback() {
+            @Override
+            public void success(List<Article> articles) {
+                view.hideProgress();
+                view.showNews(articles);
+            }
+
+            @Override
+            public void failure(Exception e) {
+                FirebaseCrash.report(e);
+                view.hideProgress();
+                view.showMessage(R.string.error_loading_news_message);
+            }
+        });
     }
 
     public void load(int id){
