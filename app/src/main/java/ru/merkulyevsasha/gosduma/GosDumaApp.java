@@ -2,10 +2,13 @@ package ru.merkulyevsasha.gosduma;
 
 import android.app.Application;
 
-import ru.merkulyevsasha.gosduma.dagger.AppModule;
-import ru.merkulyevsasha.gosduma.dagger.DaggerDbComponent;
-import ru.merkulyevsasha.gosduma.dagger.DbComponent;
-import ru.merkulyevsasha.gosduma.dagger.DbModule;
+import ru.merkulyevsasha.gosduma.di.AppModule;
+import ru.merkulyevsasha.gosduma.di.DaggerDbComponent;
+import ru.merkulyevsasha.gosduma.di.DbComponent;
+import ru.merkulyevsasha.gosduma.di.DbModule;
+import ru.merkulyevsasha.gosduma.di.InteractorsModule;
+import ru.merkulyevsasha.gosduma.di.PresentersModule;
+import ru.merkulyevsasha.gosduma.di.RepositoriesModule;
 
 
 public class GosDumaApp extends Application {
@@ -18,6 +21,9 @@ public class GosDumaApp extends Application {
         component = DaggerDbComponent.builder()
                 .appModule(new AppModule(this))
                 .dbModule(new DbModule())
+                .repositoriesModule(new RepositoriesModule())
+                .interactorsModule(new InteractorsModule())
+                .presentersModule(new PresentersModule())
                 .build();
     }
 

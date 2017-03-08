@@ -14,7 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ru.merkulyevsasha.gosduma.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 
 
 public class SplashActivity extends AppCompatActivity {

@@ -29,37 +29,37 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".news.NewsActivity"
+            android:name=".presentation.news.NewsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".news.NewsDetailsActivity"
+            android:name=".presentation.news.NewsDetailsActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".listdata.ListDataActivity"
+            android:name=".presentation.listdata.ListDataActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".mvp.deputies.DeputyDetailsActivity"
+            android:name=".presentation.deputies.DeputyDetailsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".mvp.lawdetails.DeputyLawDetailsActivity"
+            android:name=".presentation.lawdetails.DeputyLawDetailsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".mvp.lawdetails.LawDetailsActivity"
+            android:name=".presentation.lawdetails.LawDetailsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".mvp.deputyrequests.DeputyRequestDetailsActivity"
+            android:name=".presentation.deputyrequests.DeputyRequestDetailsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

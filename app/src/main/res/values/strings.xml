@@ -47,4 +47,9 @@
     <string name="text_resolution">Резолюция: </string>
     <string name="text_signedby">Подписан: </string>
     <string name="text_addressee">Адресован: </string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-1794194967807366/9535207937</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-1794194967807366/8058474731</string>
+
+
 </resources>
