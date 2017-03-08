@@ -9,9 +9,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,8 @@ public class NewsActivity extends BaseActivity
     private String mName = "";
     private int mPosition = -1;
 
+    private AdRequest adRequest;
+    private InterstitialAd mInterstitialAd;
     private AdView mAdView;
 
     @Inject
@@ -85,11 +91,25 @@ public class NewsActivity extends BaseActivity
         mListView.setOnItemClickListener(this);
 
         mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = BuildConfig.DEBUG_MODE
+        adRequest = BuildConfig.DEBUG_MODE
                 ? new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build()
                 : new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, getString(R.string.app_unit_id));
+
+        // Create the InterstitialAd and set the adUnitId.
+        mInterstitialAd = new InterstitialAd(this);
+        // Defined in res/values/strings.xml
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                showDetailsOnPosition(mPosition);
+            }
+        });
     }
 
     private void showDetailsOnPosition(int position){
@@ -113,7 +133,18 @@ public class NewsActivity extends BaseActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mPosition = i;
-        showDetailsOnPosition(i);
+        //showDetailsOnPosition(i);
+        showInterstitial();
+    }
+
+    private void showInterstitial() {
+        // Show the ad if it's ready. Otherwise toast and restart the game.
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            //Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
+            showDetailsOnPosition(mPosition);
+        }
     }
 
     @Override
@@ -127,6 +158,7 @@ public class NewsActivity extends BaseActivity
     @Override
     protected void onStart() {
         super.onStart();
+        mInterstitialAd.loadAd(adRequest);
         if (presenter != null){
             presenter.onStart(this);
             presenter.load(mId);

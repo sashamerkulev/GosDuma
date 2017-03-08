@@ -24,12 +24,16 @@ import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
 
 
-public class ListDataActivity extends BaseActivity {
+public class ListDataActivity extends BaseActivity implements ListDataView {
 
     private final HashMap<Integer, String> mListDataTableName = new HashMap<>();
 
+    private ListViewListDataAdapter mAdapter;
+
     @Inject
-    public DatabaseHelper mDatabase;
+    ListDataPresenter presenter;
+
+    private int menuId;
 
     private AdView mAdView;
 
@@ -43,7 +47,7 @@ public class ListDataActivity extends BaseActivity {
         initSupportActionBarWithBackButton(R.id.list_toolbar);
 
         Intent intent = getIntent();
-        final int id = intent.getIntExtra(KEY_ID, 0);
+        menuId = intent.getIntExtra(KEY_ID, 0);
         final String name = intent.getStringExtra(KEY_NAME);
         setTitle(name);
 
@@ -55,14 +59,9 @@ public class ListDataActivity extends BaseActivity {
         mListDataTableName.put(R.id.nav_stad, DatabaseHelper.STAD_TABLE_NAME);
         mListDataTableName.put(R.id.nav_inst, DatabaseHelper.INST_TABLE_NAME);
 
-        List<ListData> data = mDatabase.selectAll(mListDataTableName.get(id));
-
         ListView mListView = (ListView) findViewById(R.id.listview_listdata);
-        ListViewListDataAdapter mAdapter = new ListViewListDataAdapter(this, new ArrayList<ListData>());
+        mAdapter = new ListViewListDataAdapter(this, new ArrayList<ListData>());
         mListView.setAdapter(mAdapter);
-        mAdapter.clear();
-        mAdapter.addAll(data);
-        mAdapter.notifyDataSetChanged();
 
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = BuildConfig.DEBUG_MODE
@@ -70,6 +69,23 @@ public class ListDataActivity extends BaseActivity {
                 : new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (presenter != null){
+            presenter.onStop();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (presenter != null){
+            presenter.onStart(this);
+            presenter.load(mListDataTableName.get(menuId));
+        }
     }
 
     @Override
@@ -96,4 +112,30 @@ public class ListDataActivity extends BaseActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void showMessage(int resId) {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void showList(final List<ListData> items) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter.clear();
+                mAdapter.addAll(items);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+   }
 }
