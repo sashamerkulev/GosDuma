@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.presentation.deputies;
+package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,6 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
-import ru.merkulyevsasha.gosduma.presentation.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
 
 

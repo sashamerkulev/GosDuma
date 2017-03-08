@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.presentation.deputies;
+package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 
 import android.app.Activity;

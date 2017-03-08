@@ -272,14 +272,14 @@ public class DatabaseHelper {
         return item;
     }
 
-    public List<Deputy> search(String searchText, String orderBy, String position, int isCurrent) {
+    public List<Deputy> getDeputies(String searchText, String orderBy, String position, int isCurrent) {
         List<Deputy> items = new ArrayList<>();
         String selectQuery = "SELECT  d.id, d.name, d.position, d.isCurrent, di.birthdate, di.credentialsStart, di.credentialsEnd "
                 + " , di.factionName, di.factionRole, di.factionRegion, di.ranks, di.degrees "
                 + " FROM " + DEPUTY_TABLE_NAME + " d JOIN " + DEPUTYINFO_TABLE_NAME + " di on di.id = d.id ";
         selectQuery = selectQuery + " where d.position = @position and d.isCurrent = @isCurrent";
         if (!searchText.isEmpty()) {
-            selectQuery = selectQuery + " and (d.name_lowcase like @search or di.factionName_lowcase like @search or di.factionRole_lowcase like @search or di.factionRegion_lowcase like @search) ";
+            selectQuery = selectQuery + " and (d.name_lowcase like @getDeputies or di.factionName_lowcase like @getDeputies or di.factionRole_lowcase like @getDeputies or di.factionRegion_lowcase like @getDeputies) ";
         }
 
         selectQuery = selectQuery + " order by " + orderBy;
@@ -338,7 +338,7 @@ public class DatabaseHelper {
                 + " where ld.DeputyId = @deputyId ";
 
         if (!searchText.isEmpty()) {
-            selectQuery = selectQuery + " and (l.number like @search or l.comments_lowcase like @search or l.name_lowcase like @search or l.lastEventSolution_lowcase like @search or l.responsibleName_lower like @search) ";
+            selectQuery = selectQuery + " and (l.number like @getDeputies or l.comments_lowcase like @getDeputies or l.name_lowcase like @getDeputies or l.lastEventSolution_lowcase like @getDeputies or l.responsibleName_lower like @getDeputies) ";
         }
 
         selectQuery = selectQuery + " order by " + orderBy;
@@ -376,7 +376,7 @@ public class DatabaseHelper {
         String selectQuery = "select id, number, name, comments, name_lowcase, comments_lowcase, introductionDate,  " +
                 " lastEventStageId, lastEventPhaseId, responsibleName, responsibleName_lower, lastEventSolution, lastEventSolution_lowcase, type "
                 +" from "+LAW_TABLE_NAME +
-                " where name_lowcase like @search or number like @search or responsibleName_lower like @search or lastEventSolution_lowcase like @search or introductionDate like @search";
+                " where name_lowcase like @getDeputies or number like @getDeputies or responsibleName_lower like @getDeputies or lastEventSolution_lowcase like @getDeputies or introductionDate like @getDeputies";
 
         selectQuery = selectQuery + " order by " + orderBy;
 
@@ -411,9 +411,9 @@ public class DatabaseHelper {
                 " from " + DEPUTYREQUEST_TABLE_NAME;
 
         if (!searchText.isEmpty()) {
-            selectQuery = selectQuery + " where initiator_lowcase like @search or name_lowcase like @search or resolution_lowcase like @search or " +
-                    " answer_lowcase like @search or signedBy_name_lowcase like @search or addressee_name_lowcase like @search or " +
-                    " documentNumber like @search ";
+            selectQuery = selectQuery + " where initiator_lowcase like @getDeputies or name_lowcase like @getDeputies or resolution_lowcase like @getDeputies or " +
+                    " answer_lowcase like @getDeputies or signedBy_name_lowcase like @getDeputies or addressee_name_lowcase like @getDeputies or " +
+                    " documentNumber like @getDeputies ";
         }
 
         selectQuery = selectQuery + " order by " + orderBy;

@@ -21,7 +21,7 @@ import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
-import static ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsActivity.KEY_POSITION;
+import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_POSITION;
 
 
 public class LawsFragment extends Fragment implements LawsView, MvpFragment {
@@ -77,7 +77,7 @@ public class LawsFragment extends Fragment implements LawsView, MvpFragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), ((OnLawClickListener)getActivity()));
+        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), ((LawsView.OnLawClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;

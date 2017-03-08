@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
+import ru.merkulyevsasha.gosduma.data.DeputiesRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.LawsRepository;
 import ru.merkulyevsasha.gosduma.data.LawsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.ListDataRepository;
@@ -35,5 +37,10 @@ public class RepositoriesModule {
         return new LawsRepositoryImpl(db);
     }
 
+    @Singleton
+    @Provides
+    DeputiesRepository providesDeputiesRepository(DatabaseHelper db) {
+        return new DeputiesRepositoryImpl(db);
+    }
 
 }

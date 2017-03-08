@@ -1,7 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.deputies;
 
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -11,12 +11,13 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.domain.DeputiesInteractor;
 import ru.merkulyevsasha.gosduma.models.Deputy;
-import ru.merkulyevsasha.gosduma.presentation.BasePresenter;
-import ru.merkulyevsasha.gosduma.presentation.PresenterInterface;
+import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
+import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class DeputiesPresenter extends BasePresenter implements PresenterInterface {
+public class DeputiesPresenter implements MvpPresenter {
 
     private final static int NAME_INDEX = 0;
     private final static int BIRTHDATE_INDEX = 1;
@@ -33,7 +34,8 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
     private final static String KEY_CURRENT_FILTERWORKING_VALUE = "WORKING";
     public final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
-    private final DeputiesViewInterface mViewInterface;
+    private DeputiesView view;
+
     private final HashMap<Integer, String> mSortColumn;
     private final HashMap<Integer, String> mFilterDeputyValues;
 
@@ -43,10 +45,11 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
     private int mFilterWorking;
     private String mSearchText;
 
-    public DeputiesPresenter(Activity context, DeputiesViewInterface viewInterface){
-        super();
+    private DeputiesInteractor inter;
 
-        mViewInterface = viewInterface;
+    public DeputiesPresenter(Context context, DeputiesInteractor inter){
+
+        this.inter = inter;
 
         mSort = NAME_INDEX;
         mSortDirection = DatabaseHelper.ASC;
@@ -66,29 +69,24 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
         mFilterDeputyValues.put(MEMBER_INDEX, context.getResources().getString(R.string.text_member_sf));
     }
 
-    @Override
     public int getSortDialogType() {
         return DialogHelper.IDD_DEPUTY_SORT;
     }
 
-    @Override
     public int getFilterDialogType() {
         return DialogHelper.IDD_DEPUTY_FILTER;
     }
 
-    @Override
     public List<Integer> getCurrentSortIndexValue(){
         List<Integer> result = new ArrayList<>();
         result.add(mSort);
         return result;
     }
 
-    @Override
     public boolean isSortMenuVisible() {
         return true;
     }
 
-    @Override
     public List<Integer> getCurrentFilterIndexValue(){
         List<Integer> result = new ArrayList<>();
         result.add(mFilterDeputy);
@@ -96,37 +94,48 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
         return result;
     }
 
-    @Override
     public boolean isFilterMenuVisible() {
         return true;
     }
 
-    public List<Deputy> getDeputies(){
-        return mDatabase.search(mSearchText, mSortColumn.get(mSort) + mSortDirection,
-                mFilterDeputyValues.get(mFilterDeputy), mFilterWorking);
-    }
-
-    @Override
     public void search(String searchText) {
         mSearchText = searchText;
-        mViewInterface.show(getDeputies());
+        load();
     }
 
-    @Override
     public void sort(List<Integer> oldSort, List<Integer> sort){
         mSort = sort.get(0);
         mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
-        mViewInterface.show(getDeputies());
+        load();
     }
 
-    @Override
     public void filter(List<Integer> filter){
         mFilterDeputy = filter.get(0);
         mFilterWorking = filter.get(1);
-        mViewInterface.show(getDeputies());
+        load();
     }
 
-    @Override
+    public void load(){
+        inter.loadDeputies(mSearchText, mSortColumn.get(mSort) + mSortDirection,
+                mFilterDeputyValues.get(mFilterDeputy), mFilterWorking, new DeputiesInteractor.DeputiesCallback() {
+                    @Override
+                    public void success(List<Deputy> items) {
+                        view.hideProgress();
+                        if (items.size() > 0) {
+                            view.showData(items);
+                        } else {
+                            view.showDataEmptyMessage();
+                        }
+                    }
+
+                    @Override
+                    public void failure(Exception e) {
+                        view.hideProgress();
+                        view.showDataEmptyMessage();
+                    }
+                });
+    }
+
     public Bundle getState(){
         Bundle state = new Bundle();
 
@@ -139,7 +148,6 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
         return state;
     }
 
-    @Override
     public void restoreState(Bundle outState){
 
         if (outState != null){
@@ -151,4 +159,13 @@ public class DeputiesPresenter extends BasePresenter implements PresenterInterfa
         }
     }
 
+    @Override
+    public void onStart(MvpView view) {
+        this.view = (DeputiesView)view;
+    }
+
+    @Override
+    public void onStop() {
+        view = null;
+    }
 }

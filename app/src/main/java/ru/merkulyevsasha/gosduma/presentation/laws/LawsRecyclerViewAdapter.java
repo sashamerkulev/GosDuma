@@ -17,9 +17,9 @@ public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<LawsRecyclerV
 
     public List<Law> mItems;
 
-    private final OnLawClickListener mClickListener;
+    private final LawsView.OnLawClickListener mClickListener;
 
-    public LawsRecyclerViewAdapter(List<Law> items, OnLawClickListener clickListener){
+    public LawsRecyclerViewAdapter(List<Law> items, LawsView.OnLawClickListener clickListener){
         mItems = items;
         mClickListener = clickListener;
     }

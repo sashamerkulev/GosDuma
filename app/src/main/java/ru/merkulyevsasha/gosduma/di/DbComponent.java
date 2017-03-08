@@ -5,6 +5,7 @@ package ru.merkulyevsasha.gosduma.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.presentation.BasePresenter;
@@ -18,6 +19,7 @@ public interface DbComponent {
     void inject(ListDataActivity context);
 
     void inject(LawsFragment context);
+    void inject(DeputiesFragment context);
 
 
     void inject(BasePresenter presenter);

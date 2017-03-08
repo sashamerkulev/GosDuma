@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -30,7 +29,7 @@ import ru.merkulyevsasha.gosduma.models.Article;
 
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
-import static ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsActivity.KEY_POSITION;
+import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_POSITION;
 
 public class NewsActivity extends BaseActivity
         implements NewsView, AdapterView.OnItemClickListener{

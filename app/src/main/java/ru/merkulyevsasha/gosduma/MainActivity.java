@@ -22,28 +22,28 @@ import java.util.List;
 
 import ru.merkulyevsasha.apprate.AppRateRequester;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
+import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesView;
+import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.deputies.OnDeputyClickListener;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.OnDeputyRequestsClickListener;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
-import ru.merkulyevsasha.gosduma.presentation.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.presentation.PresenterInterface;
 import ru.merkulyevsasha.gosduma.presentation.ViewInterface;
-import ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsActivity;
-import ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsFragment;
+import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestsFragment;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 
-import static ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsActivity.KEY_DEPUTY;
+import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_DEPUTY;
 import static ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
 import static ru.merkulyevsasha.gosduma.presentation.lawdetails.BaseLawDetailsActivity.KEY_LAW;
 
@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity
         , SearchView.OnQueryTextListener
         , ViewInterface
         , ViewInterface.OnPresenterListener
-        , OnDeputyClickListener
-        , OnLawClickListener
+        , DeputiesView.OnDeputyClickListener
+        , LawsView.OnLawClickListener
         , OnDeputyRequestsClickListener
 {
 
@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity
     private final static String KEY_TITLE = "TITLE";
     private final static String KEY_SEARCHTEXT = "SEARCHTEXT";
     private final static String KEY_ITEMID = "ITEMID";
-
-    //private PresenterInterface mPresenter;
 
     private MvpFragment mFragment;
 

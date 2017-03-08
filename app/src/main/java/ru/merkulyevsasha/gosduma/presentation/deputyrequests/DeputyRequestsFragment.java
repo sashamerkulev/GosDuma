@@ -17,7 +17,7 @@ import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.ViewInterface;
 
-import static ru.merkulyevsasha.gosduma.presentation.deputies.DeputyDetailsActivity.KEY_POSITION;
+import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_POSITION;
 
 
 public class DeputyRequestsFragment extends Fragment implements DeputyRequestsViewInterface, MvpFragment {

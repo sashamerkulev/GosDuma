@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.presentation.deputies;
+package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 
 import android.content.Intent;
@@ -28,7 +28,6 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
-import ru.merkulyevsasha.gosduma.presentation.laws.OnLawClickListener;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.BaseLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
@@ -38,7 +37,7 @@ import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrGone;
 @SuppressWarnings("WeakerAccess")
 public class DeputyDetailsActivity extends BaseActivity
     implements
-     OnLawClickListener
+        LawsView.OnLawClickListener
         , MenuItem.OnMenuItemClickListener
         , SearchView.OnQueryTextListener
     , LawsView
