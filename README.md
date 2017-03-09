@@ -6,7 +6,7 @@
 
 Структурно проект содержит несколько packages, названия (и содержимое) которых соответствует терминам Clean Architecture (https://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/):
 
-- Presentation
+- Presentation (MVP)
 - Domain
 - Data
 
