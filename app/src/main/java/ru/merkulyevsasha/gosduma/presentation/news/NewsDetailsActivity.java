@@ -2,17 +2,18 @@ package ru.merkulyevsasha.gosduma.presentation.news;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.TextView;
 
-import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.ui.UiUtils;
 
-import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
-import static ru.merkulyevsasha.gosduma.presentation.news.NewsActivity.KEY_DESCRIPTION;
-import static ru.merkulyevsasha.gosduma.presentation.news.NewsActivity.KEY_TOPIC;
 
-public class NewsDetailsActivity extends BaseActivity {
+public class NewsDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,18 @@ public class NewsDetailsActivity extends BaseActivity {
 
         setContentView(R.layout.activity_newsdetails);
 
-        initSupportActionBarWithBackButton(R.id.newsdetails_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.newsdetails_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         Intent intent = getIntent();
-        final String topic = intent.getStringExtra(KEY_TOPIC);
-        final String description = intent.getStringExtra(KEY_DESCRIPTION);
-        final String name = intent.getStringExtra(KEY_NAME);
+        final String topic = intent.getStringExtra(KeysBundleHolder.KEY_TOPIC);
+        final String description = intent.getStringExtra(KeysBundleHolder.KEY_DESCRIPTION);
+        final String name = intent.getStringExtra(KeysBundleHolder.KEY_NAME);
         setTitle(name);
 
         TextView textViewTopic = (TextView)findViewById(R.id.textview_newsdetailstopic);
@@ -38,6 +45,18 @@ public class NewsDetailsActivity extends BaseActivity {
 
         textViewTopic.setText(topic);
         textViewDescription.setText(description);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

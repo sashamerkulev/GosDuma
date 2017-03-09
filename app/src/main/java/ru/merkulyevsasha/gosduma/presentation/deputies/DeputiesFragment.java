@@ -18,10 +18,9 @@ import javax.inject.Inject;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
-
-import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_POSITION;
 
 
 public class DeputiesFragment extends Fragment implements DeputiesView, MvpFragment {
@@ -51,7 +50,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView, MvpFragm
         if (state != null){
             outState.putAll(state);
         }
-        outState.putInt(KEY_POSITION, mLayoutManager.findFirstVisibleItemPosition());
+        outState.putInt(KeysBundleHolder.KEY_POSITION, mLayoutManager.findFirstVisibleItemPosition());
     }
 
     @Override
@@ -60,7 +59,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView, MvpFragm
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null){
             mPresenter.restoreState(savedInstanceState);
-            mPosition = savedInstanceState.getInt(KEY_POSITION);
+            mPosition = savedInstanceState.getInt(KeysBundleHolder.KEY_POSITION);
         }
     }
 

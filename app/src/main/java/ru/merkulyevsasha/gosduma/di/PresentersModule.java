@@ -9,12 +9,14 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ru.merkulyevsasha.gosduma.domain.DeputiesInteractor;
+import ru.merkulyevsasha.gosduma.domain.DeputyDetailsInteractor;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractor;
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
 import ru.merkulyevsasha.gosduma.domain.ListDataInteractor;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesPresenter;
+import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsPresenter;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestsPresenter;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsPresenter;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsPresenter;
@@ -60,5 +62,10 @@ public class PresentersModule {
         return new LawDetailsPresenter(inter);
     }
 
+    @Singleton
+    @Provides
+    DeputyDetailsPresenter providesDeputyLawsPresenter(DeputyDetailsInteractor inter) {
+        return new DeputyDetailsPresenter(inter);
+    }
 
 }

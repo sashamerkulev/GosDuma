@@ -4,25 +4,26 @@ package ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.ui.UiUtils;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
 
 @SuppressWarnings("WeakerAccess")
-public class DeputyRequestDetailsActivity extends BaseActivity {
-
-
-    public final static String KEY_DEPUTYREQUEST = "DEPUTYREQUEST";
+public class DeputyRequestDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_deputyrequest_name)
     public
@@ -81,10 +82,16 @@ public class DeputyRequestDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_deputyrequest_details);
         ButterKnife.bind(this);
 
-        initSupportActionBarWithBackButton(R.id.deputyrequestdetails_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.deputyrequestdetails_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         Intent intent = getIntent();
-        mDeputyRequest = intent.getParcelableExtra(KEY_DEPUTYREQUEST);
+        mDeputyRequest = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTYREQUEST);
         setTitle(R.string.menu_deputies_requests);
 
         mDeputyrequestName.setText(mDeputyRequest.getNameWithNumberAndDate());
@@ -130,5 +137,15 @@ public class DeputyRequestDetailsActivity extends BaseActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

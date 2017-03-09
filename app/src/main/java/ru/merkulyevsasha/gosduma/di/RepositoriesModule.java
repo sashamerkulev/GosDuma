@@ -6,6 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepositoryImpl;
+import ru.merkulyevsasha.gosduma.data.DeputyDetailsRepository;
+import ru.merkulyevsasha.gosduma.data.DeputyDetailsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.DeputyRequestsRepository;
 import ru.merkulyevsasha.gosduma.data.DeputyRequestsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.LawDetailsRepository;
@@ -18,6 +20,7 @@ import ru.merkulyevsasha.gosduma.data.NewsRepository;
 import ru.merkulyevsasha.gosduma.data.NewsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.data.http.RssService;
+import ru.merkulyevsasha.gosduma.models.Deputy;
 
 
 @Module
@@ -57,6 +60,12 @@ public class RepositoriesModule {
     @Provides
     LawDetailsRepository providesLawDetailsRepository(DatabaseHelper db) {
         return new LawDetailsRepositoryImpl(db);
+    }
+
+    @Singleton
+    @Provides
+    DeputyDetailsRepository providesDeputyDetailsRepository(DatabaseHelper db) {
+        return new DeputyDetailsRepositoryImpl(db);
     }
 
 }

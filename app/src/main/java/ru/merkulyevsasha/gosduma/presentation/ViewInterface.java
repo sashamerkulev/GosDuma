@@ -8,8 +8,4 @@ public interface ViewInterface extends MvpView {
         void onItemClick(int position);
     }
 
-    interface OnPresenterListener {
-        void onPresenterCreated(PresenterInterface presenter);
-    }
-
 }

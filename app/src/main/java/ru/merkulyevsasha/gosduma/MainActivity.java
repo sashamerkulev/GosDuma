@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import java.util.List;
 
 import ru.merkulyevsasha.apprate.AppRateRequester;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesView;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestsView;
@@ -33,7 +34,6 @@ import ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequest
 import ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesFragment;
-import ru.merkulyevsasha.gosduma.presentation.PresenterInterface;
 import ru.merkulyevsasha.gosduma.presentation.ViewInterface;
 import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsFragment;
@@ -44,8 +44,6 @@ import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 
-import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_DEPUTY;
-import static ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -53,17 +51,10 @@ public class MainActivity extends AppCompatActivity
         , MenuItem.OnMenuItemClickListener
         , SearchView.OnQueryTextListener
         , ViewInterface
-        , ViewInterface.OnPresenterListener
         , DeputiesView.OnDeputyClickListener
         , LawsView.OnLawClickListener
         , DeputyRequestsView.OnDeputyRequestsClickListener
 {
-
-    public final static String KEY_ID = "ID";
-    public final static String KEY_NAME = "NAME";
-    private final static String KEY_TITLE = "TITLE";
-    private final static String KEY_SEARCHTEXT = "SEARCHTEXT";
-    private final static String KEY_ITEMID = "ITEMID";
 
     private MvpFragment mFragment;
 
@@ -92,17 +83,17 @@ public class MainActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
 
         if (mDeputy != null) {
-            outState.putParcelable(KEY_DEPUTY, mDeputy);
+            outState.putParcelable(KeysBundleHolder.KEY_DEPUTY, mDeputy);
         }
         if (mLaw != null) {
             outState.putParcelable(LawDetailsActivity.KEY_LAW, mLaw);
         }
         if (mDeputyRequest != null) {
-            outState.putParcelable(KEY_DEPUTYREQUEST, mDeputyRequest);
+            outState.putParcelable(KeysBundleHolder.KEY_DEPUTYREQUEST, mDeputyRequest);
         }
-        outState.putString(KEY_TITLE, mTitle);
-        outState.putString(KEY_SEARCHTEXT, mSearchText);
-        outState.putInt(KEY_ITEMID, mItemId);
+        outState.putString(KeysBundleHolder.KEY_TITLE, mTitle);
+        outState.putString(KeysBundleHolder.KEY_SEARCHTEXT, mSearchText);
+        outState.putInt(KeysBundleHolder.KEY_ITEMID, mItemId);
     }
 
 
@@ -135,29 +126,29 @@ public class MainActivity extends AppCompatActivity
         hideFragmentDetails();
 
         if (savedInstanceState == null) {
-            //mItemId = R.id.nav_deputies;
-            //setDeputiesFragment();
-            mItemId = R.id.nav_laws;
-            setLawsFragment();
+            mItemId = R.id.nav_deputies;
+            setDeputiesFragment();
+//            mItemId = R.id.nav_laws;
+//            setLawsFragment();
         } else {
-            mItemId = savedInstanceState.getInt(KEY_ITEMID);
-            mTitle = savedInstanceState.getString(KEY_TITLE);
+            mItemId = savedInstanceState.getInt(KeysBundleHolder.KEY_ITEMID);
+            mTitle = savedInstanceState.getString(KeysBundleHolder.KEY_TITLE);
             setTitle(mTitle);
 
-            if (savedInstanceState.containsKey(KEY_SEARCHTEXT)) {
-                mSearchText = savedInstanceState.getString(KEY_SEARCHTEXT);
+            if (savedInstanceState.containsKey(KeysBundleHolder.KEY_SEARCHTEXT)) {
+                mSearchText = savedInstanceState.getString(KeysBundleHolder.KEY_SEARCHTEXT);
             }
 
             if (savedInstanceState.containsKey(LawDetailsActivity.KEY_LAW) && mItemId == R.id.nav_laws) {
                 mLaw = savedInstanceState.getParcelable(LawDetailsActivity.KEY_LAW);
                 showLawDetails(mLaw);
             }
-            if (savedInstanceState.containsKey(KEY_DEPUTY) && mItemId == R.id.nav_deputies) {
-                mDeputy = savedInstanceState.getParcelable(KEY_DEPUTY);
+            if (savedInstanceState.containsKey(KeysBundleHolder.KEY_DEPUTY) && mItemId == R.id.nav_deputies) {
+                mDeputy = savedInstanceState.getParcelable(KeysBundleHolder.KEY_DEPUTY);
                 showDeputyDetails(mDeputy);
             }
-            if (savedInstanceState.containsKey(KEY_DEPUTYREQUEST) && mItemId == R.id.nav_depqueries) {
-                mDeputyRequest = savedInstanceState.getParcelable(KEY_DEPUTYREQUEST);
+            if (savedInstanceState.containsKey(KeysBundleHolder.KEY_DEPUTYREQUEST) && mItemId == R.id.nav_depqueries) {
+                mDeputyRequest = savedInstanceState.getParcelable(KeysBundleHolder.KEY_DEPUTYREQUEST);
                 showDeputyRequestDetails(mDeputyRequest);
             }
         }
@@ -305,8 +296,8 @@ public class MainActivity extends AppCompatActivity
 
     private void startActivity(int id, String name, Class<?> cls){
         Intent activityIntent = new Intent(this, cls);
-        activityIntent.putExtra(KEY_ID, id);
-        activityIntent.putExtra(KEY_NAME, name);
+        activityIntent.putExtra(KeysBundleHolder.KEY_ID, id);
+        activityIntent.putExtra(KeysBundleHolder.KEY_NAME, name);
         startActivity(activityIntent);
     }
 
@@ -444,12 +435,6 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    @Override
-    public void onPresenterCreated(PresenterInterface presenter) {
-//        mPresenter = presenter;
-        setVisibleMenuItems();
-    }
-
     private void showDeputyDetails(Deputy deputy){
         if (mFrameLayoutDetails != null){
             mFrameLayoutDetails.setVisibility(View.VISIBLE);
@@ -458,7 +443,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyDetailsActivity.class);
-            activityIntent.putExtra(KEY_DEPUTY, deputy);
+            activityIntent.putExtra(KeysBundleHolder.KEY_DEPUTY, deputy);
             startActivity(activityIntent);
         }
     }
@@ -490,7 +475,7 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null).commit();
         } else {
             Intent activityIntent = new Intent(this, DeputyRequestDetailsActivity.class);
-            activityIntent.putExtra(KEY_DEPUTYREQUEST, deputyRequest);
+            activityIntent.putExtra(KeysBundleHolder.KEY_DEPUTYREQUEST, deputyRequest);
             startActivity(activityIntent);
         }
     }

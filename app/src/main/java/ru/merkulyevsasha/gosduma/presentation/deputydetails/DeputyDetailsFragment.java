@@ -1,5 +1,6 @@
 package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,24 +10,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
+import ru.merkulyevsasha.gosduma.presentation.MvpView;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
+import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 
 
-public class DeputyDetailsFragment extends Fragment
-    implements LawsView {
+public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView {
 
-    private final static String KEY_DEPUTY = "deputy";
+    private Deputy mDeputy;
+
+    private LawsRecyclerViewAdapter mAdapter;
+
+    @Inject
+    DeputyDetailsPresenter mPresenter;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        GosDumaApp.getComponent().inject(this);
+    }
 
     public static DeputyDetailsFragment newInstance(Deputy deputy) {
         DeputyDetailsFragment fragment = new DeputyDetailsFragment();
         Bundle args = new Bundle();
-        args.putParcelable(KEY_DEPUTY, deputy);
+        args.putParcelable(KeysBundleHolder.KEY_DEPUTY, deputy);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +53,7 @@ public class DeputyDetailsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_deputy_details, container, false);
 
-        final Deputy mDeputy = getArguments().getParcelable(KEY_DEPUTY);
+        mDeputy = getArguments().getParcelable(KeysBundleHolder.KEY_DEPUTY);
 
         TextView mDeputyName = (TextView)v.findViewById(R.id.textview_deputy_name);
         TextView mDeputyPosition = (TextView)v.findViewById(R.id.textview_position);
@@ -60,10 +78,7 @@ public class DeputyDetailsFragment extends Fragment
 
         RecyclerView mRecyclerView = (RecyclerView)v.findViewById(R.id.recyclerview_laws);
 
-        DeputyLawsPresenter mPresenter = new DeputyLawsPresenter(getActivity(), this);
-
-        List<Law> items = mPresenter.getDeputyLaws(mDeputy.id);
-        LawsRecyclerViewAdapter mAdapter = new LawsRecyclerViewAdapter(items, (OnLawClickListener) getActivity());
+        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), (LawsView.OnLawClickListener) getActivity());
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -74,27 +89,69 @@ public class DeputyDetailsFragment extends Fragment
     }
 
     @Override
-    public void showMessage(int resId) {
-
+    public void onStop() {
+        super.onStop();
+        if (mPresenter != null) {
+            mPresenter.onStop();
+        }
     }
 
     @Override
-    public void hideProgress() {
-
+    public void onStart() {
+        super.onStart();
+        if (mPresenter != null) {
+            mPresenter.onStart(this);
+            mPresenter.load(mDeputy.id);
+        }
     }
 
     @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void showData(List<Law> items) {
-
+    public void showData(final List<Law> items){
+        if (isAdded()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.mItems = items;
+                    mAdapter.notifyDataSetChanged();
+//                    mRecyclerView.setVisibility(View.VISIBLE);
+//                    mEmptyLayout.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
     @Override
     public void showDataEmptyMessage() {
-
+        if (isAdded()) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    mRecyclerView.setVisibility(View.GONE);
+//                    mEmptyLayout.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
+
+    @Override
+    public void showMessage(int resId) {
+        if (isAdded()){
+            ((MvpView)getActivity()).showMessage(resId);
+        }
+    }
+
+    @Override
+    public void hideProgress() {
+        if (isAdded()){
+            ((MvpView)getActivity()).hideProgress();
+        }
+    }
+
+    @Override
+    public void showProgress() {
+        if (isAdded()){
+            ((MvpView)getActivity()).showProgress();
+        }
+    }
+
 }

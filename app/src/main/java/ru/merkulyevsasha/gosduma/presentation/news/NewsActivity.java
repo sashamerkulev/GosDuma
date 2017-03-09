@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -21,21 +25,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Article;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
-import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
-import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
-import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_POSITION;
-
-public class NewsActivity extends BaseActivity
+public class NewsActivity extends AppCompatActivity
         implements NewsView, AdapterView.OnItemClickListener{
 
-    public final static String KEY_TOPIC = "TOPIC";
-    public final static String KEY_DESCRIPTION = "DESCRIPTION";
 
     private ListViewNewsAdapter mAdapter;
 
@@ -56,7 +54,7 @@ public class NewsActivity extends BaseActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_POSITION, mPosition);
+        outState.putInt(KeysBundleHolder.KEY_POSITION, mPosition);
     }
 
     @Override
@@ -66,11 +64,17 @@ public class NewsActivity extends BaseActivity
 
         GosDumaApp.getComponent().inject(this);
 
-        initSupportActionBarWithBackButton(R.id.news_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.news_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         Intent intent = getIntent();
-        mId = intent.getIntExtra(KEY_ID, 0);
-        mName = intent.getStringExtra(KEY_NAME);
+        mId = intent.getIntExtra(KeysBundleHolder.KEY_ID, 0);
+        mName = intent.getStringExtra(KeysBundleHolder.KEY_NAME);
         setTitle(mName);
 
         root = findViewById(R.id.root);
@@ -111,6 +115,18 @@ public class NewsActivity extends BaseActivity
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void showDetailsOnPosition(int position){
         Article item = mAdapter.getItem(position);
         if (item != null) {
@@ -121,9 +137,9 @@ public class NewsActivity extends BaseActivity
             } else {
                 mPosition = -1;
                 Intent activityIntent = new Intent(this, NewsDetailsActivity.class);
-                activityIntent.putExtra(KEY_TOPIC, item.Title);
-                activityIntent.putExtra(KEY_DESCRIPTION, item.Description);
-                activityIntent.putExtra(KEY_NAME, mName);
+                activityIntent.putExtra(KeysBundleHolder.KEY_TOPIC, item.Title);
+                activityIntent.putExtra(KeysBundleHolder.KEY_DESCRIPTION, item.Description);
+                activityIntent.putExtra(KeysBundleHolder.KEY_NAME, mName);
                 startActivity(activityIntent);
             }
         }

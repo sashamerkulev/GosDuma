@@ -3,6 +3,10 @@ package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -14,7 +18,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractorImpl;
@@ -23,7 +26,7 @@ import ru.merkulyevsasha.gosduma.models.Law;
 import static ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity.KEY_LAW;
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
-public class DeputyLawDetailsActivity extends BaseActivity implements LawDetailsView  {
+public class DeputyLawDetailsActivity extends AppCompatActivity implements LawDetailsView  {
 
 
     @BindView(R.id.tv_law_type)
@@ -125,7 +128,13 @@ public class DeputyLawDetailsActivity extends BaseActivity implements LawDetails
 
         ButterKnife.bind(this);
 
-        initSupportActionBarWithBackButton(R.id.lawdetails_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.lawdetails_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         setTitle(R.string.menu_laws);
 
@@ -178,6 +187,18 @@ public class DeputyLawDetailsActivity extends BaseActivity implements LawDetails
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

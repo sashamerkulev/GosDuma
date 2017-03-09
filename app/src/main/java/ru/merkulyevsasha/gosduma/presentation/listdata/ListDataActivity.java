@@ -2,6 +2,10 @@ package ru.merkulyevsasha.gosduma.presentation.listdata;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -13,18 +17,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.ListData;
-
-import static ru.merkulyevsasha.gosduma.MainActivity.KEY_ID;
-import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
 
-public class ListDataActivity extends BaseActivity implements ListDataView {
+public class ListDataActivity extends AppCompatActivity implements ListDataView {
 
     private final HashMap<Integer, String> mListDataTableName = new HashMap<>();
 
@@ -44,11 +45,17 @@ public class ListDataActivity extends BaseActivity implements ListDataView {
 
         GosDumaApp.getComponent().inject(this);
 
-        initSupportActionBarWithBackButton(R.id.list_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.list_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         Intent intent = getIntent();
-        menuId = intent.getIntExtra(KEY_ID, 0);
-        final String name = intent.getStringExtra(KEY_NAME);
+        menuId = intent.getIntExtra(KeysBundleHolder.KEY_ID, 0);
+        final String name = intent.getStringExtra(KeysBundleHolder.KEY_NAME);
         setTitle(name);
 
         mListDataTableName.put(R.id.nav_comittee, DatabaseHelper.COMMITTEE_TABLE_NAME);
@@ -69,6 +76,18 @@ public class ListDataActivity extends BaseActivity implements ListDataView {
                 : new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

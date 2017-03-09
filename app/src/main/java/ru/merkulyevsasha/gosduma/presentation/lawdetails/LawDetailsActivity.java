@@ -3,6 +3,10 @@ package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -14,7 +18,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Law;
@@ -25,7 +28,7 @@ import ru.merkulyevsasha.gosduma.ui.UiUtils;
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
 
-public class LawDetailsActivity extends BaseActivity implements LawDetailsView{
+public class LawDetailsActivity extends AppCompatActivity implements LawDetailsView{
 
     public final static String KEY_LAW = "LAW";
 
@@ -128,7 +131,13 @@ public class LawDetailsActivity extends BaseActivity implements LawDetailsView{
 
         ButterKnife.bind(this);
 
-        initSupportActionBarWithBackButton(R.id.lawdetails_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.lawdetails_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         if (UiUtils.isLargeLandscape(this)) {
             finish();
@@ -186,6 +195,18 @@ public class LawDetailsActivity extends BaseActivity implements LawDetailsView{
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

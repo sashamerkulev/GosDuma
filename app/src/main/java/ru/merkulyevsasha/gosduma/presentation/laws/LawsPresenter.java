@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
@@ -14,17 +15,12 @@ import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
-import static ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesPresenter.KEY_CURRENT_SEARCHTEXT_VALUE;
-
 
 public class LawsPresenter implements MvpPresenter{
 
     final static int NAME_INDEX = 0;
     final static int NUMBER_INDEX = 1;
     final static int DATE_INDEX = 2;
-
-    private final static String KEY_CURRENT_SORT_VALUE = "SORT";
-    private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
 
 
     protected int mSort;
@@ -53,18 +49,18 @@ public class LawsPresenter implements MvpPresenter{
     public Bundle getState() {
         Bundle state = new Bundle();
 
-        state.putInt(KEY_CURRENT_SORT_VALUE, mSort);
-        state.putString(KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
-        state.putString(KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
+        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
+        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
+        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
 
         return state;
     }
 
     public void restoreState(Bundle outState) {
         if (outState != null){
-            mSort = outState.getInt(KEY_CURRENT_SORT_VALUE);
-            mSortDirection = outState.getString(KEY_CURRENT_SORT_DIRECTIONVALUE);
-            mSearchText = outState.getString(KEY_CURRENT_SEARCHTEXT_VALUE);
+            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
+            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
+            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
         }
     }
 

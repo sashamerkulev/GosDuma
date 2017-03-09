@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ru.merkulyevsasha.gosduma.R;
-
-import static ru.merkulyevsasha.gosduma.presentation.news.NewsActivity.KEY_DESCRIPTION;
-import static ru.merkulyevsasha.gosduma.presentation.news.NewsActivity.KEY_TOPIC;
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
 
 public class NewsDetailsFragment extends Fragment {
@@ -18,8 +16,8 @@ public class NewsDetailsFragment extends Fragment {
     public static NewsDetailsFragment newInstance(String topic, String description) {
         NewsDetailsFragment details = new NewsDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(KEY_TOPIC, topic);
-        args.putString(KEY_DESCRIPTION, description);
+        args.putString(KeysBundleHolder.KEY_TOPIC, topic);
+        args.putString(KeysBundleHolder.KEY_DESCRIPTION, description);
         details.setArguments(args);
         return details;
     }
@@ -32,8 +30,8 @@ public class NewsDetailsFragment extends Fragment {
         TextView textViewTopic = (TextView)v.findViewById(R.id.textview_newsdetailstopic);
         TextView textViewDescription = (TextView)v.findViewById(R.id.textview_newsdetailsdescription);
 
-        final String topic = getArguments().getString(KEY_TOPIC);
-        final String description = getArguments().getString(KEY_DESCRIPTION);
+        final String topic = getArguments().getString(KeysBundleHolder.KEY_TOPIC);
+        final String description = getArguments().getString(KeysBundleHolder.KEY_DESCRIPTION);
 
         textViewTopic.setText(topic);
         textViewDescription.setText(description);

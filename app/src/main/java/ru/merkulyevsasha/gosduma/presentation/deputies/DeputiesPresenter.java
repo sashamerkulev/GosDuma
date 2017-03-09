@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
@@ -27,12 +28,6 @@ public class DeputiesPresenter implements MvpPresenter {
     public final static int MEMBER_INDEX = 1;
     public final static int WORKING_INDEX = 1;
     public final static int NOT_WORKING_INDEX = 0;
-
-    private final static String KEY_CURRENT_SORT_VALUE = "SORT";
-    private final static String KEY_CURRENT_SORT_DIRECTIONVALUE = "SORT_DIRECTION";
-    private final static String KEY_CURRENT_FILTERDEPUTY_VALUE = "DEPUTY";
-    private final static String KEY_CURRENT_FILTERWORKING_VALUE = "WORKING";
-    public final static String KEY_CURRENT_SEARCHTEXT_VALUE = "SEARCH";
 
     private DeputiesView view;
 
@@ -139,11 +134,11 @@ public class DeputiesPresenter implements MvpPresenter {
     public Bundle getState(){
         Bundle state = new Bundle();
 
-        state.putInt(KEY_CURRENT_SORT_VALUE, mSort);
-        state.putString(KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
-        state.putInt(KEY_CURRENT_FILTERDEPUTY_VALUE, mFilterDeputy);
-        state.putInt(KEY_CURRENT_FILTERWORKING_VALUE, mFilterWorking);
-        state.putString(KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
+        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
+        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
+        state.putInt(KeysBundleHolder.KEY_CURRENT_FILTERDEPUTY_VALUE, mFilterDeputy);
+        state.putInt(KeysBundleHolder.KEY_CURRENT_FILTERWORKING_VALUE, mFilterWorking);
+        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
 
         return state;
     }
@@ -151,11 +146,11 @@ public class DeputiesPresenter implements MvpPresenter {
     public void restoreState(Bundle outState){
 
         if (outState != null){
-            mSort = outState.getInt(KEY_CURRENT_SORT_VALUE);
-            mSortDirection = outState.getString(KEY_CURRENT_SORT_DIRECTIONVALUE);
-            mFilterDeputy = outState.getInt(KEY_CURRENT_FILTERDEPUTY_VALUE);
-            mFilterWorking = outState.getInt(KEY_CURRENT_FILTERWORKING_VALUE);
-            mSearchText = outState.getString(KEY_CURRENT_SEARCHTEXT_VALUE);
+            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
+            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
+            mFilterDeputy = outState.getInt(KeysBundleHolder.KEY_CURRENT_FILTERDEPUTY_VALUE);
+            mFilterWorking = outState.getInt(KeysBundleHolder.KEY_CURRENT_FILTERWORKING_VALUE);
+            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
         }
     }
 
