@@ -11,10 +11,10 @@
 - Data
 
 Data package содержит классы для работы c базой данных и internet.
-- для работы с БД используется самописный класс data\db\DatabaseHelper;
+- для работы с БД используется класс data\db\DatabaseHelper;
 - Для работы с сетью используется библиотека Retrofit2.
 
-В этом же пакете лежат интерфейсы/классы repositories. Количество классов/интерфейсов соответствует количеству активити/фрагментов.
+В этом же пакете лежат интерфейсы/классы repositories.
 
 Пример:
 ```java
@@ -69,7 +69,7 @@ public class LawsRepositoryImpl implements LawsRepository{
 }
 ```
 
-Domain package содержит интерфейсы/классы интеракторов, которые содержат бизнес логику и взаимодействуют с классами репозитариев и презентерами.
+Domain package содержит интерфейсы/классы интеракторов, которые содержат бизнес логику и взаимодействуют с классами репозитариев и презентеров.
 
 Пример:
 ```java
@@ -155,9 +155,10 @@ public class LawsInteractorImpl implements LawsInteractor {
 ```
 Presentation package, с ним, как сейчас любят говорить, не все так однозначно, потому что в проекте используются фрагменты.
 
-Данный пакет содержит классы активити, фрагментов, и, презенторов, которые дергают соответствующщие интеракторы получают от них callback и командуют вью (активити или фрагмету), что делать.
+Данный пакет содержит классы активити, фрагментов, и, презенторов, которые дергают соответствующщие интеракторы получают от них callback и командуют вью (активити или фрагменту), что же делать.
 
-Пример простого интерактора (в реальности в БД для новостей пара десятков строк данных, поэтому я и не заморачивался на callbackи/ потоки для этого случая, внимательные наверное уже заметили в коде остальных интеракторов вот такой интерфейс ExecutorService, как раз для запуска потоков):
+Пример простого интерактора (в реальности в БД для новостей пара десятков строк данных, поэтому я и не заморачивался на callback/потоки для этого случая, внимательные наверное уже заметили в коде остальных интеракторов вот такой интерфейс ExecutorService, как раз для запуска потоков):
+
 ```java
 public class NewsPresenter implements MvpPresenter {
 
@@ -211,6 +212,42 @@ public class NewsPresenter implements MvpPresenter {
 
 ```
 
+А вот остальные презентеры имеют чуть больше строк кода, поэтому выложу только часть кода одного из презентеров:
+```java
+    @Override
+    public void onStart(MvpView view) {
+        this.view = (LawsView)view;
+    }
+
+    @Override
+    public void onStop() {
+        view = null;
+    }
+
+    private void loadIfSearchTextExists(){
+        view.showProgress();
+        inter.loadLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection, new LawsInteractor.LawsCallback() {
+            @Override
+            public void success(List<Law> items) {
+                view.hideProgress();
+                if (items.size() > 0) {
+                    view.showData(items);
+                } else {
+                    view.showDataEmptyMessage();
+                }
+            }
+
+            @Override
+            public void failure(Exception e) {
+                view.hideProgress();
+                view.showDataEmptyMessage();
+                //view.showMessage();
+            }
+        });
+    }
+```
+
+Что касается взаимодействия активити, которая имеет свои фрагменты и презентеры фрагментов, то я пошел таким путем: если активити что-то надо, к примеру отреагировать на действия пользователя, она говорит фрагменту, а тот уже, говорит своему презентеру, что же именно надо.
 
 
 
