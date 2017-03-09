@@ -10,12 +10,13 @@ import dagger.Module;
 import dagger.Provides;
 import ru.merkulyevsasha.gosduma.domain.DeputiesInteractor;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractor;
+import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
 import ru.merkulyevsasha.gosduma.domain.ListDataInteractor;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
-import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesPresenter;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestsPresenter;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsPresenter;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsPresenter;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataPresenter;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsPresenter;
@@ -52,5 +53,12 @@ public class PresentersModule {
     DeputyRequestsPresenter providesDeputyRequestsPresenter(DeputyRequestsInteractor inter) {
         return new DeputyRequestsPresenter(inter);
     }
+
+    @Singleton
+    @Provides
+    LawDetailsPresenter providesLawDetailsPresenter(LawDetailsInteractor inter) {
+        return new LawDetailsPresenter(inter);
+    }
+
 
 }

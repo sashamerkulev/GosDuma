@@ -27,8 +27,8 @@ import ru.merkulyevsasha.gosduma.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
-import ru.merkulyevsasha.gosduma.presentation.lawdetails.BaseLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
 
@@ -255,7 +255,7 @@ public class DeputyDetailsActivity extends BaseActivity
     @Override
     public void onLawClick(Law law) {
         Intent activityIntent = new Intent(this, DeputyLawDetailsActivity.class);
-        activityIntent.putExtra(BaseLawDetailsActivity.KEY_LAW, law);
+        activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
         startActivity(activityIntent);
     }
 

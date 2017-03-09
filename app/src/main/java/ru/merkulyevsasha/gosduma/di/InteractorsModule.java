@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
 import ru.merkulyevsasha.gosduma.data.DeputyRequestsRepository;
+import ru.merkulyevsasha.gosduma.data.LawDetailsRepository;
 import ru.merkulyevsasha.gosduma.data.LawsRepository;
 import ru.merkulyevsasha.gosduma.data.ListDataRepository;
 import ru.merkulyevsasha.gosduma.data.NewsRepository;
@@ -16,6 +17,8 @@ import ru.merkulyevsasha.gosduma.domain.DeputiesInteractor;
 import ru.merkulyevsasha.gosduma.domain.DeputiesInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractor;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractorImpl;
+import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
+import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.ListDataInteractor;
@@ -55,5 +58,12 @@ public class InteractorsModule {
     DeputyRequestsInteractor providesDeputyRequestsInteractor(ExecutorService serv, DeputyRequestsRepository repo) {
         return new DeputyRequestsInteractorImpl(serv, repo);
     }
+
+    @Singleton
+    @Provides
+    LawDetailsInteractor providesLawDetailsInteractor(ExecutorService serv, LawDetailsRepository repo) {
+        return new LawDetailsInteractorImpl(serv, repo);
+    }
+
 
 }

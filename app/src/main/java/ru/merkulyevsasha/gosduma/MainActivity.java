@@ -45,7 +45,6 @@ import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 
 import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_DEPUTY;
 import static ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;
-import static ru.merkulyevsasha.gosduma.presentation.lawdetails.BaseLawDetailsActivity.KEY_LAW;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             outState.putParcelable(KEY_DEPUTY, mDeputy);
         }
         if (mLaw != null) {
-            outState.putParcelable(KEY_LAW, mLaw);
+            outState.putParcelable(LawDetailsActivity.KEY_LAW, mLaw);
         }
         if (mDeputyRequest != null) {
             outState.putParcelable(KEY_DEPUTYREQUEST, mDeputyRequest);
@@ -148,8 +147,8 @@ public class MainActivity extends AppCompatActivity
                 mSearchText = savedInstanceState.getString(KEY_SEARCHTEXT);
             }
 
-            if (savedInstanceState.containsKey(KEY_LAW) && mItemId == R.id.nav_laws) {
-                mLaw = savedInstanceState.getParcelable(KEY_LAW);
+            if (savedInstanceState.containsKey(LawDetailsActivity.KEY_LAW) && mItemId == R.id.nav_laws) {
+                mLaw = savedInstanceState.getParcelable(LawDetailsActivity.KEY_LAW);
                 showLawDetails(mLaw);
             }
             if (savedInstanceState.containsKey(KEY_DEPUTY) && mItemId == R.id.nav_deputies) {
@@ -472,11 +471,11 @@ public class MainActivity extends AppCompatActivity
         } else {
             if (mDeputy == null) {
                 Intent activityIntent = new Intent(this, LawDetailsActivity.class);
-                activityIntent.putExtra(KEY_LAW, law);
+                activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
                 startActivity(activityIntent);
             } else {
                 Intent activityIntent = new Intent(this, DeputyLawDetailsActivity.class);
-                activityIntent.putExtra(KEY_LAW, law);
+                activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
                 startActivity(activityIntent);
             }
         }

@@ -1,45 +1,47 @@
 package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 
+import java.util.HashMap;
 
-import android.app.Activity;
-
-import java.util.List;
-
-import ru.merkulyevsasha.gosduma.models.Codifier;
-import ru.merkulyevsasha.gosduma.presentation.laws.BaseLawsPresenter;
+import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
+import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
+import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-class LawDetailsPresenter extends BaseLawsPresenter {
+public class LawDetailsPresenter implements MvpPresenter {
 
-    public LawDetailsPresenter(Activity context) {
-        super(context);
+    private LawDetailsView view;
+    private LawDetailsInteractor inter;
+
+    public LawDetailsPresenter(LawDetailsInteractor inter) {
+        this.inter = inter;
     }
 
-    public Codifier getPhaseById(int id) {
-        return mDatabase.getPhaseById(id);
+    @Override
+    public void onStart(MvpView view) {
+        this.view = (LawDetailsView)view;
     }
 
-    public Codifier getStageById(int id) {
-        return mDatabase.getStageById(id);
+    @Override
+    public void onStop() {
+        view = null;
     }
 
-    public List<Codifier> getProfileComittees(int id) {
-        return mDatabase.getProfileComittees(id);
+    public void load(Law law){
+        view.showProgress();
+        inter.loadLawDetails(law, new LawDetailsInteractor.LawDetailsCallback() {
+            @Override
+            public void success(HashMap<String, String> result) {
+                view.hideProgress();
+                view.showData(result);
+            }
+
+            @Override
+            public void failure(Exception e) {
+                view.hideProgress();
+                view.showEmptyData();
+            }
+        });
     }
 
-    public List<Codifier> getCoexecutorCommittees(int id) {
-        return mDatabase.getCoexecutorCommittees(id);
-    }
-
-    public List<Codifier> getLawDeputies(int id) {
-        return mDatabase.getLawDeputies(id);
-    }
-
-    public List<Codifier> getLawRegionals(int id) {
-        return mDatabase.getLawRegionals(id);
-    }
-
-    public List<Codifier> getLawFederals(int id) {
-        return mDatabase.getLawFederals(id);
-    }
 }

@@ -8,6 +8,8 @@ import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.DeputyRequestsRepository;
 import ru.merkulyevsasha.gosduma.data.DeputyRequestsRepositoryImpl;
+import ru.merkulyevsasha.gosduma.data.LawDetailsRepository;
+import ru.merkulyevsasha.gosduma.data.LawDetailsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.LawsRepository;
 import ru.merkulyevsasha.gosduma.data.LawsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.ListDataRepository;
@@ -49,6 +51,12 @@ public class RepositoriesModule {
     @Provides
     DeputyRequestsRepository providesDeputyRequestsRepository(DatabaseHelper db) {
         return new DeputyRequestsRepositoryImpl(db);
+    }
+
+    @Singleton
+    @Provides
+    LawDetailsRepository providesLawDetailsRepository(DatabaseHelper db) {
+        return new LawDetailsRepositoryImpl(db);
     }
 
 }

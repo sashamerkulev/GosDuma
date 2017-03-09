@@ -7,6 +7,9 @@ import javax.inject.Singleton;
 import dagger.Component;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesFragment;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequests.DeputyRequestsFragment;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.presentation.BasePresenter;
@@ -22,6 +25,11 @@ public interface DbComponent {
     void inject(LawsFragment context);
     void inject(DeputiesFragment context);
     void inject(DeputyRequestsFragment context);
+
+    void inject(LawDetailsFragment context);
+    void inject(LawDetailsActivity context);
+    void inject(DeputyLawDetailsActivity context);
+
 
     void inject(BasePresenter presenter);
 
