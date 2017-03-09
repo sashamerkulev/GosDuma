@@ -7,14 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.DialogHelper;
+import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractor;
-import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 
 
 public class DeputyRequestsPresenter implements MvpPresenter {

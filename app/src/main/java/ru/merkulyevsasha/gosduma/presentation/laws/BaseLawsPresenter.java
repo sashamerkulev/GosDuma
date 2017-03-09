@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.DialogHelper;
+import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.presentation.BasePresenter;
 import ru.merkulyevsasha.gosduma.presentation.PresenterInterface;

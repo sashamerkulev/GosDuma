@@ -1,5 +1,7 @@
 package ru.merkulyevsasha.gosduma.ui;
 
+import android.content.res.Configuration;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +24,17 @@ public class UiUtils {
             textView.setText(text);
         }
     }
+
+    public static boolean isLarge(AppCompatActivity activity) {
+        return (activity.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    public static boolean isLargeLandscape(AppCompatActivity activity){
+        return activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && isLarge(activity);
+    }
+
 
 
 }

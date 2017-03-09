@@ -20,6 +20,7 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Law;
 
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractorImpl;
+import ru.merkulyevsasha.gosduma.ui.UiUtils;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
@@ -129,7 +130,7 @@ public class LawDetailsActivity extends BaseActivity implements LawDetailsView{
 
         initSupportActionBarWithBackButton(R.id.lawdetails_toolbar);
 
-        if (isLargeLandscape()) {
+        if (UiUtils.isLargeLandscape(this)) {
             finish();
             return;
         }

@@ -42,6 +42,7 @@ import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
+import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 
 import static ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity.KEY_DEPUTY;
 import static ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsActivity.KEY_DEPUTYREQUEST;

@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma;
+package ru.merkulyevsasha.gosduma.ui;
 
 
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesPresenter;
 
 public class DialogHelper {

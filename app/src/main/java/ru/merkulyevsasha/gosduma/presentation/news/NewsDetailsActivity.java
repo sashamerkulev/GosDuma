@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
+import ru.merkulyevsasha.gosduma.ui.UiUtils;
 
 import static ru.merkulyevsasha.gosduma.MainActivity.KEY_NAME;
 import static ru.merkulyevsasha.gosduma.presentation.news.NewsActivity.KEY_DESCRIPTION;
@@ -17,7 +18,7 @@ public class NewsDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isLargeLandscape()) {
+        if (UiUtils.isLargeLandscape(this)) {
             finish();
             return;
         }

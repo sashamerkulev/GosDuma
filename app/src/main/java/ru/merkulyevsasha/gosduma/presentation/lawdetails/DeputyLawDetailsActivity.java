@@ -127,11 +127,6 @@ public class DeputyLawDetailsActivity extends BaseActivity implements LawDetails
 
         initSupportActionBarWithBackButton(R.id.lawdetails_toolbar);
 
-        if (isLargeLandscape()) {
-            finish();
-            return;
-        }
-
         setTitle(R.string.menu_laws);
 
         GosDumaApp.getComponent().inject(this);

@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.BaseActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
+import ru.merkulyevsasha.gosduma.ui.UiUtils;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
 
@@ -72,7 +73,7 @@ public class DeputyRequestDetailsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isLargeLandscape()) {
+        if (UiUtils.isLargeLandscape(this)) {
             finish();
             return;
         }

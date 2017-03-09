@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.BaseActivity;
-import ru.merkulyevsasha.gosduma.DialogHelper;
+import ru.merkulyevsasha.gosduma.ui.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
@@ -31,6 +31,7 @@ import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
+import ru.merkulyevsasha.gosduma.ui.UiUtils;
 
 import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrGone;
 
@@ -107,7 +108,7 @@ public class DeputyDetailsActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (isLargeLandscape()) {
+        if (UiUtils.isLargeLandscape(this)) {
             finish();
             return;
         }
