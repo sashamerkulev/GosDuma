@@ -153,6 +153,64 @@ public class LawsInteractorImpl implements LawsInteractor {
     }
 }
 ```
+Presentation package, с ним, как сейчас любят говорить, не все так однозначно, потому что в проекте используются фрагменты.
+
+Данный пакет содержит классы активити, фрагментов, и, презенторов, которые дергают соответствующщие интеракторы получают от них callback и командуют вью (активити или фрагмету), что делать.
+
+Пример простого интерактора (в реальности в БД для новостей пара десятков строк данных, поэтому я и не заморачивался на callbackи/ потоки для этого случая, внимательные наверное уже заметили в коде остальных интеракторов вот такой интерфейс ExecutorService, как раз для запуска потоков):
+```java
+public class NewsPresenter implements MvpPresenter {
+
+    private NewsView view;
+
+    private NewsInteractor inter;
+
+    public NewsPresenter(NewsInteractor inter){
+        this.inter = inter;
+    }
+
+    @Override
+    public void onStart(MvpView view) {
+        this.view = (NewsView)view;
+    }
+
+    @Override
+    public void onStop() {
+        view = null;
+    }
+
+    public void refresh(int id){
+        view.showProgress();
+        inter.loadNews(id, new NewsInteractor.NewsCallback() {
+            @Override
+            public void success(List<Article> articles) {
+                view.hideProgress();
+                view.showNews(articles);
+            }
+
+            @Override
+            public void failure(Exception e) {
+                FirebaseCrash.report(e);
+                view.hideProgress();
+                view.showMessage(R.string.error_loading_news_message);
+            }
+        });
+    }
+
+    public void load(int id){
+        List<Article> articles = inter.getArticles(id);
+        if (articles.size() > 0){
+            view.showNews(articles);
+        } else {
+            refresh(id);
+        }
+
+    }
+
+}
+
+```
+
 
 
 
