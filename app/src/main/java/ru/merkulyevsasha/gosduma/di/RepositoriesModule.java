@@ -20,7 +20,6 @@ import ru.merkulyevsasha.gosduma.data.NewsRepository;
 import ru.merkulyevsasha.gosduma.data.NewsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.data.http.RssService;
-import ru.merkulyevsasha.gosduma.models.Deputy;
 
 
 @Module

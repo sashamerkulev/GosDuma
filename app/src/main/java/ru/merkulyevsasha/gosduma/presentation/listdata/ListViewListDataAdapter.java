@@ -17,7 +17,6 @@ import ru.merkulyevsasha.gosduma.models.ListData;
 
 class ListViewListDataAdapter extends ArrayAdapter<ListData> {
 
-    private final Context mContext;
     private final List<ListData> mItems;
     private final LayoutInflater mInflater;
 
@@ -25,8 +24,7 @@ class ListViewListDataAdapter extends ArrayAdapter<ListData> {
         super(context, R.layout.listview_newsitem, items);
 
         mItems = items;
-        mContext = context;
-        mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
