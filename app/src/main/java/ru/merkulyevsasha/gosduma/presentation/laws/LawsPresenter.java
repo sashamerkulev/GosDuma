@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.ui.DialogHelper;
+import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
 import ru.merkulyevsasha.gosduma.models.Law;

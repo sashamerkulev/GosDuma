@@ -42,7 +42,7 @@ import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
-import ru.merkulyevsasha.gosduma.ui.DialogHelper;
+import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
 
 
 public class MainActivity extends AppCompatActivity

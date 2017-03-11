@@ -17,9 +17,9 @@ import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.ui.UiUtils;
+import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 
-import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
+import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayoutGone;
 
 
 @SuppressWarnings("WeakerAccess")

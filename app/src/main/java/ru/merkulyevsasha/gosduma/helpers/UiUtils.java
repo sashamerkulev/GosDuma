@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.ui;
+package ru.merkulyevsasha.gosduma.helpers;
 
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;

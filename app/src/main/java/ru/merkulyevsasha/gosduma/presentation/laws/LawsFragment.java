@@ -10,13 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
+import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.MvpFragment;
@@ -31,6 +36,9 @@ public class LawsFragment extends Fragment implements LawsView, MvpFragment {
     private LawsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mPosition = -1;
+
+    private AdRequest adRequest;
+    private AdView mAdView;
 
     @Inject
     LawsPresenter mPresenter;
@@ -77,6 +85,10 @@ public class LawsFragment extends Fragment implements LawsView, MvpFragment {
         mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), ((LawsView.OnLawClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = AdRequestHelper.getAdRequest();
+        mAdView.loadAd(adRequest);
+
         return rootView;
     }
 
@@ -95,6 +107,30 @@ public class LawsFragment extends Fragment implements LawsView, MvpFragment {
             mPresenter.onStart(this);
             mPresenter.load();
         }
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 
     @Override

@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.ui.DialogHelper;
+import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
@@ -38,9 +38,9 @@ import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
-import ru.merkulyevsasha.gosduma.ui.UiUtils;
+import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 
-import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrGone;
+import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrGone;
 
 @SuppressWarnings("WeakerAccess")
 public class DeputyDetailsActivity extends AppCompatActivity

@@ -23,9 +23,9 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Law;
 
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractorImpl;
-import ru.merkulyevsasha.gosduma.ui.UiUtils;
+import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 
-import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
+import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayoutGone;
 
 
 public class LawDetailsActivity extends AppCompatActivity implements LawDetailsView{

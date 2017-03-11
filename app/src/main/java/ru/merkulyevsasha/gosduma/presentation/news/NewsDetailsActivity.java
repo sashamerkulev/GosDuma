@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.ui.UiUtils;
+import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 
 
 public class NewsDetailsActivity extends AppCompatActivity {

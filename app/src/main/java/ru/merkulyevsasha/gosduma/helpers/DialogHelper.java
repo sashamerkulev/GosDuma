@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gosduma.ui;
+package ru.merkulyevsasha.gosduma.helpers;
 
 
 import android.app.Activity;

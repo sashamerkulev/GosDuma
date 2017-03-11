@@ -20,7 +20,7 @@ import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 import static ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity.KEY_LAW;
-import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
+import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayoutGone;
 
 
 public class LawDetailsFragment extends Fragment implements LawDetailsView{

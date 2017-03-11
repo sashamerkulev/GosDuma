@@ -14,7 +14,7 @@ import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
-import ru.merkulyevsasha.gosduma.ui.DialogHelper;
+import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
 
 
 public class DeputyDetailsPresenter implements MvpPresenter {

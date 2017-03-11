@@ -21,6 +21,7 @@ import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
+import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.ListData;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
@@ -71,9 +72,7 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         mListView.setAdapter(mAdapter);
 
         mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = BuildConfig.DEBUG_MODE
-                ? new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build()
-                : new AdRequest.Builder().build();
+        AdRequest adRequest = AdRequestHelper.getAdRequest();
         mAdView.loadAd(adRequest);
 
     }

@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
+import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
@@ -94,9 +95,7 @@ public class NewsActivity extends AppCompatActivity
         mListView.setOnItemClickListener(this);
 
         mAdView = (AdView) findViewById(R.id.adView);
-        adRequest = BuildConfig.DEBUG_MODE
-                ? new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build()
-                : new AdRequest.Builder().build();
+        AdRequest adRequest = AdRequestHelper.getAdRequest();
         mAdView.loadAd(adRequest);
 
         // Create the InterstitialAd and set the adUnitId.

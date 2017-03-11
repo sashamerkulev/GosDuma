@@ -24,7 +24,7 @@ import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractorImpl;
 import ru.merkulyevsasha.gosduma.models.Law;
 
 import static ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity.KEY_LAW;
-import static ru.merkulyevsasha.gosduma.ui.UiUtils.setTextToTextViewOrLayoutGone;
+import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayoutGone;
 
 public class DeputyLawDetailsActivity extends AppCompatActivity implements LawDetailsView  {
 
