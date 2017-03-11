@@ -326,11 +326,11 @@ public class DeputyDetailsActivity extends AppCompatActivity
             int sortDialogType = mPresenter.getSortDialogType();
             if (sortDialogType == DialogHelper.IDD_LAWS_SORT) {
                 DialogHelper.getLawSortDialog(this,
-                        mPresenter.getCurrentSortIndexValue().get(0),
-                        new DialogHelper.DialogClickListener() {
+                        mPresenter.getCurrentSortIndexValue(),
+                        new DialogHelper.DialogItemClickListener() {
                             @Override
-                            public void onClick(List<Integer> selectItemsIndex) {
-                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemsIndex);
+                            public void onClick(int selectItemIndex) {
+                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemIndex);
                             }
                         }
                 ).show();

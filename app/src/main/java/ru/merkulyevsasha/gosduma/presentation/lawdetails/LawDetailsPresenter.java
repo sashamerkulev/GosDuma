@@ -1,5 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.HashMap;
 
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
@@ -32,12 +34,20 @@ public class LawDetailsPresenter implements MvpPresenter {
         inter.loadLawDetails(law, new LawDetailsInteractor.LawDetailsCallback() {
             @Override
             public void success(HashMap<String, String> result) {
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 view.showData(result);
             }
 
             @Override
             public void failure(Exception e) {
+                FirebaseCrash.report(e);
+
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 view.showEmptyData();
             }

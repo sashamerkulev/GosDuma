@@ -132,7 +132,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     }
 
     @Override
-    public List<Integer> getCurrentSortIndexValue() {
+    public int getCurrentSortIndexValue() {
         return mPresenter.getCurrentSortIndexValue();
     }
 
@@ -162,7 +162,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     }
 
     @Override
-    public void sort(List<Integer> oldSort, List<Integer> sort) {
+    public void sort(int oldSort, int sort) {
         mPresenter.sort(oldSort, sort);
     }
 

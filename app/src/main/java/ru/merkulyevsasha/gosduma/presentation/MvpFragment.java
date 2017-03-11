@@ -8,7 +8,7 @@ import java.util.List;
 public interface MvpFragment {
 
     int getSortDialogType();
-    List<Integer> getCurrentSortIndexValue();
+    int getCurrentSortIndexValue();
     boolean isSortMenuVisible();
 
     int getFilterDialogType();
@@ -16,7 +16,7 @@ public interface MvpFragment {
     boolean isFilterMenuVisible();
 
     void search(String searchText);
-    void sort(List<Integer> oldSort, List<Integer> sort);
+    void sort(int oldSort, int sort);
     void filter(List<Integer> filter);
 
     Bundle getState();

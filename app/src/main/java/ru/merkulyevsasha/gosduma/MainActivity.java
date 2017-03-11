@@ -376,11 +376,11 @@ public class MainActivity extends AppCompatActivity
             int sortDialogType = mFragment.getSortDialogType();
             if (sortDialogType == DialogHelper.IDD_DEPUTY_SORT) {
                 DialogHelper.getDeputySortDialog(this,
-                        mFragment.getCurrentSortIndexValue().get(0),
-                        new DialogHelper.DialogClickListener() {
+                        mFragment.getCurrentSortIndexValue(),
+                        new DialogHelper.DialogItemClickListener() {
                             @Override
-                            public void onClick(List<Integer> selectItemsIndex) {
-                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemsIndex);
+                            public void onClick(int selectItemIndex) {
+                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemIndex);
                             }
                         }
                 ).show();
@@ -388,11 +388,11 @@ public class MainActivity extends AppCompatActivity
 
             if (sortDialogType == DialogHelper.IDD_LAWS_SORT) {
                 DialogHelper.getLawSortDialog(this,
-                        mFragment.getCurrentSortIndexValue().get(0),
-                        new DialogHelper.DialogClickListener() {
+                        mFragment.getCurrentSortIndexValue(),
+                        new DialogHelper.DialogItemClickListener() {
                             @Override
-                            public void onClick(List<Integer> selectItemsIndex) {
-                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemsIndex);
+                            public void onClick(int selectItemIndex) {
+                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemIndex);
                             }
                         }
                 ).show();
@@ -400,11 +400,11 @@ public class MainActivity extends AppCompatActivity
 
             if (sortDialogType == DialogHelper.IDD_DEPUTY_REQUEST_SORT) {
                 DialogHelper.getDeputyRequestsSortDialog(this,
-                        mFragment.getCurrentSortIndexValue().get(0),
-                        new DialogHelper.DialogClickListener() {
+                        mFragment.getCurrentSortIndexValue(),
+                        new DialogHelper.DialogItemClickListener() {
                             @Override
-                            public void onClick(List<Integer> selectItemsIndex) {
-                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemsIndex);
+                            public void onClick(int selectItemIndex) {
+                                mFragment.sort(mFragment.getCurrentSortIndexValue(), selectItemIndex);
                             }
                         }
                 ).show();
@@ -420,7 +420,7 @@ public class MainActivity extends AppCompatActivity
             if (filterDialogType == DialogHelper.IDD_DEPUTY_FILTER){
                 DialogHelper.getDeputyFilterDialog(this,
                         mFragment.getCurrentFilterIndexValue(),
-                        new DialogHelper.DialogClickListener() {
+                        new DialogHelper.DialogItemsClickListener() {
                             @Override
                             public void onClick(List<Integer> selectItemsIndex) {
                                 mFragment.filter(selectItemsIndex);

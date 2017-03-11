@@ -3,7 +3,8 @@ package ru.merkulyevsasha.gosduma.presentation.deputyrequests;
 
 import android.os.Bundle;
 
-import java.util.ArrayList;
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,10 +51,8 @@ public class DeputyRequestsPresenter implements MvpPresenter {
         return DialogHelper.IDD_DEPUTY_REQUEST_SORT;
     }
 
-    public List<Integer> getCurrentSortIndexValue(){
-        List<Integer> result = new ArrayList<>();
-        result.add(mSort);
-        return result;
+    public int getCurrentSortIndexValue(){
+        return mSort;
     }
 
     public boolean isSortMenuVisible() {
@@ -77,9 +76,9 @@ public class DeputyRequestsPresenter implements MvpPresenter {
         load();
     }
 
-    public void sort(List<Integer> oldSort, List<Integer> sort) {
-        mSort = sort.get(0);
-        mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
+    public void sort(int oldSort, int sort) {
+        mSort = sort;
+        mSortDirection = DatabaseHelper.getSortDirection(oldSort, mSort, mSortDirection);
         load();
     }
 
@@ -91,6 +90,9 @@ public class DeputyRequestsPresenter implements MvpPresenter {
         inter.loadDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection, new DeputyRequestsInteractor.DeputyRequestsCallback() {
             @Override
             public void success(List<DeputyRequest> items) {
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 if (items.size() > 0) {
                     view.showData(items);
@@ -101,6 +103,11 @@ public class DeputyRequestsPresenter implements MvpPresenter {
 
             @Override
             public void failure(Exception e) {
+                FirebaseCrash.report(e);
+
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 view.showDataEmptyMessage();
                 //view.showMessage();

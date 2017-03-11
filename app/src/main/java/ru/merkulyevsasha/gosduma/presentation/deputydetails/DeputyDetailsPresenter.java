@@ -3,7 +3,8 @@ package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 import android.os.Bundle;
 
-import java.util.ArrayList;
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,9 +54,9 @@ public class DeputyDetailsPresenter implements MvpPresenter {
         load(mDeputyId);
     }
 
-    public void sort(List<Integer> oldSort, List<Integer> sort) {
-        mSort = sort.get(0);
-        mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
+    public void sort(int oldSort, int sort) {
+        mSort = sort;
+        mSortDirection = DatabaseHelper.getSortDirection(oldSort, mSort, mSortDirection);
         load(mDeputyId);
     }
 
@@ -65,6 +66,9 @@ public class DeputyDetailsPresenter implements MvpPresenter {
         inter.loadDeputyLaws(deputyId, mSearchText, mSortColumn.get(mSort) + mSortDirection, new DeputyDetailsInteractor.DeputyDetailsCallback() {
             @Override
             public void success(List<Law> items) {
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 if (items.size() > 0) {
                     view.showData(items);
@@ -75,6 +79,11 @@ public class DeputyDetailsPresenter implements MvpPresenter {
 
             @Override
             public void failure(Exception e) {
+                FirebaseCrash.report(e);
+
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 view.showDataEmptyMessage();
                 //view.showMessage();
@@ -116,11 +125,8 @@ public class DeputyDetailsPresenter implements MvpPresenter {
         return DialogHelper.IDD_LAWS_SORT;
     }
 
-    public List<Integer> getCurrentSortIndexValue() {
-
-        List<Integer> result = new ArrayList<>();
-        result.add(mSort);
-        return result;
+    public int getCurrentSortIndexValue() {
+        return mSort;
     }
 
 

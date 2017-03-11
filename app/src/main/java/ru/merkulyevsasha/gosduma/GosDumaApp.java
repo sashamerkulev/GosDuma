@@ -2,6 +2,8 @@ package ru.merkulyevsasha.gosduma;
 
 import android.app.Application;
 
+import com.google.android.gms.ads.MobileAds;
+
 import ru.merkulyevsasha.gosduma.di.AppModule;
 import ru.merkulyevsasha.gosduma.di.DaggerDbComponent;
 import ru.merkulyevsasha.gosduma.di.DbComponent;
@@ -25,6 +27,8 @@ public class GosDumaApp extends Application {
                 .interactorsModule(new InteractorsModule())
                 .presentersModule(new PresentersModule())
                 .build();
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, getString(R.string.app_unit_id));
     }
 
     public static DbComponent getComponent() {

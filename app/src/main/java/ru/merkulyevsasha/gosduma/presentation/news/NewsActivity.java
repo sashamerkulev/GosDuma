@@ -99,20 +99,17 @@ public class NewsActivity extends AppCompatActivity
                 : new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(this, getString(R.string.app_unit_id));
-
         // Create the InterstitialAd and set the adUnitId.
         mInterstitialAd = new InterstitialAd(this);
         // Defined in res/values/strings.xml
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
 
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                showDetailsOnPosition(mPosition);
-            }
-        });
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdClosed() {
+//                showDetailsOnPosition(mPosition);
+//            }
+//        });
     }
 
     @Override
@@ -173,7 +170,7 @@ public class NewsActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        mInterstitialAd.loadAd(adRequest);
+        //mInterstitialAd.loadAd(adRequest);
         if (presenter != null){
             presenter.onStart(this);
             presenter.load(mId);

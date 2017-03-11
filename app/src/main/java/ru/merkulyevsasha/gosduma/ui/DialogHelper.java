@@ -21,7 +21,7 @@ public class DialogHelper {
     public final static int IDD_LAWS_SORT = 3;
     public final static int IDD_DEPUTY_REQUEST_SORT = 4;
 
-    public static Dialog getDeputySortDialog(final Activity context, int currentItemIndex, final DialogClickListener listener){
+    public static Dialog getDeputySortDialog(final Activity context, int currentItemIndex, final DialogItemClickListener listener){
 
         final String[] sortItems = {
                 context.getString(R.string.item_sort_name),
@@ -38,10 +38,7 @@ public class DialogHelper {
 
                         dialog.dismiss();
 
-                        List<Integer> newSort = new ArrayList<>();
-                        newSort.add(item);
-
-                        listener.onClick(newSort);
+                        listener.onClick(item);
                     }
                 });
 
@@ -49,7 +46,7 @@ public class DialogHelper {
 
     }
 
-    public static Dialog getLawSortDialog(final Activity context, int currentItemIndex, final DialogClickListener listener){
+    public static Dialog getLawSortDialog(final Activity context, int currentItemIndex, final DialogItemClickListener listener){
 
         final String[] sortItems = {
                 context.getString(R.string.item_sort_lawname),
@@ -66,10 +63,7 @@ public class DialogHelper {
 
                         dialog.dismiss();
 
-                        List<Integer> newSort = new ArrayList<>();
-                        newSort.add(item);
-
-                        listener.onClick(newSort);
+                        listener.onClick(item);
                     }
                 });
 
@@ -77,7 +71,7 @@ public class DialogHelper {
 
     }
 
-    public static Dialog getDeputyRequestsSortDialog(final Activity context, int currentItemIndex, final DialogClickListener listener){
+    public static Dialog getDeputyRequestsSortDialog(final Activity context, int currentItemIndex, final DialogItemClickListener listener){
 
         final String[] sortItems = {
                 context.getString(R.string.item_sort_lawname),
@@ -94,10 +88,7 @@ public class DialogHelper {
 
                         dialog.dismiss();
 
-                        List<Integer> newSort = new ArrayList<>();
-                        newSort.add(item);
-
-                        listener.onClick(newSort);
+                        listener.onClick(item);
                     }
                 });
 
@@ -106,7 +97,7 @@ public class DialogHelper {
     }
 
 
-    public static Dialog getDeputyFilterDialog(final Activity context, List<Integer> filterSettings, final DialogClickListener listener) {
+    public static Dialog getDeputyFilterDialog(final Activity context, List<Integer> filterSettings, final DialogItemsClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.title_filter);
 
@@ -151,7 +142,11 @@ public class DialogHelper {
         return builder.create();
     }
 
-    public interface DialogClickListener{
+    public interface DialogItemClickListener{
+        void onClick(int selectItemsIndex);
+    }
+
+    public interface DialogItemsClickListener {
         void onClick(List<Integer> selectItemsIndex);
     }
 

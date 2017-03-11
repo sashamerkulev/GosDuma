@@ -4,6 +4,8 @@ package ru.merkulyevsasha.gosduma.presentation.deputies;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,10 +74,8 @@ public class DeputiesPresenter implements MvpPresenter {
         return DialogHelper.IDD_DEPUTY_FILTER;
     }
 
-    public List<Integer> getCurrentSortIndexValue(){
-        List<Integer> result = new ArrayList<>();
-        result.add(mSort);
-        return result;
+    public int getCurrentSortIndexValue(){
+        return mSort;
     }
 
     public boolean isSortMenuVisible() {
@@ -98,9 +98,9 @@ public class DeputiesPresenter implements MvpPresenter {
         load();
     }
 
-    public void sort(List<Integer> oldSort, List<Integer> sort){
-        mSort = sort.get(0);
-        mSortDirection = DatabaseHelper.getSortDirection(oldSort.get(0), mSort, mSortDirection);
+    public void sort(int oldSort, int sort){
+        mSort = sort;
+        mSortDirection = DatabaseHelper.getSortDirection(oldSort, mSort, mSortDirection);
         load();
     }
 
@@ -115,6 +115,9 @@ public class DeputiesPresenter implements MvpPresenter {
                 mFilterDeputyValues.get(mFilterDeputy), mFilterWorking, new DeputiesInteractor.DeputiesCallback() {
                     @Override
                     public void success(List<Deputy> items) {
+                        if (view == null)
+                            return;
+
                         view.hideProgress();
                         if (items.size() > 0) {
                             view.showData(items);
@@ -125,6 +128,11 @@ public class DeputiesPresenter implements MvpPresenter {
 
                     @Override
                     public void failure(Exception e) {
+                        FirebaseCrash.report(e);
+
+                        if (view == null)
+                            return;
+
                         view.hideProgress();
                         view.showDataEmptyMessage();
                     }

@@ -29,6 +29,8 @@ public class ListDataPresenter implements MvpPresenter {
 
     public void load(String tableName){
         List<ListData> items = inter.select(tableName);
-        view.showList(items);
+        if (view != null) {
+            view.showList(items);
+        }
     }
 }

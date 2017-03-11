@@ -36,6 +36,9 @@ public class NewsPresenter implements MvpPresenter {
         inter.loadNews(id, new NewsInteractor.NewsCallback() {
             @Override
             public void success(List<Article> articles) {
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 view.showNews(articles);
             }
@@ -43,6 +46,10 @@ public class NewsPresenter implements MvpPresenter {
             @Override
             public void failure(Exception e) {
                 FirebaseCrash.report(e);
+
+                if (view == null)
+                    return;
+
                 view.hideProgress();
                 view.showMessage(R.string.error_loading_news_message);
             }

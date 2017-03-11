@@ -152,7 +152,7 @@ public class LawsFragment extends Fragment implements LawsView, MvpFragment {
     }
 
     @Override
-    public List<Integer> getCurrentSortIndexValue() {
+    public int getCurrentSortIndexValue() {
         return mPresenter.getCurrentSortIndexValue();
     }
 
@@ -182,7 +182,7 @@ public class LawsFragment extends Fragment implements LawsView, MvpFragment {
     }
 
     @Override
-    public void sort(List<Integer> oldSort, List<Integer> sort) {
+    public void sort(int oldSort, int sort) {
         mPresenter.sort(oldSort, sort);
     }
 
