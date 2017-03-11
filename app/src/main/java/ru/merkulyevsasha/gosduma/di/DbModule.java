@@ -16,13 +16,13 @@ public class DbModule {
     @Singleton
     @Provides
     DatabaseHelper providesDatabaseHelper(Context context) {
-        return DatabaseHelper.getInstance(DatabaseHelper.getDbPath(context));
+        return new DatabaseHelper(DatabaseHelper.getDbPath(context));
     }
 
     @Singleton
     @Provides
     RssService providesRssService() {
-        return RssService.getInstance();
+        return new RssService();
     }
 
 

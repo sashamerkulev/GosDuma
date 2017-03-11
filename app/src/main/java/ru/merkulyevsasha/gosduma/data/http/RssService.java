@@ -9,7 +9,7 @@ public class RssService {
 
     private final RssInterface anInterface;
 
-    private RssService(){
+    public RssService(){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.duma.gov.ru/")
@@ -19,17 +19,17 @@ public class RssService {
     }
 
     // https://habrahabr.ru/post/27108/
-    private static volatile RssService mInstance;
-    public static RssService getInstance() {
-        if (mInstance == null) {
-            synchronized (RssService.class) {
-                if (mInstance == null) {
-                    mInstance = new RssService();
-                }
-            }
-        }
-        return mInstance;
-    }
+//    private static volatile RssService mInstance;
+//    public static RssService getInstance() {
+//        if (mInstance == null) {
+//            synchronized (RssService.class) {
+//                if (mInstance == null) {
+//                    mInstance = new RssService();
+//                }
+//            }
+//        }
+//        return mInstance;
+//    }
 
     public Call<ResponseBody> gosduma() {
         return anInterface.gosduma();

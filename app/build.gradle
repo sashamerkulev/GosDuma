@@ -35,11 +35,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
-
-
-
-
     compile project(path: ':apprate')
 
     compile 'com.android.support:appcompat-v7:25.2.0'

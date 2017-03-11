@@ -90,25 +90,25 @@ public class DatabaseHelper {
         return fileDb.getPath();
     }
 
-    // https://habrahabr.ru/post/27108/
-    private static volatile DatabaseHelper mInstance;
-
-    public static DatabaseHelper getInstance(final String databasePath) {
-        if (mInstance == null) {
-            synchronized (DatabaseHelper.class) {
-                if (mInstance == null) {
-                    mInstance = new DatabaseHelper(databasePath);
-                }
-            }
-        }
-        return mInstance;
-    }
+//    // https://habrahabr.ru/post/27108/
+//    private static volatile DatabaseHelper mInstance;
+//
+//    public static DatabaseHelper getInstance(final String databasePath) {
+//        if (mInstance == null) {
+//            synchronized (DatabaseHelper.class) {
+//                if (mInstance == null) {
+//                    mInstance = new DatabaseHelper(databasePath);
+//                }
+//            }
+//        }
+//        return mInstance;
+//    }
 
     private SQLiteDatabase openOrCreateDatabase() {
         return SQLiteDatabase.openOrCreateDatabase(mDbPath, null);
     }
 
-    private DatabaseHelper(final String dbPath) {
+    public DatabaseHelper(final String dbPath) {
         mDbPath = dbPath;
     }
 
