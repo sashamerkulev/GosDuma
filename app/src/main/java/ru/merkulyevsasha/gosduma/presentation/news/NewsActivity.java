@@ -18,14 +18,12 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
@@ -46,7 +44,7 @@ public class NewsActivity extends AppCompatActivity
     private int mPosition = -1;
 
     private AdRequest adRequest;
-    private InterstitialAd mInterstitialAd;
+    //private InterstitialAd mInterstitialAd;
     private AdView mAdView;
 
     @Inject
@@ -99,9 +97,9 @@ public class NewsActivity extends AppCompatActivity
         mAdView.loadAd(adRequest);
 
         // Create the InterstitialAd and set the adUnitId.
-        mInterstitialAd = new InterstitialAd(this);
+        //mInterstitialAd = new InterstitialAd(this);
         // Defined in res/values/strings.xml
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+        //mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
 
 //        mInterstitialAd.setAdListener(new AdListener() {
 //            @Override
@@ -144,19 +142,19 @@ public class NewsActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mPosition = i;
-        //showDetailsOnPosition(i);
-        showInterstitial();
+        showDetailsOnPosition(i);
+        //showInterstitial();
     }
 
-    private void showInterstitial() {
-        // Show the ad if it's ready. Otherwise toast and restart the game.
-        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        } else {
-            //Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
-            showDetailsOnPosition(mPosition);
-        }
-    }
+//    private void showInterstitial() {
+//        // Show the ad if it's ready. Otherwise toast and restart the game.
+//        if (mInterstitialAd != null && mInterstitialAd.isLoaded() && mInterstitialAd.isLoading()) {
+//            mInterstitialAd.show();
+//        } else {
+//            //Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
+//            showDetailsOnPosition(mPosition);
+//        }
+//    }
 
     @Override
     protected void onStop() {
@@ -170,8 +168,10 @@ public class NewsActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         //mInterstitialAd.loadAd(adRequest);
-        if (presenter != null){
+
+        if (presenter != null) {
             presenter.onStart(this);
+            presenter.load(mId);
             presenter.load(mId);
         }
     }

@@ -15,6 +15,9 @@ import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
+import ru.merkulyevsasha.gosduma.presentation.services.NewsJobService;
+import ru.merkulyevsasha.gosduma.presentation.services.NewsRunnable;
+import ru.merkulyevsasha.gosduma.presentation.services.NewsService;
 
 @Singleton
 @Component(modules={AppModule.class, DbModule.class, RepositoriesModule.class, InteractorsModule.class, PresentersModule.class})
@@ -34,5 +37,8 @@ public interface DbComponent {
     void inject(DeputyDetailsActivity context);
     void inject(DeputyDetailsFragment context);
 
+    void inject(NewsJobService context);
+    void inject(NewsService context);
+    void inject(NewsRunnable context);
 
 }

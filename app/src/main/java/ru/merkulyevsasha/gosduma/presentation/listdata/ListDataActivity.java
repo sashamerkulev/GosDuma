@@ -17,7 +17,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.merkulyevsasha.gosduma.BuildConfig;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;

@@ -43,6 +43,7 @@ import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsFragment;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
+import ru.merkulyevsasha.gosduma.presentation.services.ServicesHelper;
 
 
 public class MainActivity extends AppCompatActivity
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         AppRateRequester.Run(this, BuildConfig.APPLICATION_ID);
+        ServicesHelper.register(this);
     }
 
     @Override

@@ -14,7 +14,7 @@ import ru.merkulyevsasha.gosduma.models.Article;
 
 public class NewsInteractorImpl implements NewsInteractor {
 
-    private NewsRepository repo;
+    protected NewsRepository repo;
 
     public NewsInteractorImpl(NewsRepository repo){
         this.repo = repo;
@@ -25,15 +25,20 @@ public class NewsInteractorImpl implements NewsInteractor {
         return repo.getArticles(id);
     }
 
-    @Override
-    public void loadNews(final int id, final NewsCallback callback) {
+    protected Call<ResponseBody> getCallResponseBody(int key){
         Call<ResponseBody> resp = null;
-
-        if (id == R.id.nav_news_gd){
+        if (key == R.id.nav_news_gd){
             resp = repo.gosduma();
-        } else if (id == R.id.nav_news_preds){
+        } else if (key == R.id.nav_news_preds){
             resp = repo.chairman();
         }
+        return resp;
+    }
+
+    @Override
+    public void loadNews(final int id, final NewsCallback callback) {
+
+        Call<ResponseBody> resp = getCallResponseBody(id);
 
         if (resp != null){
             resp.enqueue(new Callback<ResponseBody>() {

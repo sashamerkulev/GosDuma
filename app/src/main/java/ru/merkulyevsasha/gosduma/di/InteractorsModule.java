@@ -28,6 +28,9 @@ import ru.merkulyevsasha.gosduma.domain.ListDataInteractor;
 import ru.merkulyevsasha.gosduma.domain.ListDataInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractorImpl;
+import ru.merkulyevsasha.gosduma.domain.NewsServiceInteractor;
+import ru.merkulyevsasha.gosduma.domain.NewsServiceInteractorImpl;
+import ru.merkulyevsasha.gosduma.presentation.services.NewsService;
 
 @Module
 public class InteractorsModule {
@@ -72,6 +75,12 @@ public class InteractorsModule {
     @Provides
     DeputyDetailsInteractor providesDeputyDetailsInteractor(ExecutorService serv, DeputyDetailsRepository repo) {
         return new DeputyDetailsInteractorImpl(serv, repo);
+    }
+
+    @Singleton
+    @Provides
+    NewsServiceInteractor providesNewsServiceInteractor(NewsRepository repo) {
+        return new NewsServiceInteractorImpl(repo);
     }
 
 }
