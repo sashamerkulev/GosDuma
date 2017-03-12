@@ -8,7 +8,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
-import ru.merkulyevsasha.gosduma.data.http.RssService;
+import ru.merkulyevsasha.gosduma.data.http.AktRssService;
+import ru.merkulyevsasha.gosduma.data.http.NewsRssService;
 
 @Module
 public class DbModule {
@@ -21,10 +22,15 @@ public class DbModule {
 
     @Singleton
     @Provides
-    RssService providesRssService() {
-        return new RssService();
+    NewsRssService providesRssService() {
+        return new NewsRssService();
     }
 
+    @Singleton
+    @Provides
+    AktRssService providesAktRssService() {
+        return new AktRssService();
+    }
 
 
 }

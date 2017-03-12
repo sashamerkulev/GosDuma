@@ -19,7 +19,8 @@ import ru.merkulyevsasha.gosduma.data.ListDataRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.NewsRepository;
 import ru.merkulyevsasha.gosduma.data.NewsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
-import ru.merkulyevsasha.gosduma.data.http.RssService;
+import ru.merkulyevsasha.gosduma.data.http.AktRssService;
+import ru.merkulyevsasha.gosduma.data.http.NewsRssService;
 
 
 @Module
@@ -27,8 +28,8 @@ public class RepositoriesModule {
 
     @Singleton
     @Provides
-    NewsRepository providesNewsRepository(DatabaseHelper db, RssService service) {
-        return new NewsRepositoryImpl(db, service);
+    NewsRepository providesNewsRepository(DatabaseHelper db, NewsRssService service, AktRssService akt) {
+        return new NewsRepositoryImpl(db, service, akt);
     }
 
     @Singleton

@@ -15,4 +15,10 @@ public interface NewsRepository {
     Call<ResponseBody> gosduma();
     Call<ResponseBody> chairman();
 
+    Call<ResponseBody> aktPresident();
+    Call<ResponseBody> aktGoverment();
+    Call<ResponseBody> aktSovetfed();
+    Call<ResponseBody> aktGosduma();
+
+
 }

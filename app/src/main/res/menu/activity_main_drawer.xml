@@ -26,6 +26,22 @@
                 android:id="@+id/nav_news_preds"
                 android:icon="@drawable/ic_rss_feed_black_18dp"
                 android:title="@string/menu_news_preds" />
+            <item
+                android:id="@+id/nav_akt_pres"
+                android:icon="@drawable/ic_rss_feed_black_18dp"
+                android:title="@string/menu_akt_pres" />
+            <item
+                android:id="@+id/nav_akt_gover"
+                android:icon="@drawable/ic_rss_feed_black_18dp"
+                android:title="@string/menu_akt_gover" />
+            <item
+                android:id="@+id/nav_akt_sf"
+                android:icon="@drawable/ic_rss_feed_black_18dp"
+                android:title="@string/menu_akt_sf" />
+            <item
+                android:id="@+id/nav_akt_gd"
+                android:icon="@drawable/ic_rss_feed_black_18dp"
+                android:title="@string/menu_akt_gd" />
         </menu>
     </item>
 

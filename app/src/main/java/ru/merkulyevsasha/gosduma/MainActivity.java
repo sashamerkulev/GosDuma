@@ -250,6 +250,14 @@ public class MainActivity extends AppCompatActivity
             startNewsActivity(R.id.nav_news_gd, item.getTitle().toString());
         } else if (mItemId == R.id.nav_news_preds) {
             startNewsActivity(R.id.nav_news_preds, item.getTitle().toString());
+        } else if (mItemId == R.id.nav_akt_pres) {
+            startNewsActivity(R.id.nav_akt_pres, item.getTitle().toString());
+        } else if (mItemId == R.id.nav_akt_gover) {
+            startNewsActivity(R.id.nav_akt_gover, item.getTitle().toString());
+        } else if (mItemId == R.id.nav_akt_sf) {
+            startNewsActivity(R.id.nav_akt_sf, item.getTitle().toString());
+        } else if (mItemId == R.id.nav_akt_gd) {
+            startNewsActivity(R.id.nav_akt_gd, item.getTitle().toString());
         }
 
         else if (mItemId == R.id.nav_comittee) {

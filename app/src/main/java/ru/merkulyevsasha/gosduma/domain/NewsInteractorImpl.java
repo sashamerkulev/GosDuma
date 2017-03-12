@@ -25,12 +25,20 @@ public class NewsInteractorImpl implements NewsInteractor {
         return repo.getArticles(id);
     }
 
-    protected Call<ResponseBody> getCallResponseBody(int key){
+    protected Call<ResponseBody> getCallResponseBody(int key) {
         Call<ResponseBody> resp = null;
-        if (key == R.id.nav_news_gd){
+        if (key == R.id.nav_news_gd) {
             resp = repo.gosduma();
-        } else if (key == R.id.nav_news_preds){
+        } else if (key == R.id.nav_news_preds) {
             resp = repo.chairman();
+        } else if (key == R.id.nav_akt_pres) {
+            resp = repo.aktPresident();
+        } else if (key == R.id.nav_akt_gover) {
+            resp = repo.aktGoverment();
+        } else if (key == R.id.nav_akt_sf) {
+            resp = repo.aktSovetfed();
+        } else if (key == R.id.nav_akt_gd) {
+            resp = repo.aktGosduma();
         }
         return resp;
     }

@@ -249,7 +249,6 @@ public class NewsActivity extends AppCompatActivity
     public void onBackPressed() {
 
         if (notificationStart){
-
             Intent intent =  new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();

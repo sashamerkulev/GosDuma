@@ -6,17 +6,20 @@ import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
-import ru.merkulyevsasha.gosduma.data.http.RssService;
+import ru.merkulyevsasha.gosduma.data.http.AktRssService;
+import ru.merkulyevsasha.gosduma.data.http.NewsRssService;
 import ru.merkulyevsasha.gosduma.models.Article;
 
 public class NewsRepositoryImpl implements NewsRepository {
 
     private DatabaseHelper db;
-    private RssService serv;
+    private NewsRssService serv;
+    private AktRssService akt;
 
-    public NewsRepositoryImpl(DatabaseHelper db, RssService service){
+    public NewsRepositoryImpl(DatabaseHelper db, NewsRssService service, AktRssService aktservice){
         this.db = db;
         this.serv = service;
+        this.akt = aktservice;
     }
 
     @Override
@@ -39,4 +42,28 @@ public class NewsRepositoryImpl implements NewsRepository {
     public Call<ResponseBody> chairman() {
         return serv.chairman();
     }
+
+
+    @Override
+    public Call<ResponseBody> aktPresident(){
+        return akt.aktPresident();
+    }
+
+    @Override
+    public Call<ResponseBody> aktGoverment(){
+        return akt.aktGoverment();
+    }
+
+    @Override
+    public Call<ResponseBody> aktSovetfed(){
+        return akt.aktSovetfed();
+    }
+
+    @Override
+    public Call<ResponseBody> aktGosduma(){
+        return akt.aktGosduma();
+    }
+
+
+
 }
