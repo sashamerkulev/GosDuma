@@ -25,6 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import ru.merkulyevsasha.gosduma.GosDumaApp;
+import ru.merkulyevsasha.gosduma.MainActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.Article;
@@ -42,6 +43,7 @@ public class NewsActivity extends AppCompatActivity
     private int mId = -1;
     private String mName = "";
     private int mPosition = -1;
+    private boolean notificationStart;
 
     private AdRequest adRequest;
     //private InterstitialAd mInterstitialAd;
@@ -74,6 +76,7 @@ public class NewsActivity extends AppCompatActivity
         Intent intent = getIntent();
         mId = intent.getIntExtra(KeysBundleHolder.KEY_ID, 0);
         mName = intent.getStringExtra(KeysBundleHolder.KEY_NAME);
+        notificationStart = intent.getBooleanExtra(KeysBundleHolder.KEY_NOTIFICATION, false);
         setTitle(mName);
 
         root = findViewById(R.id.root);
@@ -240,5 +243,18 @@ public class NewsActivity extends AppCompatActivity
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (notificationStart){
+
+            Intent intent =  new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

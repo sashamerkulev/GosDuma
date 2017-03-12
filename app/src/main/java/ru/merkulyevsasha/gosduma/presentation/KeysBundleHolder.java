@@ -26,4 +26,6 @@ public final class KeysBundleHolder {
     public final static String KEY_SEARCHTEXT = "SEARCHTEXT";
     public final static String KEY_ITEMID = "ITEMID";
 
+    public final static String KEY_NOTIFICATION = "notification";
+
 }

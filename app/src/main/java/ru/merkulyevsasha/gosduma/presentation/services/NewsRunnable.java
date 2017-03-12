@@ -33,9 +33,10 @@ public class NewsRunnable implements Runnable{
             return;
 
         List<News> news = inter.getNotificationNews();
+        System.out.println("NewsRunnable: "+ news.size());
         for(int i = 0; i < news.size(); i++) {
             News n = news.get(0);
-            ServicesHelper.setNotification(cont, n.getNavId(), n.getTitle(), n.getName());
+            ServicesHelper.setNotification(cont, n.getNavId(), cont.getString(n.getTitleId()), n.getName());
         }
     }
 }

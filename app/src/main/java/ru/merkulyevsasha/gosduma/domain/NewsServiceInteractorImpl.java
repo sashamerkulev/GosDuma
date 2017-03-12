@@ -2,6 +2,8 @@ package ru.merkulyevsasha.gosduma.domain;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +50,41 @@ public class NewsServiceInteractorImpl extends NewsInteractorImpl implements New
                 List<Article> netNews = parser.parseXml(body.string());
                 repo.saveToCache(entry.getKey(), netNews);
 
+                Collections.sort(dbNews, new Comparator<Article>() {
+                    @Override
+                    public int compare(Article o1, Article o2) {
+                        return o1.PubDate.compareTo(o2.PubDate);
+                    }
+                });
 
+                Collections.sort(netNews, new Comparator<Article>() {
+                    @Override
+                    public int compare(Article o1, Article o2) {
+                        return o1.PubDate.compareTo(o2.PubDate);
+                    }
+                });
+
+                Article lastNetItem = netNews.get(netNews.size() - 1);
+                if (dbNews.size() == 0){
+                    News news = new News();
+                    news.setNavId(entry.getKey());
+                    news.setTitleId(newsIds.get(entry.getKey()));
+                    news.setName(lastNetItem.Title);
+                    result.add(news);
+                } else {
+
+                    Article lastDbItem = dbNews.get(dbNews.size() - 1);
+
+                    if (lastDbItem.PubDate.before(lastNetItem.PubDate)) {
+                        News news = new News();
+                        news.setNavId(entry.getKey());
+                        news.setTitleId(newsIds.get(entry.getKey()));
+                        news.setName(lastNetItem.Title);
+                        result.add(news);
+                    }
+                }
             } catch(Exception e){
+                System.out.println("getNotificationNews: exception:"+e.getMessage());
                 e.printStackTrace();
             }
 

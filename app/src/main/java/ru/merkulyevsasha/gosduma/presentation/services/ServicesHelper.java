@@ -87,6 +87,7 @@ public class ServicesHelper {
         Intent resultIntent = new Intent(context, NewsActivity.class);
         resultIntent.putExtra(KeysBundleHolder.KEY_ID, id);
         resultIntent.putExtra(KeysBundleHolder.KEY_NAME, name);
+        resultIntent.putExtra(KeysBundleHolder.KEY_NOTIFICATION, true);
 
 // The stack builder object will contain an artificial back stack for the
 // started Activity.
@@ -101,7 +102,7 @@ public class ServicesHelper {
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(ServicesHelper.NOTIFICATION_ID, mBuilder.build());
+        mNotificationManager.notify(id, mBuilder.build());
     }
 
 
