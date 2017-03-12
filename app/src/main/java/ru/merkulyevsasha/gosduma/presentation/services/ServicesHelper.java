@@ -28,7 +28,7 @@ public class ServicesHelper {
 
     public static final String ALARM_ACTION_NAME = "ru.merkulyevsasha.easytodo.START_SERVICE";
 
-    private static final int ALARM_AFTER_MINUTES = 1;
+    private static final int ALARM_AFTER_MINUTES = 60;
     private static final int NOTIFICATION_ID = 989;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
