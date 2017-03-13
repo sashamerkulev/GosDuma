@@ -17,4 +17,8 @@ public interface NewsInteractor {
     List<Article> getArticles(int id);
     void loadNews(int id, NewsCallback callback);
 
+    boolean canShowInterstitialAd();
+    void resetCounter();
+    void incrementCounter();
+
 }

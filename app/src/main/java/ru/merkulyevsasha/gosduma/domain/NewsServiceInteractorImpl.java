@@ -22,12 +22,16 @@ public class NewsServiceInteractorImpl extends NewsInteractorImpl implements New
 
 
     public NewsServiceInteractorImpl(NewsRepository repo){
-        super(repo);
+        super(repo, null);
 
         newsIds = new HashMap<>();
 
         newsIds.put(R.id.nav_news_gd, R.string.menu_news_gd);
         newsIds.put(R.id.nav_news_preds, R.string.menu_news_preds);
+        newsIds.put(R.id.nav_akt_pres, R.string.menu_akt_pres);
+        newsIds.put(R.id.nav_akt_gover, R.string.menu_akt_gover);
+        newsIds.put(R.id.nav_akt_sf, R.string.menu_akt_sf);
+        newsIds.put(R.id.nav_akt_gd, R.string.menu_akt_gd);
 
     }
 

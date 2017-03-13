@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.merkulyevsasha.gosduma.data.ClickCounterRepository;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
 import ru.merkulyevsasha.gosduma.data.DeputyDetailsRepository;
 import ru.merkulyevsasha.gosduma.data.DeputyRequestsRepository;
@@ -37,8 +38,8 @@ public class InteractorsModule {
 
     @Singleton
     @Provides
-    NewsInteractor providesNewsRepository(NewsRepository repo) {
-        return new NewsInteractorImpl(repo);
+    NewsInteractor providesNewsRepository(NewsRepository repo, ClickCounterRepository clickRepo) {
+        return new NewsInteractorImpl(repo, clickRepo);
     }
 
     @Singleton

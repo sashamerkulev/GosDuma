@@ -46,7 +46,7 @@ public class NewsActivity extends AppCompatActivity
     private boolean notificationStart;
 
     private AdRequest adRequest;
-    //private InterstitialAd mInterstitialAd;
+    private InterstitialAd mInterstitialAd;
     private AdView mAdView;
 
     @Inject
@@ -96,13 +96,13 @@ public class NewsActivity extends AppCompatActivity
         mListView.setOnItemClickListener(this);
 
         mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = AdRequestHelper.getAdRequest();
+        adRequest = AdRequestHelper.getAdRequest();
         mAdView.loadAd(adRequest);
 
         // Create the InterstitialAd and set the adUnitId.
-        //mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd = new InterstitialAd(this);
         // Defined in res/values/strings.xml
-        //mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
 
 //        mInterstitialAd.setAdListener(new AdListener() {
 //            @Override
@@ -145,19 +145,26 @@ public class NewsActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         mPosition = i;
-        showDetailsOnPosition(i);
-        //showInterstitial();
+        //showDetailsOnPosition(i);
+        showInterstitial();
     }
 
-//    private void showInterstitial() {
-//        // Show the ad if it's ready. Otherwise toast and restart the game.
-//        if (mInterstitialAd != null && mInterstitialAd.isLoaded() && mInterstitialAd.isLoading()) {
-//            mInterstitialAd.show();
-//        } else {
-//            //Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show();
-//            showDetailsOnPosition(mPosition);
-//        }
-//    }
+    private void showInterstitial() {
+        // Show the ad if it's ready. Otherwise toast and restart the game.
+        if (presenter.canShowIntersititalAd()) {
+            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                presenter.resetCounter();
+                showDetailsOnPosition(mPosition);
+                mInterstitialAd.show();
+            } else {
+                showDetailsOnPosition(mPosition);
+            }
+        } else {
+            presenter.incrementCounter();
+            showDetailsOnPosition(mPosition);
+        }
+
+    }
 
     @Override
     protected void onStop() {
@@ -170,11 +177,12 @@ public class NewsActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        //mInterstitialAd.loadAd(adRequest);
+        if (mInterstitialAd != null && !mInterstitialAd.isLoaded() && !mInterstitialAd.isLoading()) {
+            mInterstitialAd.loadAd(adRequest);
+        }
 
         if (presenter != null) {
             presenter.onStart(this);
-            presenter.load(mId);
             presenter.load(mId);
         }
     }

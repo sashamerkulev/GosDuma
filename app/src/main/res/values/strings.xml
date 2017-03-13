@@ -7,13 +7,14 @@
     <string name="menu_deputies">Депутаты и Члены СФ</string>
     <string name="menu_laws">Законопроекты</string>
     <string name="menu_deputies_requests">Депутатские запросы</string>
+    <string name="menu_news">Новости</string>
     <string name="menu_news_gd">Новости ГД</string>
     <string name="menu_news_preds">Новости председателя ГД</string>
+    <string name="menu_akt">Правовые акты</string>
     <string name="menu_akt_pres">Президент РФ</string>
     <string name="menu_akt_gover">Правительство РФ</string>
     <string name="menu_akt_sf">Совет Федерации РФ</string>
     <string name="menu_akt_gd">Государственная Дума РФ</string>
-    <string name="menu_news">Новости</string>
     <string name="menu_lists">Справочники</string>
     <string name="menu_comittee">Список комитетов</string>
     <string name="menu_blocks">Список тематических блоков</string>

@@ -10,6 +10,7 @@ import dagger.Provides;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.data.http.AktRssService;
 import ru.merkulyevsasha.gosduma.data.http.NewsRssService;
+import ru.merkulyevsasha.gosduma.data.preferences.SettingsSharedPreferences;
 
 @Module
 public class DbModule {
@@ -19,6 +20,13 @@ public class DbModule {
     DatabaseHelper providesDatabaseHelper(Context context) {
         return new DatabaseHelper(DatabaseHelper.getDbPath(context));
     }
+
+    @Singleton
+    @Provides
+    SettingsSharedPreferences providesSettingsSharedPreferences(Context context) {
+        return new SettingsSharedPreferences(context);
+    }
+
 
     @Singleton
     @Provides

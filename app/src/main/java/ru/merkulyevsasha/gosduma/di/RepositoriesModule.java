@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.merkulyevsasha.gosduma.data.ClickCounterRepository;
+import ru.merkulyevsasha.gosduma.data.ClickCounterRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.DeputyDetailsRepository;
@@ -21,6 +23,7 @@ import ru.merkulyevsasha.gosduma.data.NewsRepositoryImpl;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.data.http.AktRssService;
 import ru.merkulyevsasha.gosduma.data.http.NewsRssService;
+import ru.merkulyevsasha.gosduma.data.preferences.SettingsSharedPreferences;
 
 
 @Module
@@ -66,6 +69,12 @@ public class RepositoriesModule {
     @Provides
     DeputyDetailsRepository providesDeputyDetailsRepository(DatabaseHelper db) {
         return new DeputyDetailsRepositoryImpl(db);
+    }
+
+    @Singleton
+    @Provides
+    ClickCounterRepository providesClickCounterRepository(SettingsSharedPreferences pref) {
+        return new ClickCounterRepositoryImpl(pref);
     }
 
 }

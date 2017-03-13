@@ -26,6 +26,11 @@
                 android:id="@+id/nav_news_preds"
                 android:icon="@drawable/ic_rss_feed_black_18dp"
                 android:title="@string/menu_news_preds" />
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_akt">
+        <menu>
             <item
                 android:id="@+id/nav_akt_pres"
                 android:icon="@drawable/ic_rss_feed_black_18dp"

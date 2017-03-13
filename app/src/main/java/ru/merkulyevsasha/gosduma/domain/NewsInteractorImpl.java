@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.merkulyevsasha.gosduma.R;
+import ru.merkulyevsasha.gosduma.data.ClickCounterRepository;
 import ru.merkulyevsasha.gosduma.data.NewsRepository;
 import ru.merkulyevsasha.gosduma.data.http.RssParser;
 import ru.merkulyevsasha.gosduma.models.Article;
@@ -15,9 +16,11 @@ import ru.merkulyevsasha.gosduma.models.Article;
 public class NewsInteractorImpl implements NewsInteractor {
 
     protected NewsRepository repo;
+    protected ClickCounterRepository clickRepo;
 
-    public NewsInteractorImpl(NewsRepository repo){
+    public NewsInteractorImpl(NewsRepository repo, ClickCounterRepository clickRepo){
         this.repo = repo;
+        this.clickRepo = clickRepo;
     }
 
     @Override
@@ -72,5 +75,21 @@ public class NewsInteractorImpl implements NewsInteractor {
         }
 
     }
+
+    @Override
+    public boolean canShowInterstitialAd(){
+        return clickRepo.canShowInterstitialAd();
+    }
+
+    @Override
+    public void resetCounter(){
+        clickRepo.resetCounter();
+    }
+
+    @Override
+    public void incrementCounter(){
+        clickRepo.incrementCounter();
+    }
+
 
 }

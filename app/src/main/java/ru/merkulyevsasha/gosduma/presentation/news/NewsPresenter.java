@@ -66,4 +66,16 @@ public class NewsPresenter implements MvpPresenter {
 
     }
 
+    public boolean canShowIntersititalAd(){
+        return inter.canShowInterstitialAd();
+    }
+
+    public void resetCounter(){
+        inter.resetCounter();
+    }
+
+    public void incrementCounter(){
+        inter.incrementCounter();
+    }
+
 }
