@@ -14,7 +14,7 @@ public interface NewsInteractor {
 
     }
 
-    List<Article> getArticles(int id);
+    void loadArticles(int id, NewsCallback callback);
     void loadNews(int id, NewsCallback callback);
 
     boolean canShowInterstitialAd();

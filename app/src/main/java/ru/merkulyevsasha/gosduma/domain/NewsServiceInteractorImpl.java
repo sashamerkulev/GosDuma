@@ -16,16 +16,16 @@ import ru.merkulyevsasha.gosduma.data.http.RssParser;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.models.News;
 
-public class NewsServiceInteractorImpl extends NewsInteractorImpl implements NewsServiceInteractor {
+public class NewsServiceInteractorImpl implements NewsServiceInteractor {
 
     private HashMap<Integer, Integer> newsIds;
-
+    private NewsRepository repo;
 
     public NewsServiceInteractorImpl(NewsRepository repo){
-        super(repo, null);
+
+        this.repo = repo;
 
         newsIds = new HashMap<>();
-
         newsIds.put(R.id.nav_news_gd, R.string.menu_news_gd);
         newsIds.put(R.id.nav_news_preds, R.string.menu_news_preds);
         newsIds.put(R.id.nav_akt_pres, R.string.menu_akt_pres);
@@ -33,6 +33,24 @@ public class NewsServiceInteractorImpl extends NewsInteractorImpl implements New
         newsIds.put(R.id.nav_akt_sf, R.string.menu_akt_sf);
         newsIds.put(R.id.nav_akt_gd, R.string.menu_akt_gd);
 
+    }
+
+    protected Call<ResponseBody> getCallResponseBody(int key) {
+        Call<ResponseBody> resp = null;
+        if (key == R.id.nav_news_gd) {
+            resp = repo.gosduma();
+        } else if (key == R.id.nav_news_preds) {
+            resp = repo.chairman();
+        } else if (key == R.id.nav_akt_pres) {
+            resp = repo.aktPresident();
+        } else if (key == R.id.nav_akt_gover) {
+            resp = repo.aktGoverment();
+        } else if (key == R.id.nav_akt_sf) {
+            resp = repo.aktSovetfed();
+        } else if (key == R.id.nav_akt_gd) {
+            resp = repo.aktGosduma();
+        }
+        return resp;
     }
 
     @Override

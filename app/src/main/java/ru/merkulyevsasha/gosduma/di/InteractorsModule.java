@@ -31,15 +31,15 @@ import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractorImpl;
 import ru.merkulyevsasha.gosduma.domain.NewsServiceInteractor;
 import ru.merkulyevsasha.gosduma.domain.NewsServiceInteractorImpl;
-import ru.merkulyevsasha.gosduma.presentation.services.NewsService;
+
 
 @Module
 public class InteractorsModule {
 
     @Singleton
     @Provides
-    NewsInteractor providesNewsRepository(NewsRepository repo, ClickCounterRepository clickRepo) {
-        return new NewsInteractorImpl(repo, clickRepo);
+    NewsInteractor providesNewsRepository(ExecutorService serv,NewsRepository repo, ClickCounterRepository clickRepo) {
+        return new NewsInteractorImpl(serv, repo, clickRepo);
     }
 
     @Singleton

@@ -3,6 +3,9 @@ package ru.merkulyevsasha.gosduma.presentation.services;
 import android.annotation.TargetApi;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Build;
 
 import java.util.concurrent.ExecutorService;
@@ -24,6 +27,11 @@ public class NewsJobService extends JobService {
         GosDumaApp.getComponent().inject(this);
 
         System.out.println("NewsJobService: start job");
+
+        if (!ServicesHelper.isBatteryGood(this)){
+            System.out.println("NewsJobService: stop service: battery low");
+            return false;
+        }
 
         System.out.println("NewsJobService: executor submit");
         executor.submit(new NewsRunnable(this.getApplicationContext()));

@@ -2,6 +2,7 @@ package ru.merkulyevsasha.gosduma.domain;
 
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -17,15 +18,29 @@ public class NewsInteractorImpl implements NewsInteractor {
 
     protected NewsRepository repo;
     protected ClickCounterRepository clickRepo;
+    protected ExecutorService executor;
 
-    public NewsInteractorImpl(NewsRepository repo, ClickCounterRepository clickRepo){
+    public NewsInteractorImpl(ExecutorService executor, NewsRepository repo, ClickCounterRepository clickRepo){
+        this.executor = executor;
         this.repo = repo;
         this.clickRepo = clickRepo;
     }
 
     @Override
-    public List<Article> getArticles(int id) {
-        return repo.getArticles(id);
+    public void loadArticles(final int id, final NewsCallback callback) {
+
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    List<Article> items =  repo.getArticles(id);
+                    callback.success(items);
+                } catch(Exception e){
+                    callback.failure(e);
+                }
+            }
+        });
+
     }
 
     protected Call<ResponseBody> getCallResponseBody(int key) {

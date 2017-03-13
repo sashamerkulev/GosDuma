@@ -8,6 +8,9 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.WifiManager;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
@@ -29,7 +32,6 @@ public class ServicesHelper {
     public static final String ALARM_ACTION_NAME = "ru.merkulyevsasha.easytodo.START_SERVICE";
 
     private static final int ALARM_AFTER_MINUTES = 60;
-    private static final int NOTIFICATION_ID = 989;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void registerJobService(Context context){
@@ -40,7 +42,7 @@ public class ServicesHelper {
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .setRequiresDeviceIdle(true)
                 .setPeriodic(ServicesHelper.ALARM_AFTER_MINUTES*60*1000)
-                .setRequiresCharging(true)
+                //.setRequiresCharging(true)
                 .build();
 
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
@@ -105,5 +107,18 @@ public class ServicesHelper {
         mNotificationManager.notify(id, mBuilder.build());
     }
 
+    public static boolean isBatteryGood(Context context){
+        try {
+            IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            Intent batteryStatus = context.registerReceiver(null, ifilter);
+            int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            return status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_HEALTH_GOOD
+                    || status == BatteryManager.BATTERY_STATUS_FULL;
+        } catch(Exception e){
+            e.printStackTrace();
+            System.out.println("batteryGood: exception:" + e.getMessage());
+            return false;
+        }
+    }
 
 }

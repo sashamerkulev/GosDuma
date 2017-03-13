@@ -56,13 +56,29 @@ public class NewsPresenter implements MvpPresenter {
         });
     }
 
-    public void load(int id){
-        List<Article> articles = inter.getArticles(id);
-        if (articles.size() > 0){
-            view.showNews(articles);
-        } else {
-            refresh(id);
-        }
+    public void load(final int id){
+        view.showProgress();
+        inter.loadArticles(id, new NewsInteractor.NewsCallback() {
+            @Override
+            public void success(List<Article> articles) {
+                if (view == null)
+                    return;
+
+                view.hideProgress();
+
+                if (articles.size() > 0){
+                    view.showNews(articles);
+                } else {
+                    refresh(id);
+                }
+            }
+
+            @Override
+            public void failure(Exception e) {
+                view.hideProgress();
+                view.showMessage(R.string.error_loading_news_message);
+            }
+        });
 
     }
 

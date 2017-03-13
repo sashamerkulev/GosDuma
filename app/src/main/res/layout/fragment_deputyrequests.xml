@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerview_deputies_requests"
+        android:layout_margin="4dp"
         />
 
     <LinearLayout

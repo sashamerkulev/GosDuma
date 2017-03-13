@@ -42,11 +42,7 @@ public class NewsService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
 
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = registerReceiver(null, ifilter);
-        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_HEALTH_GOOD;
-        if (!isCharging){
+        if (!ServicesHelper.isBatteryGood(this)){
             System.out.println("NewsService: stop service: battery low");
             ServicesHelper.registerAlarmNewsService(this);
             stopSelf();
