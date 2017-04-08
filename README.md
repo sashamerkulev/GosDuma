@@ -10,8 +10,7 @@
 - Domain
 - Data
 
-Data package содержит классы для работы c базой данных и internet.
-- для работы с БД используется класс data\db\DatabaseHelper;
+Data package содержит классы для работы c Sqlite, Internet и SharedPreferences.
 - Для работы с сетью используется библиотека Retrofit2.
 
 В этом же пакете лежат интерфейсы/классы repositories.
