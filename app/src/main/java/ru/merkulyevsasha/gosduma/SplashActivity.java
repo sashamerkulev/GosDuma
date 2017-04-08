@@ -2,6 +2,7 @@ package ru.merkulyevsasha.gosduma;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 public class SplashActivity extends AppCompatActivity {
 
     private final static int MAX_PROGRESS = 200;
+    private final static int DB_VERSION = 2;
 
     private ProgressBar mProgress;
 
@@ -49,7 +51,19 @@ public class SplashActivity extends AppCompatActivity {
             AssetManager assetManager = getAssets();
             try {
                 File fileDb = new File(getFilesDir(), DatabaseHelper.DATABASE_NAME);
-                if (!fileDb.exists()) {
+				boolean hasNewVersion = !fileDb.exists();
+				if (fileDb.exists()){
+					try{
+						SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(fileDb.getAbsolutePath(), null);
+						if (DB_VERSION > db.getVersion()){
+							hasNewVersion = true;
+						}
+					} catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
+                if (hasNewVersion) {
                     int progress = 1;
                     InputStream in = assetManager.open(DatabaseHelper.DATABASE_NAME);
                     FileOutputStream out = new FileOutputStream(fileDb);

@@ -18,8 +18,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +73,11 @@ public class DeputyDetailsActivity extends AppCompatActivity
     @BindView(R.id.textview_deputy_ranks)
     public
     TextView mDeputyRanks;
+
+    @BindView(R.id.imageview_photo)
+    public
+    ImageView mPhoto;
+
 
     @BindView(R.id.fab)
     public FloatingActionButton mFab;
@@ -130,6 +138,9 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         mDeputy = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTY);
+        if (mDeputy == null)
+            finish();
+
         setTitle("");
 
         if (savedInstanceState != null){
@@ -179,6 +190,14 @@ public class DeputyDetailsActivity extends AppCompatActivity
         if (mPosition > 0){
             mRecyclerView.scrollToPosition(mPosition);
         }
+
+        try {
+            Picasso.with(this).load(getResources().getIdentifier("b"+String.valueOf(mDeputy.id), "raw", getPackageName()))
+                    .into(mPhoto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,11 +252,12 @@ public class DeputyDetailsActivity extends AppCompatActivity
             mDeputyRanks.setTextColor(Color.TRANSPARENT);
             mFractionName.setTextColor(Color.TRANSPARENT);
             mFractionRole.setTextColor(Color.TRANSPARENT);
+            mPhoto.setVisibility(View.INVISIBLE);
             visibleMenuItems(true);
         } else {
             setTitle("");
             mCollapsingToolbar.setTitleEnabled(false);
-
+            mPhoto.setVisibility(View.VISIBLE);
             mDeputyName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
             mDeputyPosition.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
             mDeputyRanks.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
@@ -353,7 +373,7 @@ public class DeputyDetailsActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-        if (mPresenter != null) {
+        if (mPresenter != null && mDeputy != null) {
             mPresenter.onStart(this);
             mPresenter.load(mDeputy.id);
         }

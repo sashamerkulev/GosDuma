@@ -7,20 +7,36 @@
     app:cardElevation="4dp"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="5dp"
-    app:cardPreventCornerOverlap="false">
+    app:cardPreventCornerOverlap="false"
+>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"
         >
 
+        <ImageView
+            android:id="@+id/imageview_photo"
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:src="@drawable/nophoto"
+            android:scaleType="centerCrop"
+            android:contentDescription="фото"
+            android:layout_centerVertical="true"
+            />
+
+
         <TextView
             android:id="@+id/deputy_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:layout_toRightOf="@+id/imageview_photo"
+            android:text="name"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             />
 
         <TextView
@@ -28,8 +44,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:text="position"
+            android:layout_below="@+id/deputy_name"
+            android:layout_toRightOf="@+id/imageview_photo"
             />
 
         <TextView
@@ -37,11 +56,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:text="fraction"
+            android:layout_below="@+id/deputy_position"
+            android:layout_toRightOf="@+id/imageview_photo"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>
 

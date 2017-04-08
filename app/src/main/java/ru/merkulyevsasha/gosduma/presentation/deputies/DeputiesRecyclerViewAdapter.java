@@ -1,12 +1,20 @@
 package ru.merkulyevsasha.gosduma.presentation.deputies;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import ru.merkulyevsasha.gosduma.R;
@@ -19,10 +27,12 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
     public List<Deputy> mItems;
 
     private final DeputiesView.OnDeputyClickListener mClickListener;
+    private final Context context;
 
-    public DeputiesRecyclerViewAdapter(List<Deputy> items, DeputiesView.OnDeputyClickListener clickListener){
+    public DeputiesRecyclerViewAdapter(Context context, List<Deputy> items, DeputiesView.OnDeputyClickListener clickListener){
         mItems = items;
         mClickListener = clickListener;
+        this.context = context;
     }
 
     @Override
@@ -49,9 +59,18 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
 
         holder.mDeputyPosition.setText(deputy.getCurrentPosition());
 
-        if (!fractionRole.isEmpty()){
-            holder.mDeputyFractionName.setText(fractionRole + " ("+fractionName+")");
+        if (!fractionRole.isEmpty()) {
+            holder.mDeputyFractionName.setText(fractionRole + " (" + fractionName + ")");
         }
+
+        try {
+            Picasso.with(context).load(context.getResources().getIdentifier("b"+String.valueOf(deputy.id), "raw", context.getPackageName()))
+                    .into(holder.mPhoto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -65,12 +84,14 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
         final TextView mDeputyName;
         final TextView mDeputyPosition;
         final TextView mDeputyFractionName;
+        final ImageView mPhoto;
 
         public DeputiesViewHolder(final View itemView, final ViewInterface.OnClickListener clickListener) {
             super(itemView);
             mDeputyName = (TextView)itemView.findViewById(R.id.deputy_name);
             mDeputyFractionName = (TextView)itemView.findViewById(R.id.deputy_fraction_name);
             mDeputyPosition = (TextView)itemView.findViewById(R.id.deputy_position);
+            mPhoto = (ImageView)itemView.findViewById(R.id.imageview_photo);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

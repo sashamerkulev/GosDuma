@@ -92,6 +92,9 @@ public class DeputyRequestDetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mDeputyRequest = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTYREQUEST);
+        if (mDeputyRequest == null)
+            finish();
+
         setTitle(R.string.menu_deputies_requests);
 
         mDeputyrequestName.setText(mDeputyRequest.getNameWithNumberAndDate());

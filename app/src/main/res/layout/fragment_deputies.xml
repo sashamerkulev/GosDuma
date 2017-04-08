@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:adSize="BANNER"
-        app:adUnitId="@string/banner_ad_unit_id">
+        app:adUnitId="@string/banner_ad_unit_id"
+        >
     </com.google.android.gms.ads.AdView>
 
     <android.support.v7.widget.RecyclerView

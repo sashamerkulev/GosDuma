@@ -154,6 +154,8 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
         } else {
             mLaw = savedInstanceState.getParcelable(KEY_LAW);
         }
+        if (mLaw == null)
+            finish();
 
         mLawType.setText(mLaw.type);
         mLawName.setText(mLaw.getLawNameWithNumberAndDate());
@@ -220,7 +222,7 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
     @Override
     public void onStart() {
         super.onStart();
-        if (mPresenter != null) {
+        if (mPresenter != null && mLaw != null) {
             mPresenter.onStart(this);
             mPresenter.load(mLaw);
         }

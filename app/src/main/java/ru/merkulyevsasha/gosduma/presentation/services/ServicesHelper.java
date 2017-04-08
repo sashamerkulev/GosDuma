@@ -9,13 +9,14 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.Calendar;
 
@@ -27,7 +28,9 @@ import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 
 public class ServicesHelper {
 
-    static String TAG = "ServicesHelper";
+    private static String TAG = "ServicesHelper";
+
+    private static double BATTERY_GOOD_PERCENT = 0.55F;
 
     public static final String ALARM_ACTION_NAME = "ru.merkulyevsasha.easytodo.START_SERVICE";
 
@@ -112,13 +115,20 @@ public class ServicesHelper {
             IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
             Intent batteryStatus = context.registerReceiver(null, ifilter);
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            return status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_HEALTH_GOOD
-                    || status == BatteryManager.BATTERY_STATUS_FULL;
+            if (status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL)
+                return true;
+
+            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+            if (((float)level / (float) scale) > BATTERY_GOOD_PERCENT) {
+                return true;
+            }
         } catch(Exception e){
-            e.printStackTrace();
+            FirebaseCrash.report(e);
             System.out.println("batteryGood: exception:" + e.getMessage());
-            return false;
         }
+        return false;
     }
 
 }

@@ -34,17 +34,27 @@
             app:layout_collapseMode="pin"
             />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
             android:fitsSystemWindows="true"
             app:layout_collapseMode="parallax"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginLeft="?attr/actionBarSize"
             android:layout_marginStart="?attr/actionBarSize"
             >
+
+            <ImageView
+                android:id="@+id/imageview_photo"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:src="@drawable/nophoto"
+                android:scaleType="centerCrop"
+                android:contentDescription="фото"
+                android:layout_centerVertical="true"
+                app:layout_collapseMode="parallax"
+                />
 
             <TextView
                 android:id="@+id/textview_deputy_name"
@@ -54,6 +64,9 @@
                 android:paddingTop="4dp"
                 android:gravity="start"
                 app:layout_collapseMode="parallax"
+                android:text="name"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/imageview_photo"
                 />
 
             <TextView
@@ -64,6 +77,10 @@
                 android:paddingTop="4dp"
                 android:gravity="start"
                 app:layout_collapseMode="parallax"
+                android:text="position"
+                android:layout_below="@+id/textview_deputy_name"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/imageview_photo"
                 />
 
             <TextView
@@ -74,6 +91,10 @@
                 android:paddingTop="4dp"
                 android:gravity="start"
                 app:layout_collapseMode="parallax"
+                android:text="ranks"
+                android:layout_below="@+id/textview_position"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/imageview_photo"
                 />
 
             <TextView
@@ -84,6 +105,10 @@
                 android:paddingTop="4dp"
                 android:gravity="start"
                 app:layout_collapseMode="parallax"
+                android:text="fractionRole"
+                android:layout_below="@+id/textview_deputy_ranks"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/imageview_photo"
                 />
 
             <TextView
@@ -94,9 +119,13 @@
                 android:paddingTop="4dp"
                 android:gravity="start"
                 app:layout_collapseMode="parallax"
+                android:text="fractionName"
+                android:layout_below="@+id/textview_deputy_fractionRole"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@+id/imageview_photo"
                 />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
     </android.support.design.widget.CollapsingToolbarLayout>

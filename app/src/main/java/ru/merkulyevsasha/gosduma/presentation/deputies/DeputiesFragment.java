@@ -81,7 +81,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView, MvpFragm
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new DeputiesRecyclerViewAdapter(new ArrayList<Deputy>(), ((OnDeputyClickListener)getActivity()));
+        mAdapter = new DeputiesRecyclerViewAdapter(getActivity(), new ArrayList<Deputy>(), ((OnDeputyClickListener)getActivity()));
         mRecyclerView.setAdapter(mAdapter);
 
         mAdView = (AdView) rootView.findViewById(R.id.adView);
