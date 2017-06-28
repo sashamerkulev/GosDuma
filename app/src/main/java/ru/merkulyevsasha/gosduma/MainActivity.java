@@ -362,15 +362,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mSearchText = query;
-        mFragment.search(query);
-        setVisibleMenuItems();
+        if (mFragment != null) {
+            mSearchText = query;
+            mFragment.search(query);
+            setVisibleMenuItems();
+        }
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (newText.isEmpty()){
+        if ((newText == null || newText.isEmpty()) && mFragment != null){
             mSearchText = newText;
             mFragment.search(newText);
             setVisibleMenuItems();
@@ -380,6 +382,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
+        if (menuItem == null)
+            return true;
+        if (mFragment == null)
+            return true;
 
         if (menuItem.getItemId() == R.id.action_sort) {
 

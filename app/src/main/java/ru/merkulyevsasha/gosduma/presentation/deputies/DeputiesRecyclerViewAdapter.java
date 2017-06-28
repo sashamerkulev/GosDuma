@@ -54,6 +54,8 @@ public class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRe
 
         String fractionName = deputy.fractionName;
         String fractionRole = deputy.fractionRole;
+        if (fractionRole != null)
+            fractionRole = fractionRole.trim();
 
         holder.mDeputyName.setText(deputy.getNameWithBirthday());
 

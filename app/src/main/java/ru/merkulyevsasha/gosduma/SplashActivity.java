@@ -21,7 +21,7 @@ import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 public class SplashActivity extends AppCompatActivity {
 
     private final static int MAX_PROGRESS = 200;
-    private final static int DB_VERSION = 2;
+    private final static int DB_VERSION = 3;
 
     private ProgressBar mProgress;
 

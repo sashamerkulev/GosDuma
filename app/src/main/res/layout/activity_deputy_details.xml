@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     >
 
@@ -15,120 +16,122 @@
         android:fitsSystemWindows="true"
         >
 
-    <android.support.design.widget.CollapsingToolbarLayout
-        android:id="@+id/collapsingToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        android:fitsSystemWindows="true"
-        app:contentScrim="?attr/colorPrimary"
-        app:expandedTitleMarginStart="48dp"
-        app:expandedTitleMarginEnd="64dp"
-        >
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/deputydetails_toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_collapseMode="pin"
-            />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:fitsSystemWindows="true"
-            app:layout_collapseMode="parallax"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="?attr/actionBarSize"
-            android:layout_marginStart="?attr/actionBarSize"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
             >
 
-            <ImageView
-                android:id="@+id/imageview_photo"
-                android:layout_width="100dp"
-                android:layout_height="140dp"
-                android:src="@drawable/nophoto"
-                android:scaleType="centerCrop"
-                android:contentDescription="фото"
-                android:layout_centerVertical="true"
-                app:layout_collapseMode="parallax"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/deputydetails_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
                 />
 
-            <TextView
-                android:id="@+id/textview_deputy_name"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:gravity="start"
+                android:orientation="vertical"
+                android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"
-                android:text="name"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/imageview_photo"
-                />
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="?attr/actionBarSize"
+                android:layout_marginStart="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                >
 
-            <TextView
-                android:id="@+id/textview_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:gravity="start"
-                app:layout_collapseMode="parallax"
-                android:text="position"
-                android:layout_below="@+id/textview_deputy_name"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/imageview_photo"
-                />
+                <TextView
+                    android:id="@+id/textview_deputy_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:gravity="start"
+                    app:layout_collapseMode="parallax"
+                    tools:text="name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    />
 
-            <TextView
-                android:id="@+id/textview_deputy_ranks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:gravity="start"
-                app:layout_collapseMode="parallax"
-                android:text="ranks"
-                android:layout_below="@+id/textview_position"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/imageview_photo"
-                />
+                <ImageView
+                    android:id="@+id/imageview_photo"
+                    android:layout_width="100dp"
+                    android:layout_height="140dp"
+                    android:src="@drawable/nophoto"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="фото"
+                    android:layout_centerVertical="true"
+                    android:layout_below="@+id/textview_deputy_name"
+                    app:layout_collapseMode="parallax"
+                    />
 
-            <TextView
-                android:id="@+id/textview_deputy_fractionRole"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:gravity="start"
-                app:layout_collapseMode="parallax"
-                android:text="fractionRole"
-                android:layout_below="@+id/textview_deputy_ranks"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/imageview_photo"
-                />
+                <TextView
+                    android:id="@+id/textview_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:gravity="start"
+                    app:layout_collapseMode="parallax"
+                    tools:text="position"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/imageview_photo"
+                    android:layout_below="@+id/textview_deputy_name"
+                    />
 
-            <TextView
-                android:id="@+id/textview_deputy_fractionName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:gravity="start"
-                app:layout_collapseMode="parallax"
-                android:text="fractionName"
-                android:layout_below="@+id/textview_deputy_fractionRole"
-                android:layout_marginLeft="4dp"
-                android:layout_toRightOf="@+id/imageview_photo"
-                />
+                <TextView
+                    android:id="@+id/textview_deputy_ranks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:gravity="start"
+                    app:layout_collapseMode="parallax"
+                    tools:text="ranks"
+                    android:layout_below="@+id/textview_position"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/imageview_photo"
+                    />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/textview_deputy_fractionRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:gravity="start"
+                    app:layout_collapseMode="parallax"
+                    tools:text="fractionRole"
+                    android:layout_below="@+id/textview_deputy_ranks"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/imageview_photo"
+                    />
+
+                <TextView
+                    android:id="@+id/textview_deputy_fractionName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:gravity="start"
+                    app:layout_collapseMode="parallax"
+                    tools:text="fractionName"
+                    android:layout_below="@+id/textview_deputy_fractionRole"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/imageview_photo"
+                    />
+
+            </RelativeLayout>
 
 
-    </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
@@ -137,14 +140,13 @@
         android:orientation="vertical"
         android:id="@+id/details_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="8dp"
         >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview_laws"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
             />
 
         <LinearLayout
