@@ -1,6 +1,7 @@
 # GosDuma
 
 Приложение работы с базой данных "Государственная дума".
+https://play.google.com/store/apps/details?id=ru.merkulyevsasha.gosduma
 
 База данных получена путем чтения данных из открытого API сайта Государственной думы http://api.duma.gov.ru/
 
