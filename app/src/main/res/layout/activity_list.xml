@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listview_listdata"
+            android:layout_marginTop="8dp"
             >
         </ListView>
 
