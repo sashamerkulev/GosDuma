@@ -3,6 +3,7 @@ package ru.merkulyevsasha.gosduma.data;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.models.Codifier;
 
 public interface LawDetailsRepository {
@@ -17,5 +18,18 @@ public interface LawDetailsRepository {
 
     List<Codifier> getLawFederals(int lawId);
     List<Codifier> getLawRegionals(int lawId);
+
+
+    Single<Codifier> getStageById2(int lastEventStageId);
+    Single<Codifier> getPhaseById2(int lastEventPhaseId);
+
+    Single<List<Codifier>> getProfileComittees2(int lawId);
+    Single<List<Codifier>> getCoexecutorCommittees2(int lawId);
+
+    Single<List<Codifier>> getLawDeputies2(int lawId);
+
+    Single<List<Codifier>> getLawFederals2(int lawId);
+    Single<List<Codifier>> getLawRegionals2(int lawId);
+
 
 }

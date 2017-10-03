@@ -3,8 +3,14 @@ package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.HashMap;
+import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
+import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
@@ -29,29 +35,31 @@ public class LawDetailsPresenter implements MvpPresenter {
         view = null;
     }
 
-    public void load(Law law){
+    public void load(Law law) {
+        if (view == null) return;
         view.showProgress();
-        inter.loadLawDetails(law, new LawDetailsInteractor.LawDetailsCallback() {
-            @Override
-            public void success(HashMap<String, String> result) {
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                view.showData(result);
-            }
-
-            @Override
-            public void failure(Exception e) {
-                FirebaseCrash.report(e);
-
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                view.showEmptyData();
-            }
-        });
+        inter.getLawDetails(law)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<HashMap<String, String>>() {
+                    @Override
+                    public void accept(@NonNull HashMap<String, String> lawDetails) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showData(lawDetails);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showMessage(R.string.error_loading_news_message);
+                        view.showEmptyData();
+                    }
+                });
     }
 
+    void onSharedClicked(Law law) {
+        if (view == null) return;
+        view.share(law);
+    }
 }

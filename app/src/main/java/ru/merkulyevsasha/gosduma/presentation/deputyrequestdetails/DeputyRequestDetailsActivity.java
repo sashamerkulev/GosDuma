@@ -1,10 +1,11 @@
 package ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -22,51 +23,22 @@ import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayoutGone;
 
 
-@SuppressWarnings("WeakerAccess")
 public class DeputyRequestDetailsActivity extends AppCompatActivity {
 
-    @BindView(R.id.tv_deputyrequest_name)
-    public
-    TextView mDeputyrequestName;
-
-    @BindView(R.id.tv_deputyrequest_initiator)
-    public
-    TextView mDeputyrequestInitiator;
-
-    @BindView(R.id.tv_deputyrequest_answer)
-    public
-    TextView mDeputyrequestAnswer;
-
-    @BindView(R.id.tv_deputyrequest_resolution)
-    public
-    TextView mDeputyrequestResolution;
-
-    @BindView(R.id.tv_deputyrequest_signed)
-    public
-    TextView mDeputyrequestSignedBy;
-
-    @BindView(R.id.tv_deputyrequest_addressee)
-    public
-    TextView mDeputyrequestAddressee;
-
-
-    @BindView(R.id.layout_initiator)
-    public LinearLayout mInitiatorLayout;
-
-    @BindView(R.id.layout_answer)
-    public LinearLayout mAnswerLayout;
-
-    @BindView(R.id.layout_resolution)
-    public LinearLayout mResolutionLayout;
-
-    @BindView(R.id.layout_signed)
-    public LinearLayout mSignedLayout;
-
-    @BindView(R.id.layout_addressee)
-    public LinearLayout mAddresseeLayout;
-
-    @BindView(R.id.fab)
-    public FloatingActionButton mFab;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.appbar_layout) AppBarLayout appbarLayout;
+    @BindView(R.id.tv_deputyrequest_name) TextView mDeputyrequestName;
+    @BindView(R.id.tv_deputyrequest_initiator) TextView mDeputyrequestInitiator;
+    @BindView(R.id.tv_deputyrequest_answer) TextView mDeputyrequestAnswer;
+    @BindView(R.id.tv_deputyrequest_resolution) TextView mDeputyrequestResolution;
+    @BindView(R.id.tv_deputyrequest_signed) TextView mDeputyrequestSignedBy;
+    @BindView(R.id.tv_deputyrequest_addressee) TextView mDeputyrequestAddressee;
+    @BindView(R.id.layout_initiator) LinearLayout mInitiatorLayout;
+    @BindView(R.id.layout_answer) LinearLayout mAnswerLayout;
+    @BindView(R.id.layout_resolution) LinearLayout mResolutionLayout;
+    @BindView(R.id.layout_signed) LinearLayout mSignedLayout;
+    @BindView(R.id.layout_addressee) LinearLayout mAddresseeLayout;
+    @BindView(R.id.fab) FloatingActionButton mFab;
 
     private DeputyRequest mDeputyRequest;
 
@@ -82,18 +54,13 @@ public class DeputyRequestDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_deputyrequest_details);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.deputyrequestdetails_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setDisplayShowHomeEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
         mDeputyRequest = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTYREQUEST);
-        if (mDeputyRequest == null)
-            finish();
+        if (mDeputyRequest == null) finish();
 
         setTitle(R.string.menu_deputies_requests);
 
@@ -150,5 +117,11 @@ public class DeputyRequestDetailsActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static void startScreen(Context context, DeputyRequest deputyRequest) {
+        Intent activityIntent = new Intent(context, DeputyRequestDetailsActivity.class);
+        activityIntent.putExtra(KeysBundleHolder.KEY_DEPUTYREQUEST, deputyRequest);
+        context.startActivity(activityIntent);
     }
 }

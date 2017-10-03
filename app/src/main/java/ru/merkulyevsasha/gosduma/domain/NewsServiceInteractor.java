@@ -1,12 +1,11 @@
 package ru.merkulyevsasha.gosduma.domain;
 
 
-import java.util.List;
 
+import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.models.News;
 
 public interface NewsServiceInteractor {
 
-    List<News> getNotificationNews();
-
+    Single<News> getNotificationNews2();
 }

@@ -8,11 +8,12 @@ import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 public interface LawsView extends MvpView{
 
-    interface OnLawClickListener{
-        void onLawClick(Law law);
-    }
+    void prepareToSearch(String searchText);
 
     void showData(List<Law> items);
     void showDataEmptyMessage();
 
+    void showSortDialog(int currentItemIndex);
+
+    void showLawDetailsScreen(Law law);
 }

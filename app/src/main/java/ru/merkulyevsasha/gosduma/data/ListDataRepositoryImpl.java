@@ -1,7 +1,9 @@
 package ru.merkulyevsasha.gosduma.data;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.ListData;
 
@@ -15,7 +17,12 @@ public class ListDataRepositoryImpl implements ListDataRepository {
     }
 
     @Override
-    public List<ListData> select(String tableName) {
-        return db.selectAll(tableName);
+    public Single<List<ListData>> select2(final String tableName) {
+        return Single.fromCallable(new Callable<List<ListData>>() {
+            @Override
+            public List<ListData> call() throws Exception {
+                return db.selectAll(tableName);
+            }
+        });
     }
 }

@@ -1,15 +1,17 @@
 package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -33,85 +36,62 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
-import ru.merkulyevsasha.gosduma.presentation.lawdetails.DeputyLawDetailsActivity;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
+import ru.merkulyevsasha.gosduma.presentation.commons.AppbarScrollExpander;
+import ru.merkulyevsasha.gosduma.presentation.commons.LawsRecyclerViewAdapter;
 import ru.merkulyevsasha.gosduma.helpers.UiUtils;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 
-import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrGone;
 
-@SuppressWarnings("WeakerAccess")
-public class DeputyDetailsActivity extends AppCompatActivity
-    implements LawsView.OnLawClickListener, MenuItem.OnMenuItemClickListener, SearchView.OnQueryTextListener, DeputyDetailsView
+public class DeputyDetailsActivity extends AppCompatActivity implements DeputyDetailsView
 {
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.appbar_layout) AppBarLayout appbarLayout;
+    @BindView(R.id.collapsinng_toolbar_layout) CollapsingToolbarLayout collapsToolbar;
 
-    @BindView(R.id.collapsingToolbar)
-    public
-    CollapsingToolbarLayout mCollapsingToolbar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.textview_deputy_name) TextView deputyName;
+    @BindView(R.id.textview_position) TextView deputyPosition;
+    @BindView(R.id.textview_deputy_fractionName) TextView fractionName;
+    @BindView(R.id.textview_deputy_fractionRole) TextView fractionRole;
+    @BindView(R.id.textview_deputy_ranks) TextView deputyRanks;
+    @BindView(R.id.imageview_photo) ImageView photo;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.layout_empty) LinearLayout emptyLayout;
+    @BindView(R.id.details_content) View rootView;
 
-    @BindView(R.id.appbarlayout)
-    public
-    AppBarLayout mAppbarLayout;
+    @Inject DeputyDetailsPresenter pres;
 
-    @BindView(R.id.textview_deputy_name)
-    public
-    TextView mDeputyName;
-    @BindView(R.id.textview_position)
-    public
-    TextView mDeputyPosition;
-    @BindView(R.id.textview_deputy_fractionName)
-    public
-    TextView mFractionName;
-    @BindView(R.id.textview_deputy_fractionRole)
-    public
-    TextView mFractionRole;
-    @BindView(R.id.textview_deputy_ranks)
-    public
-    TextView mDeputyRanks;
+    private LawsRecyclerViewAdapter adapter;
+    private LinearLayoutManager layoutManager;
+    private Deputy deputy;
 
-    @BindView(R.id.imageview_photo)
-    public
-    ImageView mPhoto;
+    private MenuItem searchItem;
+    private MenuItem sortItem;
 
+    private boolean menuItemsVisible = false;
 
-    @BindView(R.id.fab)
-    public FloatingActionButton mFab;
-
-    @BindView(R.id.recyclerview_laws)
-    public RecyclerView mRecyclerView;
-
-    @BindView(R.id.layout_empty_search)
-    public LinearLayout mEmptyLayout;
-
-    private LawsRecyclerViewAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
-
-    private Deputy mDeputy;
-
-    @Inject
-    DeputyDetailsPresenter mPresenter;
-
-    private MenuItem mSearchItem;
-    private MenuItem mSortItem;
-
-    private int mPosition = -1;
-    private boolean mMenuItemsVisible = false;
+    private AppbarScrollExpander appbarScrollExpander;
+    private int position;
+    private boolean expanded;
 
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
+        outState.putInt(KeysBundleHolder.KEY_POSITION, layoutManager.findFirstVisibleItemPosition());
+        outState.putBoolean(KeysBundleHolder.KEY_MENUITEMSVISIBLE, menuItemsVisible);
+        outState.putBoolean(KeysBundleHolder.KEY_EXPANDED, appbarScrollExpander.getExpanded());
+    }
 
-        Bundle state = mPresenter.getState();
-        if (state != null){
-            outState.putAll(state);
-        }
-        outState.putInt(KeysBundleHolder.KEY_POSITION, mLayoutManager.findFirstVisibleItemPosition());
-        outState.putBoolean(KeysBundleHolder.KEY_MENUITEMSVISIBLE, mMenuItemsVisible);
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        position = savedInstanceState.getInt(KeysBundleHolder.KEY_POSITION);
+        menuItemsVisible = savedInstanceState.getBoolean(KeysBundleHolder.KEY_MENUITEMSVISIBLE);
+        expanded = savedInstanceState.getBoolean(KeysBundleHolder.KEY_EXPANDED, true);
     }
 
     @Override
@@ -123,109 +103,77 @@ public class DeputyDetailsActivity extends AppCompatActivity
             return;
         }
 
-        GosDumaApp.getComponent().inject(this);
-
         setContentView(R.layout.activity_deputy_details);
         ButterKnife.bind(this);
+        GosDumaApp.getComponent().inject(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.deputydetails_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setDisplayShowHomeEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
-        mDeputy = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTY);
-        if (mDeputy == null)
-            finish();
+        deputy = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTY);
+        if (deputy == null) finish();
 
-        setTitle("");
+        setTitle(deputy.name);
 
-        if (savedInstanceState != null){
-            mPresenter.restoreState(savedInstanceState);
-            mPosition = savedInstanceState.getInt(KeysBundleHolder.KEY_POSITION);
-            mMenuItemsVisible = savedInstanceState.getBoolean(KeysBundleHolder.KEY_MENUITEMSVISIBLE);
+        collapsToolbar.setTitleEnabled(false);
+        appbarScrollExpander = new AppbarScrollExpander(recyclerView, appbarLayout);
+        appbarScrollExpander.setExpanded(expanded);
+
+
+//        appbarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+//            @Override
+//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+//                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+//                    // Collapsed
+//                    setCollapsingToolbarTitleEnabled(true);
+//                } else if (verticalOffset == 0) {
+//                    // Expanded
+//                    setCollapsingToolbarTitleEnabled(false);
+//                } else {
+//                    // Somewhere in between
+//                    setCollapsingToolbarTitleEnabled(false);
+//                }
+//            }
+//        });
+
+        deputyPosition.setText(deputy.getPositionWithStartAndEndDates());
+
+        deputyName.setText(deputy.getNameWithBirthday());
+        String ranksAndDegrees = deputy.getRanksWithDegrees();
+        if (ranksAndDegrees == null || ranksAndDegrees.isEmpty()){
+            deputyRanks.setVisibility(View.GONE);
+        } else {
+            deputyRanks.setText(ranksAndDegrees);
+            deputyRanks.setVisibility(View.VISIBLE);
         }
+        fractionName.setText(deputy.fractionName);
+        fractionRole.setText(deputy.fractionRole + " " + deputy.fractionRegion);
 
-        mAppbarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(true);
+
+        adapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), new LawsRecyclerViewAdapter.OnLawClickListener() {
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                    // Collapsed
-                    setCollapsingToolbarTitleEnabled(true);
-                } else if (verticalOffset == 0) {
-                    // Expanded
-                    setCollapsingToolbarTitleEnabled(false);
-                } else {
-                    // Somewhere in between
-                    setCollapsingToolbarTitleEnabled(false);
-                }
+            public void onLawClick(Law law) {
+                pres.onLawClicked(law);
             }
         });
-
-        mDeputyPosition.setText(mDeputy.getPositionWithStartAndEndDates());
-
-        mDeputyName.setText(mDeputy.getNameWithBirthday());
-
-        setTextToTextViewOrGone(mDeputy.getRanksWithDegrees(), mDeputyRanks);
-
-        mFractionName.setText(mDeputy.fractionName);
-        mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);
-
-        //List<Law> items = mPresenter.getDeputyLaws(mDeputy.id);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), this);
-        mRecyclerView.setAdapter(mAdapter);
-        //showData(items.size() > 0);
-
-        if (savedInstanceState != null && mMenuItemsVisible) {
-            mAppbarLayout.setExpanded(false);
-        }
-
-        if (mPosition > 0){
-            mRecyclerView.scrollToPosition(mPosition);
-        }
+        recyclerView.setAdapter(adapter);
 
         try {
-            Picasso.with(this).load(getResources().getIdentifier("b"+String.valueOf(mDeputy.id), "raw", getPackageName()))
-                    .into(mPhoto);
+            Picasso.with(this).load(getResources().getIdentifier("b"+String.valueOf(deputy.id), "raw", getPackageName()))
+                    .into(photo);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        mFab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-
-                final StringBuilder message = new StringBuilder();
-
-                message.append(mDeputy.getNameWithBirthday());
-                message.append("\n");
-                message.append(mDeputy.getPositionWithStartAndEndDates());
-                message.append("\n");
-                if (!mDeputy.getRanksWithDegrees().isEmpty()) {
-                    message.append(mDeputy.getRanksWithDegrees());
-                    message.append("\n");
-                }
-                message.append(mDeputy.fractionName);
-                message.append("\n");
-                message.append(mDeputy.fractionRole);
-                if (!mDeputy.fractionRegion.isEmpty()){
-                    message.append(" ");
-                    message.append(mDeputy.fractionRegion);
-                }
-                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
-
-                sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
+                pres.onSharedClicked(deputy);
             }
         });
 
@@ -243,169 +191,137 @@ public class DeputyDetailsActivity extends AppCompatActivity
         }
     }
 
-    private void setCollapsingToolbarTitleEnabled(boolean enable) {
-        if (enable) {
-            setTitle(mDeputy.name);
-            mCollapsingToolbar.setTitleEnabled(true);
-            mDeputyName.setTextColor(Color.TRANSPARENT);
-            mDeputyPosition.setTextColor(Color.TRANSPARENT);
-            mDeputyRanks.setTextColor(Color.TRANSPARENT);
-            mFractionName.setTextColor(Color.TRANSPARENT);
-            mFractionRole.setTextColor(Color.TRANSPARENT);
-            mPhoto.setVisibility(View.INVISIBLE);
-            visibleMenuItems(true);
-        } else {
-            setTitle("");
-            mCollapsingToolbar.setTitleEnabled(false);
-            mPhoto.setVisibility(View.VISIBLE);
-            mDeputyName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
-            mDeputyPosition.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
-            mDeputyRanks.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
-            mFractionName.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
-            mFractionRole.setTextColor(ContextCompat.getColor(DeputyDetailsActivity.this, R.color.textColorPrimary));
-
-            visibleMenuItems(false);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.deputy, menu);
+        getMenuInflater().inflate(R.menu.deputy_details_menu, menu);
 
-        mSearchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
-        searchView.setOnQueryTextListener(this);
+        searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                pres.onSearchTextSubmitted(query);
+                return false;
+            }
 
-        mSortItem = menu.findItem(R.id.action_sort);
-        mSortItem.setOnMenuItemClickListener(this);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                pres.onSearchTextChanged(deputy.id, newText);
+                return false;
+            }
+        });
+
+        sortItem = menu.findItem(R.id.action_sort);
+        sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                pres.onSortItemClicked();
+                return false;
+            }
+        });
 
         return true;
     }
 
-    private void visibleMenuItems(boolean visible){
-        mMenuItemsVisible = visible;
-
-        if (mSearchItem != null)
-            mSearchItem.setVisible(visible);
-        if (mSortItem != null)
-            mSortItem.setVisible(visible);
-    }
-
-
-    @Override
-    public void onLawClick(Law law) {
-        Intent activityIntent = new Intent(this, DeputyLawDetailsActivity.class);
-        activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
-        startActivity(activityIntent);
-    }
-
     @Override
     public void showData(final List<Law> items) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mAdapter.mItems = items;
-                mAdapter.notifyDataSetChanged();
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mEmptyLayout.setVisibility(View.GONE);
-            }
-        });
+        adapter.setItems(items);
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void showDataEmptyMessage() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mRecyclerView.setVisibility(View.GONE);
-                mEmptyLayout.setVisibility(View.VISIBLE);
-            }
-        });
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-        mPresenter.search(query);
-        return false;
+    public void showLawDetailsScreen(Law law) {
+        LawDetailsActivity.startScreen(this, law);
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        if (newText.isEmpty()){
-            mPresenter.search(newText);
+    public void share(Deputy deputy) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+
+        final StringBuilder message = new StringBuilder();
+
+        message.append(deputy.getNameWithBirthday());
+        message.append("\n");
+        message.append(deputy.getPositionWithStartAndEndDates());
+        message.append("\n");
+        if (!deputy.getRanksWithDegrees().isEmpty()) {
+            message.append(deputy.getRanksWithDegrees());
+            message.append("\n");
         }
-        return false;
+        message.append(deputy.fractionName);
+        message.append("\n");
+        message.append(deputy.fractionRole);
+        if (!deputy.fractionRegion.isEmpty()){
+            message.append(" ");
+            message.append(deputy.fractionRegion);
+        }
+        sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
+    public void showSortDialog(final int currentItemIndex) {
+        final String[] sortItems = {
+                getResources().getString(R.string.item_sort_lawname),
+                getResources().getString(R.string.item_sort_number),
+                getResources().getString(R.string.item_sort_date)};
 
-        if (menuItem.getItemId() == R.id.action_sort) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.title_sort);
 
-            int sortDialogType = mPresenter.getSortDialogType();
-            if (sortDialogType == DialogHelper.IDD_LAWS_SORT) {
-                DialogHelper.getLawSortDialog(this,
-                        mPresenter.getCurrentSortIndexValue(),
-                        new DialogHelper.DialogItemClickListener() {
-                            @Override
-                            public void onClick(int selectItemIndex) {
-                                mPresenter.sort(mPresenter.getCurrentSortIndexValue(), selectItemIndex);
-                            }
-                        }
-                ).show();
-            }
-
-            return false;
-        }
-
-        return false;
+        builder.setSingleChoiceItems(sortItems, currentItemIndex,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        dialog.dismiss();
+                        pres.sort(currentItemIndex, item);
+                    }
+                });
+        builder.show();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mPresenter != null) {
-            mPresenter.onStop();
-        }
+        pres.onStop();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (mPresenter != null && mDeputy != null) {
-            mPresenter.onStart(this);
-            mPresenter.load(mDeputy.id);
-        }
+        pres.onStart(this);
+        pres.load(deputy.id);
     }
 
     @Override
-    public void showMessage(int resId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
+    public void showMessage(@StringRes int resId) {
+        Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void hideProgress() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showProgress() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
 
-            }
-        });
+    public static void startScreen(Context context, Deputy deputy) {
+        Intent activityIntent = new Intent(context, DeputyDetailsActivity.class);
+        activityIntent.putExtra(KeysBundleHolder.KEY_DEPUTY, deputy);
+        context.startActivity(activityIntent);
     }
 }

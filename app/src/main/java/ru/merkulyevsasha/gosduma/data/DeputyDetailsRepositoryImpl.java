@@ -2,7 +2,9 @@ package ru.merkulyevsasha.gosduma.data;
 
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
 
@@ -15,7 +17,12 @@ public class DeputyDetailsRepositoryImpl implements DeputyDetailsRepository{
     }
 
     @Override
-    public List<Law> getDeputyLaws(int deputyId, String searchText, String orderby) {
-        return db.getDeputyLaws(deputyId, searchText, orderby);
+    public Single<List<Law>> getDeputyLaws2(final int deputyId, final String searchText, final String orderby) {
+        return Single.fromCallable(new Callable<List<Law>>() {
+            @Override
+            public List<Law> call() throws Exception {
+                return db.getDeputyLaws(deputyId, searchText, orderby);
+            }
+        });
     }
 }

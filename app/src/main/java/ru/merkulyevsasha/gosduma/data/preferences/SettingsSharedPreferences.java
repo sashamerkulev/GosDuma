@@ -7,31 +7,43 @@ import android.content.SharedPreferences;
 public class SettingsSharedPreferences {
 
     public final static int MAX_COUNT = 3;
-    private final SharedPreferences pref;
+
+    private final static String KEY_FIRST_RUN = "ru.merkulyevsasha.gosduma.prefs_key_run_flag";
+
+    private final SharedPreferences prefs;
 
     public SettingsSharedPreferences(Context context){
-        pref = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
     }
 
     public SharedPreferences getSharedPreferences(){
-        return pref;
+        return prefs;
     }
 
     public int getClickCounter(){
-        return pref.getInt("clicks", 0);
+        return prefs.getInt("clicks", 0);
     }
 
     public void incClickCounter(){
-        int clicks = pref.getInt("clicks", 0);
+        int clicks = prefs.getInt("clicks", 0);
         clicks++;
         if (clicks == MAX_COUNT){
             clicks = 0;
         }
-        pref.edit().putInt("clicks", clicks).apply();
+        prefs.edit().putInt("clicks", clicks).apply();
     }
 
     public void resetClickCounter(){
-        pref.edit().putInt("clicks", 0).apply();
+        prefs.edit().putInt("clicks", 0).apply();
     }
 
+    public boolean getFirstRunFlag() {
+        return prefs.getBoolean(KEY_FIRST_RUN, true);
+    }
+
+    public void setFirstRunFlag() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(KEY_FIRST_RUN, false);
+        editor.apply();
+    }
 }

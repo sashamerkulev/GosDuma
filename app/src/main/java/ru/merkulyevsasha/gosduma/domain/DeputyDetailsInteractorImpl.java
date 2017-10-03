@@ -2,34 +2,26 @@ package ru.merkulyevsasha.gosduma.domain;
 
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.DeputyDetailsRepository;
 import ru.merkulyevsasha.gosduma.models.Law;
 
 public class DeputyDetailsInteractorImpl implements DeputyDetailsInteractor{
 
-    private DeputyDetailsRepository repo;
-    private ExecutorService executor;
+    private final DeputyDetailsRepository repo;
+    private final Scheduler scheduler;
 
-    public DeputyDetailsInteractorImpl(ExecutorService executor, DeputyDetailsRepository repo){
+    public DeputyDetailsInteractorImpl(DeputyDetailsRepository repo, Scheduler scheduler){
         this.repo = repo;
-        this.executor = executor;
+        this.scheduler = scheduler;
     }
 
     @Override
-    public void loadDeputyLaws(final int deputyId, final String searchText, final String orderby, final DeputyDetailsInteractor.DeputyDetailsCallback callback) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<Law> items = repo.getDeputyLaws(deputyId, searchText, orderby);
-                    callback.success(items);
-                } catch(Exception e){
-                    callback.failure(e);
-                }
-            }
-        });
+    public Single<List<Law>> getDeputyLaws(int deputyId, String searchText, String orderby) {
+        return repo.getDeputyLaws2(deputyId, searchText, orderby)
+                .subscribeOn(scheduler);
     }
 
 

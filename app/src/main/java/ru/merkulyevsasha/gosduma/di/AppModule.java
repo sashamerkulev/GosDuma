@@ -9,6 +9,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 @Module
 public class AppModule {
@@ -29,6 +31,12 @@ public class AppModule {
     @Provides
     ExecutorService providesExecutorService() {
         return Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() );
+    }
+
+    @Singleton
+    @Provides
+    Scheduler providesScheduler() {
+        return Schedulers.io();
     }
 
 }

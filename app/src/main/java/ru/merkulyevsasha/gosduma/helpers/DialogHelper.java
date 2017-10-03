@@ -21,30 +21,6 @@ public class DialogHelper {
     public final static int IDD_LAWS_SORT = 3;
     public final static int IDD_DEPUTY_REQUEST_SORT = 4;
 
-    public static Dialog getDeputySortDialog(final Activity context, int currentItemIndex, final DialogItemClickListener listener){
-
-        final String[] sortItems = {
-                context.getString(R.string.item_sort_name),
-                context.getString(R.string.item_sort_birtdate),
-                context.getString(R.string.item_sort_fractionname)};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.title_sort);
-
-        builder.setSingleChoiceItems(sortItems, currentItemIndex,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
-
-                        dialog.dismiss();
-
-                        listener.onClick(item);
-                    }
-                });
-
-        return builder.create();
-
-    }
 
     public static Dialog getLawSortDialog(final Activity context, int currentItemIndex, final DialogItemClickListener listener){
 

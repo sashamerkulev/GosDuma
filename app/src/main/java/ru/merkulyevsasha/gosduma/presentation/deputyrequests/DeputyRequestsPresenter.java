@@ -1,15 +1,15 @@
 package ru.merkulyevsasha.gosduma.presentation.deputyrequests;
 
 
-import android.os.Bundle;
 
-import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.HashMap;
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractor;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
@@ -47,31 +47,7 @@ public class DeputyRequestsPresenter implements MvpPresenter {
         mSortColumn.put(INITIATOR_INDEX, "initiator");
     }
 
-    public int getSortDialogType() {
-        return DialogHelper.IDD_DEPUTY_REQUEST_SORT;
-    }
-
-    public int getCurrentSortIndexValue(){
-        return mSort;
-    }
-
-    public boolean isSortMenuVisible() {
-        return true;
-    }
-
-    public int getFilterDialogType() {
-        return 0;
-    }
-
-    public List<Integer> getCurrentFilterIndexValue() {
-        return null;
-    }
-
-    public boolean isFilterMenuVisible() {
-        return false;
-    }
-
-    public void search(String searchText) {
+    private void search(String searchText) {
         mSearchText = searchText;
         load();
     }
@@ -82,56 +58,28 @@ public class DeputyRequestsPresenter implements MvpPresenter {
         load();
     }
 
-    public void filter(List<Integer> filter) {
-
-    }
-
     public void load(){
-        inter.loadDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection, new DeputyRequestsInteractor.DeputyRequestsCallback() {
-            @Override
-            public void success(List<DeputyRequest> items) {
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                if (items.size() > 0) {
-                    view.showData(items);
-                } else {
-                    view.showDataEmptyMessage();
-                }
-            }
-
-            @Override
-            public void failure(Exception e) {
-                FirebaseCrash.report(e);
-
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                view.showDataEmptyMessage();
-                //view.showMessage();
-            }
-        });
-    }
-
-    public Bundle getState(){
-        Bundle state = new Bundle();
-
-        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
-        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
-        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
-
-        return state;
-    }
-
-    public void restoreState(Bundle outState){
-
-        if (outState != null){
-            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
-            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
-            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
-        }
+        if (view == null) return;
+        view.showProgress();
+        inter.getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<DeputyRequest>>() {
+                    @Override
+                    public void accept(@NonNull List<DeputyRequest> deputyRequests) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        if (deputyRequests.size() > 0) view.showData(deputyRequests);
+                        else view.showDataEmptyMessage();
+                        view.prepareToSearch(mSearchText);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showMessage(R.string.error_loading_news_message);
+                    }
+                });
     }
 
     @Override
@@ -142,5 +90,31 @@ public class DeputyRequestsPresenter implements MvpPresenter {
     @Override
     public void onStop() {
         view = null;
+    }
+
+    void onSortItemClicked() {
+        if (view == null) return;
+        view.showSortDialog(mSort);
+    }
+
+    void onSearchTextSubmitted(String query) {
+        if (view == null) return;
+        if (query == null || query.isEmpty()) load();
+        else {
+            if (query.length() < 3) view.showMessage(R.string.search_lvalidation_message);
+            else search(query);
+        }
+    }
+
+    void onSearchTextChanged(String newText) {
+        if (newText == null || newText.isEmpty()){
+            mSearchText = newText;
+            load();
+        }
+    }
+
+    void onDeputyRequestClicked(DeputyRequest deputyRequest) {
+        if (view == null) return;
+        view.showDeputyRequestDetailsScreen(deputyRequest);
     }
 }

@@ -62,4 +62,8 @@
 
     <string name="error_loading_news_message">Ошибка загрузки новостей.</string>
 
+    <string name="search_lvalidation_message">Строка поиска должна быть не менее 3 символов.</string>
+    <string name="image_content_description">фото</string>
+    <string name="open_details_image">открыть</string>
+
 </resources>

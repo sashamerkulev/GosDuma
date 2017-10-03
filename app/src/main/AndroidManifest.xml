@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -40,7 +40,7 @@
         <activity
             android:name=".presentation.news.NewsDetailsActivity"
             android:label=""
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".presentation.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
@@ -54,11 +54,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".presentation.lawdetails.DeputyLawDetailsActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".presentation.lawdetails.LawDetailsActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -68,19 +63,14 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <receiver android:name=".presentation.services.Reciever">
+
+        <receiver android:name=".presentation.services.RebootActionReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <service
-            android:name=".presentation.services.NewsJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true"/>
-        <service android:name=".presentation.services.NewsService" />
-
 
     </application>
 

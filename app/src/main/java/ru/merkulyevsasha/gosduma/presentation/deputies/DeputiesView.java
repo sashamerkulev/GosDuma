@@ -6,14 +6,16 @@ import java.util.List;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
-public interface DeputiesView extends MvpView {
+interface DeputiesView extends MvpView {
 
-    interface OnDeputyClickListener{
-        void onDeputyClick(Deputy deputy);
-    }
+    void prepareToSearch(String searchText);
 
     void showData(List<Deputy> items);
     void showDataEmptyMessage();
 
+    void showDeputyDetailsScreen(Deputy deputy);
+
+    void showFilterDialog(List<Integer> filter);
+    void showSortDialog(int currentItemIndex);
 
 }

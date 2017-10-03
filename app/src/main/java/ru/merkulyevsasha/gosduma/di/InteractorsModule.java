@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Scheduler;
 import ru.merkulyevsasha.gosduma.data.ClickCounterRepository;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
 import ru.merkulyevsasha.gosduma.data.DeputyDetailsRepository;
@@ -38,50 +39,50 @@ public class InteractorsModule {
 
     @Singleton
     @Provides
-    NewsInteractor providesNewsRepository(ExecutorService serv,NewsRepository repo, ClickCounterRepository clickRepo) {
-        return new NewsInteractorImpl(serv, repo, clickRepo);
+    NewsInteractor providesNewsRepository(NewsRepository repo, ClickCounterRepository clickRepo, Scheduler scheduler) {
+        return new NewsInteractorImpl(repo, clickRepo, scheduler);
     }
 
     @Singleton
     @Provides
-    ListDataInteractor providesListDataInteractor(ListDataRepository repo) {
-        return new ListDataInteractorImpl(repo);
+    ListDataInteractor providesListDataInteractor(ListDataRepository repo, Scheduler scheduler) {
+        return new ListDataInteractorImpl(repo, scheduler);
     }
 
     @Singleton
     @Provides
-    LawsInteractor providesLawsInteractor(ExecutorService serv, LawsRepository repo) {
-        return new LawsInteractorImpl(serv, repo);
+    LawsInteractor providesLawsInteractor(LawsRepository repo, Scheduler scheduler) {
+        return new LawsInteractorImpl(repo, scheduler);
     }
 
     @Singleton
     @Provides
-    DeputiesInteractor providesDeputiesInteractor(ExecutorService serv, DeputiesRepository repo) {
-        return new DeputiesInteractorImpl(serv, repo);
+    DeputiesInteractor providesDeputiesInteractor(DeputiesRepository repo, Scheduler scheduler) {
+        return new DeputiesInteractorImpl(repo, scheduler);
     }
 
     @Singleton
     @Provides
-    DeputyRequestsInteractor providesDeputyRequestsInteractor(ExecutorService serv, DeputyRequestsRepository repo) {
-        return new DeputyRequestsInteractorImpl(serv, repo);
+    DeputyRequestsInteractor providesDeputyRequestsInteractor(DeputyRequestsRepository repo, Scheduler scheduler) {
+        return new DeputyRequestsInteractorImpl(repo, scheduler);
     }
 
     @Singleton
     @Provides
-    LawDetailsInteractor providesLawDetailsInteractor(ExecutorService serv, LawDetailsRepository repo) {
-        return new LawDetailsInteractorImpl(serv, repo);
+    LawDetailsInteractor providesLawDetailsInteractor(LawDetailsRepository repo, Scheduler scheduler) {
+        return new LawDetailsInteractorImpl(repo, scheduler);
     }
 
     @Singleton
     @Provides
-    DeputyDetailsInteractor providesDeputyDetailsInteractor(ExecutorService serv, DeputyDetailsRepository repo) {
-        return new DeputyDetailsInteractorImpl(serv, repo);
+    DeputyDetailsInteractor providesDeputyDetailsInteractor(DeputyDetailsRepository repo, Scheduler scheduler) {
+        return new DeputyDetailsInteractorImpl(repo, scheduler);
     }
 
     @Singleton
     @Provides
-    NewsServiceInteractor providesNewsServiceInteractor(NewsRepository repo) {
-        return new NewsServiceInteractorImpl(repo);
+    NewsServiceInteractor providesNewsServiceInteractor(NewsRepository repo, NewsInteractor newsInteractor, Scheduler scheduler) {
+        return new NewsServiceInteractorImpl(repo, newsInteractor, scheduler);
     }
 
 }

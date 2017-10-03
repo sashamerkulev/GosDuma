@@ -7,11 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
 
 public class NewsDetailsFragment extends Fragment {
+
+    @BindView(R.id.textview_newsdetailstopic) TextView textViewTopic;
+    @BindView(R.id.textview_newsdetailsdescription) TextView textViewDescription;
 
     public static NewsDetailsFragment newInstance(String topic, String description) {
         NewsDetailsFragment details = new NewsDetailsFragment();
@@ -26,9 +31,7 @@ public class NewsDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news_details, container, false);
-
-        TextView textViewTopic = (TextView)v.findViewById(R.id.textview_newsdetailstopic);
-        TextView textViewDescription = (TextView)v.findViewById(R.id.textview_newsdetailsdescription);
+        ButterKnife.bind(this, v);
 
         final String topic = getArguments().getString(KeysBundleHolder.KEY_TOPIC);
         final String description = getArguments().getString(KeysBundleHolder.KEY_DESCRIPTION);

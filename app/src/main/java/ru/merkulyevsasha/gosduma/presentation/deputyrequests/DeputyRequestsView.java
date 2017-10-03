@@ -6,14 +6,14 @@ import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public interface DeputyRequestsView extends MvpView {
+interface DeputyRequestsView extends MvpView {
 
-    interface OnDeputyRequestsClickListener {
-        void onDeputyRequestwClick(DeputyRequest deputyRequest);
-    }
-
+    void showSortDialog(int currentItemIndex);
 
     void showData(List<DeputyRequest> items);
     void showDataEmptyMessage();
 
+    void showDeputyRequestDetailsScreen(DeputyRequest deputyRequest);
+
+    void prepareToSearch(String searchText);
 }

@@ -2,11 +2,14 @@ package ru.merkulyevsasha.gosduma.domain;
 
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.ClickCounterRepository;
@@ -16,34 +19,17 @@ import ru.merkulyevsasha.gosduma.models.Article;
 
 public class NewsInteractorImpl implements NewsInteractor {
 
-    protected NewsRepository repo;
-    protected ClickCounterRepository clickRepo;
-    protected ExecutorService executor;
+    private final NewsRepository repo;
+    private final ClickCounterRepository clickRepo;
+    private final Scheduler scheduler;
 
-    public NewsInteractorImpl(ExecutorService executor, NewsRepository repo, ClickCounterRepository clickRepo){
-        this.executor = executor;
+    public NewsInteractorImpl(NewsRepository repo, ClickCounterRepository clickRepo, Scheduler scheduler){
         this.repo = repo;
+        this.scheduler = scheduler;
         this.clickRepo = clickRepo;
     }
 
-    @Override
-    public void loadArticles(final int id, final NewsCallback callback) {
-
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    List<Article> items =  repo.getArticles(id);
-                    callback.success(items);
-                } catch(Exception e){
-                    callback.failure(e);
-                }
-            }
-        });
-
-    }
-
-    protected Call<ResponseBody> getCallResponseBody(int key) {
+    public Call<ResponseBody> getCallResponseBody(int key) {
         Call<ResponseBody> resp = null;
         if (key == R.id.nav_news_gd) {
             resp = repo.gosduma();
@@ -62,33 +48,31 @@ public class NewsInteractorImpl implements NewsInteractor {
     }
 
     @Override
-    public void loadNews(final int id, final NewsCallback callback) {
+    public Single<List<Article>> getArticles(final int id) {
+        return Single.fromCallable(new Callable<List<Article>>() {
+            @Override
+            public List<Article> call() throws Exception {
+                return repo.getArticles(id);
+            }
+        }).subscribeOn(scheduler);
+    }
 
-        Call<ResponseBody> resp = getCallResponseBody(id);
-
-        if (resp != null){
-            resp.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
-                        RssParser parser = new RssParser();
-                        List<Article> result = parser.parseXml(response.body().string());
-                        repo.saveToCache(id, result);
-
-                        callback.success(result);
-
-                    } catch(Exception e){
-                        callback.failure(e);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    callback.failure(new Exception(t));
-                }
-            });
-        }
-
+    @Override
+    public Single<List<Article>> getNews(final int id) {
+        return Single.fromCallable(new Callable<List<Article>>() {
+            @Override
+            public List<Article> call() throws Exception {
+                Call<ResponseBody> resp = getCallResponseBody(id);
+                Response<ResponseBody> response = resp.execute();
+                RssParser parser = new RssParser();
+                return parser.parseXml(response.body().string());
+            }
+        }).doOnSuccess(new Consumer<List<Article>>() {
+            @Override
+            public void accept(@NonNull List<Article> articles) throws Exception {
+                repo.saveToCache(id, articles);
+            }
+        }).subscribeOn(scheduler);
     }
 
     @Override

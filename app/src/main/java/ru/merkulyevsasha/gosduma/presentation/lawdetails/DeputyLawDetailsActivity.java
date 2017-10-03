@@ -128,7 +128,7 @@ public class DeputyLawDetailsActivity extends AppCompatActivity implements LawDe
 
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.lawdetails_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
@@ -138,7 +138,7 @@ public class DeputyLawDetailsActivity extends AppCompatActivity implements LawDe
 
         setTitle(R.string.menu_laws);
 
-        GosDumaApp.getComponent().inject(this);
+        //GosDumaApp.getComponent().inject(this);
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -290,6 +290,11 @@ public class DeputyLawDetailsActivity extends AppCompatActivity implements LawDe
                 showAdditionalData();
             }
         });
+    }
+
+    @Override
+    public void share(Law law) {
+
     }
 
 }

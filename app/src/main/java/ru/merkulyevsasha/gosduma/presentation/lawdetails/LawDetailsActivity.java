@@ -1,9 +1,10 @@
 package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -32,72 +33,31 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
 
     public final static String KEY_LAW = "LAW";
 
-    @BindView(R.id.tv_law_type)
-    public TextView mLawType;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.appbar_layout) AppBarLayout appbarLayout;
 
-    @BindView(R.id.tv_law_name)
-    public TextView mLawName;
-
-    @BindView(R.id.tv_law_comments)
-    public TextView mLawComments;
-
-    @BindView(R.id.tv_law_responsible)
-    public TextView mLawResponsible;
-
-    @BindView(R.id.tv_law_solution)
-    public TextView mLawSolution;
-
-    @BindView(R.id.tv_law_stage)
-    public TextView mLawStage;
-
-    @BindView(R.id.tv_law_phase)
-    public TextView mLawPhase;
-
-    @BindView(R.id.tv_law_coexeccomittees)
-    public TextView mLawCoexecComittees;
-
-    @BindView(R.id.tv_law_profilecomittees)
-    public TextView mLawProgileComittees;
-
-    @BindView(R.id.tv_law_deputies)
-    public TextView mLawDeputies;
-
-    @BindView(R.id.tv_law_departments)
-    public TextView mLawDepartments;
-
-
-    @BindView(R.id.layout_comments)
-    public LinearLayout mLayoutComments;
-
-    @BindView(R.id.layout_phase)
-    public LinearLayout mLayoutPhase;
-
-    @BindView(R.id.layout_stage)
-    public LinearLayout mLayoutStage;
-
-    @BindView(R.id.layout_responsible)
-    public LinearLayout mLayoutResponsible;
-
-    @BindView(R.id.layout_solution)
-    public LinearLayout mLayoutSolution;
-
-    @BindView(R.id.layout_coexeccomittees)
-    public LinearLayout mLayoutCoexecComittees;
-
-    @BindView(R.id.layout_profilecomittees)
-    public LinearLayout mLayoutProfileComittees;
-
-    @BindView(R.id.layout_deputies)
-    public LinearLayout mLayoutDeputies;
-
-    @BindView(R.id.layout_departments)
-    public LinearLayout mLayoutDepartments;
-
-    @BindView(R.id.fab)
-    public FloatingActionButton mFab;
-
-    @BindView(R.id.progressBar)
-    public ProgressBar mProgressBar;
+    @BindView(R.id.tv_law_type) TextView mLawType;
+    @BindView(R.id.tv_law_name) TextView mLawName;
+    @BindView(R.id.tv_law_comments) TextView mLawComments;
+    @BindView(R.id.tv_law_responsible) TextView mLawResponsible;
+    @BindView(R.id.tv_law_solution) TextView mLawSolution;
+    @BindView(R.id.tv_law_stage) TextView mLawStage;
+    @BindView(R.id.tv_law_phase) TextView mLawPhase;
+    @BindView(R.id.tv_law_coexeccomittees) TextView mLawCoexecComittees;
+    @BindView(R.id.tv_law_profilecomittees)TextView mLawProgileComittees;
+    @BindView(R.id.tv_law_deputies) TextView mLawDeputies;
+    @BindView(R.id.tv_law_departments) TextView mLawDepartments;
+    @BindView(R.id.layout_comments) LinearLayout mLayoutComments;
+    @BindView(R.id.layout_phase) LinearLayout mLayoutPhase;
+    @BindView(R.id.layout_stage) LinearLayout mLayoutStage;
+    @BindView(R.id.layout_responsible) LinearLayout mLayoutResponsible;
+    @BindView(R.id.layout_solution) LinearLayout mLayoutSolution;
+    @BindView(R.id.layout_coexeccomittees) LinearLayout mLayoutCoexecComittees;
+    @BindView(R.id.layout_profilecomittees) LinearLayout mLayoutProfileComittees;
+    @BindView(R.id.layout_deputies) LinearLayout mLayoutDeputies;
+    @BindView(R.id.layout_departments) LinearLayout mLayoutDepartments;
+    @BindView(R.id.fab) FloatingActionButton mFab;
+    @BindView(R.id.progressBar) ProgressBar mProgressBar;
 
     private String mStage;
     private String mPhase;
@@ -128,16 +88,11 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lawdetails);
-
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.lawdetails_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setDisplayShowHomeEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (UiUtils.isLargeLandscape(this)) {
             finish();
@@ -154,8 +109,7 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
         } else {
             mLaw = savedInstanceState.getParcelable(KEY_LAW);
         }
-        if (mLaw == null)
-            finish();
+        if (mLaw == null) finish();
 
         mLawType.setText(mLaw.type);
         mLawName.setText(mLaw.getLawNameWithNumberAndDate());
@@ -166,34 +120,7 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-
-                final StringBuilder message = new StringBuilder();
-
-                message.append(mLaw.type);
-                message.append("\n");
-                message.append(mLaw.getLawNameWithNumberAndDate());
-                message.append("\n");
-                if (mLaw.comments != null && !mLaw.comments.isEmpty()) {
-                    message.append(getResources().getString(R.string.text_comment));
-                    message.append(mLaw.comments);
-                    message.append("\n");
-                }
-                if (mLaw.lastEventSolution != null && !mLaw.lastEventSolution.isEmpty()){
-                    message.append(getResources().getString(R.string.text_solution));
-                    message.append(mLaw.lastEventSolution);
-                    message.append("\n");
-                }
-                if (mLaw.responsibleName != null && !mLaw.responsibleName.isEmpty()){
-                    message.append(getResources().getString(R.string.text_resp_comittee));
-                    message.append(mLaw.responsibleName);
-                    message.append("\n");
-                }
-                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
-
-                sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
+                mPresenter.onSharedClicked(mLaw);
             }
         });
 
@@ -212,50 +139,30 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (mPresenter != null) {
-            mPresenter.onStop();
-        }
+    public void onPause() {
+        super.onPause();
+        mPresenter.onStop();
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (mPresenter != null && mLaw != null) {
-            mPresenter.onStart(this);
-            mPresenter.load(mLaw);
-        }
+    public void onResume() {
+        super.onResume();
+        mPresenter.onStart(this);
+        mPresenter.load(mLaw);
     }
 
     @Override
     public void showMessage(int resId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
     }
 
     @Override
     public void hideProgress() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mProgressBar.setVisibility(View.GONE);
-            }
-        });
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showProgress() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mProgressBar.setVisibility(View.VISIBLE);
-            }
-        });
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void showAdditionalData(){
@@ -270,35 +177,63 @@ public class LawDetailsActivity extends AppCompatActivity implements LawDetailsV
 
     @Override
     public void showData(final HashMap<String, String> result) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStage = result.get(LawDetailsInteractorImpl.KEY_STAGE);
-                mPhase = result.get(LawDetailsInteractorImpl.KEY_PHASE);
-                mProfile = result.get(LawDetailsInteractorImpl.KEY_PROFILE);
-                mCoexec = result.get(LawDetailsInteractorImpl.KEY_COEXEC);
-                mDdeputies = result.get(LawDetailsInteractorImpl.KEY_DEPUTIES);
-                mDepartments = result.get(LawDetailsInteractorImpl.KEY_DEPARTMENTS);
+        mStage = result.get(LawDetailsInteractorImpl.KEY_STAGE);
+        mPhase = result.get(LawDetailsInteractorImpl.KEY_PHASE);
+        mProfile = result.get(LawDetailsInteractorImpl.KEY_PROFILE);
+        mCoexec = result.get(LawDetailsInteractorImpl.KEY_COEXEC);
+        mDdeputies = result.get(LawDetailsInteractorImpl.KEY_DEPUTIES);
+        mDepartments = result.get(LawDetailsInteractorImpl.KEY_DEPARTMENTS);
 
-                showAdditionalData();
-            }
-        });
+        showAdditionalData();
     }
 
     @Override
     public void showEmptyData() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStage = "";
-                mPhase = "";
-                mProfile = "";
-                mCoexec = "";
-                mDdeputies = "";
-                mDepartments = "";
+        mStage = "";
+        mPhase = "";
+        mProfile = "";
+        mCoexec = "";
+        mDdeputies = "";
+        mDepartments = "";
 
-                showAdditionalData();
-            }
-        });
+        showAdditionalData();
+    }
+
+    @Override
+    public void share(Law law) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+
+        final StringBuilder message = new StringBuilder();
+
+        message.append(law.type);
+        message.append("\n");
+        message.append(law.getLawNameWithNumberAndDate());
+        message.append("\n");
+        if (law.comments != null && !law.comments.isEmpty()) {
+            message.append(getResources().getString(R.string.text_comment));
+            message.append(law.comments);
+            message.append("\n");
+        }
+        if (law.lastEventSolution != null && !law.lastEventSolution.isEmpty()){
+            message.append(getResources().getString(R.string.text_solution));
+            message.append(law.lastEventSolution);
+            message.append("\n");
+        }
+        if (law.responsibleName != null && !law.responsibleName.isEmpty()){
+            message.append(getResources().getString(R.string.text_resp_comittee));
+            message.append(law.responsibleName);
+            message.append("\n");
+        }
+        sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
+    }
+
+    public static void startScreen(Context context, Law law) {
+        Intent activityIntent = new Intent(context, LawDetailsActivity.class);
+        activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
+        context.startActivity(activityIntent);
     }
 }

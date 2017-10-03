@@ -2,33 +2,25 @@ package ru.merkulyevsasha.gosduma.domain;
 
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.LawsRepository;
 import ru.merkulyevsasha.gosduma.models.Law;
 
 public class LawsInteractorImpl implements LawsInteractor {
 
-    private LawsRepository repo;
-    private ExecutorService executor;
+    private final LawsRepository repo;
+    private final Scheduler scheduler;
 
-    public LawsInteractorImpl(ExecutorService executor, LawsRepository repo){
+    public LawsInteractorImpl(LawsRepository repo, Scheduler scheduler){
         this.repo = repo;
-        this.executor = executor;
+        this.scheduler = scheduler;
     }
 
     @Override
-    public void loadLaws(final String searchText, final String orderBy, final LawsCallback callback) {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<Law> items = repo.getLaws(searchText, orderBy);
-                    callback.success(items);
-                } catch(Exception e){
-                    callback.failure(e);
-                }
-            }
-        });
+    public Single<List<Law>> getLaws(String searchText, String orderBy) {
+        return repo.getLaws2(searchText, orderBy)
+                .subscribeOn(scheduler);
     }
 }

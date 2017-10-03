@@ -191,6 +191,11 @@ public class LawDetailsFragment extends Fragment implements LawDetailsView{
         }
     }
 
+    @Override
+    public void share(Law law) {
+
+    }
+
 //
 //
 //    private String joinCodifiers(List<Codifier> list){

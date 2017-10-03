@@ -1,9 +1,11 @@
 package ru.merkulyevsasha.gosduma.presentation;
 
 
+import android.support.annotation.StringRes;
+
 public interface MvpView {
 
-    void showMessage(int resId);
+    void showMessage(@StringRes int resId);
 
     void hideProgress();
     void showProgress();

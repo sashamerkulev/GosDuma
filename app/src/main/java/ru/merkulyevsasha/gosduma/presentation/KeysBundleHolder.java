@@ -12,6 +12,7 @@ public final class KeysBundleHolder {
     public final static String KEY_DEPUTY = "DEPUTY";
     public final static String KEY_POSITION = "POSITION";
     public final static String KEY_MENUITEMSVISIBLE = "MENUITEMSVISIBLE";
+    public final static String KEY_EXPANDED = "APPBAR_EXPANDED";
 
     public final static String KEY_DEPUTY_ID = "DEPUTY_ID";
 

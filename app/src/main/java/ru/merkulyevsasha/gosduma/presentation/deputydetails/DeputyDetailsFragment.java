@@ -21,7 +21,7 @@ import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsRecyclerViewAdapter;
+import ru.merkulyevsasha.gosduma.presentation.commons.LawsRecyclerViewAdapter;
 import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
 
 
@@ -76,9 +76,14 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
         mFractionName.setText(mDeputy.fractionName);
         mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);
 
-        RecyclerView mRecyclerView = (RecyclerView)v.findViewById(R.id.recyclerview_laws);
+        RecyclerView mRecyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
 
-        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), (LawsView.OnLawClickListener) getActivity());
+        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), new LawsRecyclerViewAdapter.OnLawClickListener() {
+            @Override
+            public void onLawClick(Law law) {
+
+            }
+        });
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -111,10 +116,9 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mAdapter.mItems = items;
-                    mAdapter.notifyDataSetChanged();
-//                    mRecyclerView.setVisibility(View.VISIBLE);
-//                    mEmptyLayout.setVisibility(View.GONE);
+                    mAdapter.setItems(items);
+//                    recyclerView.setVisibility(View.VISIBLE);
+//                    emptyLayout.setVisibility(View.GONE);
                 }
             });
         }
@@ -126,11 +130,26 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    mRecyclerView.setVisibility(View.GONE);
-//                    mEmptyLayout.setVisibility(View.VISIBLE);
+//                    recyclerView.setVisibility(View.GONE);
+//                    emptyLayout.setVisibility(View.VISIBLE);
                 }
             });
         }
+    }
+
+    @Override
+    public void showLawDetailsScreen(Law law) {
+
+    }
+
+    @Override
+    public void share(Deputy deputy) {
+
+    }
+
+    @Override
+    public void showSortDialog(int currentItemIndex) {
+
     }
 
     @Override

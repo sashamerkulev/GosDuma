@@ -2,16 +2,15 @@ package ru.merkulyevsasha.gosduma.presentation.deputies;
 
 
 import android.content.Context;
-import android.os.Bundle;
 
-import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputiesInteractor;
@@ -66,100 +65,52 @@ public class DeputiesPresenter implements MvpPresenter {
         mFilterDeputyValues.put(MEMBER_INDEX, context.getResources().getString(R.string.text_member_sf));
     }
 
-    public int getSortDialogType() {
-        return DialogHelper.IDD_DEPUTY_SORT;
-    }
-
-    public int getFilterDialogType() {
-        return DialogHelper.IDD_DEPUTY_FILTER;
-    }
-
-    public int getCurrentSortIndexValue(){
-        return mSort;
-    }
-
-    public boolean isSortMenuVisible() {
-        return true;
-    }
-
-    public List<Integer> getCurrentFilterIndexValue(){
+    private List<Integer> getCurrentFilterIndexValue(){
         List<Integer> result = new ArrayList<>();
         result.add(mFilterDeputy);
         result.add(mFilterWorking);
         return result;
     }
 
-    public boolean isFilterMenuVisible() {
-        return true;
-    }
-
-    public void search(String searchText) {
+    private void search(String searchText) {
         mSearchText = searchText;
         load();
     }
 
-    public void sort(int oldSort, int sort){
+    void sort(int oldSort, int sort){
         mSort = sort;
         mSortDirection = DatabaseHelper.getSortDirection(oldSort, mSort, mSortDirection);
         load();
     }
 
-    public void filter(List<Integer> filter){
+    void filter(List<Integer> filter){
         mFilterDeputy = filter.get(0);
         mFilterWorking = filter.get(1);
         load();
     }
 
-    public void load(){
-        inter.loadDeputies(mSearchText, mSortColumn.get(mSort) + mSortDirection,
-                mFilterDeputyValues.get(mFilterDeputy), mFilterWorking, new DeputiesInteractor.DeputiesCallback() {
+    void load(){
+        if (view ==null) return;
+        view.showProgress();
+        inter.getDeputies(mSearchText, mSortColumn.get(mSort) + mSortDirection, mFilterDeputyValues.get(mFilterDeputy), mFilterWorking)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Deputy>>() {
                     @Override
-                    public void success(List<Deputy> items) {
-                        if (view == null)
-                            return;
-
+                    public void accept(@NonNull List<Deputy> deputies) throws Exception {
+                        if (view == null) return;
                         view.hideProgress();
-                        if (items.size() > 0) {
-                            view.showData(items);
-                        } else {
-                            view.showDataEmptyMessage();
-                        }
+                        if (deputies.size() > 0) view.showData(deputies);
+                        else view.showDataEmptyMessage();
+                        view.prepareToSearch(mSearchText);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void failure(Exception e) {
-                        FirebaseCrash.report(e);
-
-                        if (view == null)
-                            return;
-
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (view == null) return;
                         view.hideProgress();
-                        view.showDataEmptyMessage();
+                        view.showMessage(R.string.error_loading_news_message);
                     }
                 });
-    }
-
-    public Bundle getState(){
-        Bundle state = new Bundle();
-
-        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
-        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
-        state.putInt(KeysBundleHolder.KEY_CURRENT_FILTERDEPUTY_VALUE, mFilterDeputy);
-        state.putInt(KeysBundleHolder.KEY_CURRENT_FILTERWORKING_VALUE, mFilterWorking);
-        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
-
-        return state;
-    }
-
-    public void restoreState(Bundle outState){
-
-        if (outState != null){
-            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
-            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
-            mFilterDeputy = outState.getInt(KeysBundleHolder.KEY_CURRENT_FILTERDEPUTY_VALUE);
-            mFilterWorking = outState.getInt(KeysBundleHolder.KEY_CURRENT_FILTERWORKING_VALUE);
-            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
-        }
     }
 
     @Override
@@ -170,5 +121,36 @@ public class DeputiesPresenter implements MvpPresenter {
     @Override
     public void onStop() {
         view = null;
+    }
+
+    void onDeputyClicked(Deputy deputy) {
+        if (view == null) return;
+        view.showDeputyDetailsScreen(deputy);
+    }
+
+    void onSortItemClicked() {
+        if (view == null) return;
+        view.showSortDialog(mSort);
+    }
+
+    void onFilterItemClicked() {
+        if (view == null) return;
+        view.showFilterDialog(getCurrentFilterIndexValue());
+    }
+
+    void onSearchTextSubmitted(String query) {
+        if (view == null) return;
+        if (query == null || query.isEmpty()) load();
+        else {
+            if (query.length() < 3) view.showMessage(R.string.search_lvalidation_message);
+            else search(query);
+        }
+    }
+
+    void onSearchTextChanged(String newText) {
+        if ((newText == null || newText.isEmpty()) && !mSearchText.isEmpty()){
+            mSearchText = newText;
+            load();
+        }
     }
 }

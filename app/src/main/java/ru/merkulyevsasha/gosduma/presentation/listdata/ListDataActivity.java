@@ -1,22 +1,32 @@
 package ru.merkulyevsasha.gosduma.presentation.listdata;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
@@ -27,52 +37,52 @@ import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
 public class ListDataActivity extends AppCompatActivity implements ListDataView {
 
-    private final HashMap<Integer, String> mListDataTableName = new HashMap<>();
-
-    private ListViewListDataAdapter mAdapter;
+    @BindView(R.id.list_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.listview_listdata)
+    ListView listView;
+    @BindView(R.id.adView)
+    AdView adView;
 
     @Inject
-    ListDataPresenter presenter;
+    ListDataPresenter pres;
+
+    private final HashMap<Integer, String> listDataTableName = new HashMap<>();
 
     private int menuId;
+    private ListViewListDataAdapter adapter;
 
-    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        ButterKnife.bind(this);
 
         GosDumaApp.getComponent().inject(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.list_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setDisplayShowHomeEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
         menuId = intent.getIntExtra(KeysBundleHolder.KEY_ID, 0);
         final String name = intent.getStringExtra(KeysBundleHolder.KEY_NAME);
         setTitle(name);
 
-        mListDataTableName.put(R.id.nav_comittee, DatabaseHelper.COMMITTEE_TABLE_NAME);
-        mListDataTableName.put(R.id.nav_blocks, DatabaseHelper.BLOCKS_TABLE_NAME);
-        mListDataTableName.put(R.id.nav_otras, DatabaseHelper.OTRAS_TABLE_NAME);
-        mListDataTableName.put(R.id.nav_reg, DatabaseHelper.REG_TABLE_NAME);
-        mListDataTableName.put(R.id.nav_fed, DatabaseHelper.FED_TABLE_NAME);
-        mListDataTableName.put(R.id.nav_stad, DatabaseHelper.STAD_TABLE_NAME);
-        mListDataTableName.put(R.id.nav_inst, DatabaseHelper.INST_TABLE_NAME);
+        listDataTableName.put(R.id.nav_comittee, DatabaseHelper.COMMITTEE_TABLE_NAME);
+        listDataTableName.put(R.id.nav_blocks, DatabaseHelper.BLOCKS_TABLE_NAME);
+        listDataTableName.put(R.id.nav_otras, DatabaseHelper.OTRAS_TABLE_NAME);
+        listDataTableName.put(R.id.nav_reg, DatabaseHelper.REG_TABLE_NAME);
+        listDataTableName.put(R.id.nav_fed, DatabaseHelper.FED_TABLE_NAME);
+        listDataTableName.put(R.id.nav_stad, DatabaseHelper.STAD_TABLE_NAME);
+        listDataTableName.put(R.id.nav_inst, DatabaseHelper.INST_TABLE_NAME);
 
-        ListView mListView = (ListView) findViewById(R.id.listview_listdata);
-        mAdapter = new ListViewListDataAdapter(this, new ArrayList<ListData>());
-        mListView.setAdapter(mAdapter);
+        adapter = new ListViewListDataAdapter(this, new ArrayList<ListData>());
+        listView.setAdapter(adapter);
 
-        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = AdRequestHelper.getAdRequest();
-        mAdView.loadAd(adRequest);
+        adView.loadAd(adRequest);
 
     }
 
@@ -89,48 +99,34 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (presenter != null){
-            presenter.onStop();
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (presenter != null){
-            presenter.onStart(this);
-            presenter.load(mListDataTableName.get(menuId));
-        }
-    }
-
-    @Override
     public void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
+        if (adView != null) {
+            adView.pause();
         }
+        pres.onStop();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
+        if (adView != null) {
+            adView.resume();
         }
+        pres.onStart(this);
+        pres.load(listDataTableName.get(menuId));
     }
 
     @Override
     public void onDestroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
+        if (adView != null) {
+            adView.destroy();
         }
         super.onDestroy();
     }
 
     @Override
-    public void showMessage(int resId) {
+    public void showMessage(@StringRes int resId) {
 
     }
 
@@ -149,10 +145,55 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mAdapter.clear();
-                mAdapter.addAll(items);
-                mAdapter.notifyDataSetChanged();
+                adapter.setItems(items);
             }
         });
-   }
+    }
+
+    private class ListViewListDataAdapter extends ArrayAdapter<ListData> {
+
+        private final List<ListData> mItems;
+        private final LayoutInflater mInflater;
+
+        ListViewListDataAdapter(Context context, List<ListData> items) {
+            super(context, R.layout.listview_newsitem, items);
+
+            mItems = items;
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public void clear() {
+            super.clear();
+        }
+
+        @Override
+        public void addAll(@NonNull Collection<? extends ListData> collection) {
+            super.addAll(collection);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.listview_newsitem, parent, false);
+                convertView.setTag(convertView.findViewById(R.id.textview_topic));
+            }
+            TextView textViewTopic = (TextView) convertView.getTag();
+
+            ListData item = mItems.get(position);
+
+            textViewTopic.setText(item.name);
+
+            return convertView;
+        }
+
+        public void setItems(List<ListData> items) {
+            mItems.clear();
+            mItems.addAll(items);
+            notifyDataSetChanged();
+        }
+    }
+
 }

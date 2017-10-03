@@ -1,13 +1,17 @@
 package ru.merkulyevsasha.gosduma.domain;
 
 
-import java.util.ArrayList;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import ru.merkulyevsasha.gosduma.R;
@@ -18,12 +22,16 @@ import ru.merkulyevsasha.gosduma.models.News;
 
 public class NewsServiceInteractorImpl implements NewsServiceInteractor {
 
-    private HashMap<Integer, Integer> newsIds;
-    private NewsRepository repo;
+    private final HashMap<Integer, Integer> newsIds;
+    private final NewsRepository repo;
+    private final NewsInteractor news;
+    private final Scheduler scheduler;
 
-    public NewsServiceInteractorImpl(NewsRepository repo){
+    public NewsServiceInteractorImpl(NewsRepository repo, NewsInteractor news, Scheduler scheduler) {
 
         this.repo = repo;
+        this.news = news;
+        this.scheduler = scheduler;
 
         newsIds = new HashMap<>();
         newsIds.put(R.id.nav_news_gd, R.string.menu_news_gd);
@@ -35,85 +43,68 @@ public class NewsServiceInteractorImpl implements NewsServiceInteractor {
 
     }
 
-    protected Call<ResponseBody> getCallResponseBody(int key) {
-        Call<ResponseBody> resp = null;
-        if (key == R.id.nav_news_gd) {
-            resp = repo.gosduma();
-        } else if (key == R.id.nav_news_preds) {
-            resp = repo.chairman();
-        } else if (key == R.id.nav_akt_pres) {
-            resp = repo.aktPresident();
-        } else if (key == R.id.nav_akt_gover) {
-            resp = repo.aktGoverment();
-        } else if (key == R.id.nav_akt_sf) {
-            resp = repo.aktSovetfed();
-        } else if (key == R.id.nav_akt_gd) {
-            resp = repo.aktGosduma();
-        }
-        return resp;
-    }
-
     @Override
-    public List<News> getNotificationNews(){
-        List<News> result = new ArrayList<>();
-        RssParser parser = new RssParser();
+    public Single<News> getNotificationNews2() {
+        return Single.fromPublisher(new Publisher<News>() {
+            @Override
+            public void subscribe(Subscriber<? super News> subscriber) {
 
-        for (Map.Entry<Integer, Integer> entry : newsIds.entrySet()) {
+                RssParser parser = new RssParser();
+                int id = 1;
+                for (Map.Entry<Integer, Integer> entry : newsIds.entrySet()) {
 
-            try {
-                Call<ResponseBody> resp = getCallResponseBody(entry.getKey());
-                if (resp == null)
-                    continue;
+                    try {
+                        Call<ResponseBody> resp = news.getCallResponseBody(entry.getKey());
+                        if (resp == null)
+                            continue;
 
-                List<Article> dbNews = repo.getArticles(entry.getKey());
+                        ResponseBody body = resp.execute().body();
+                        List<Article> netNews = parser.parseXml(body.string());
+                        if (netNews.size() == 0) continue;
 
-                ResponseBody body = resp.execute().body();
+                        List<Article> dbNews = repo.getArticles(entry.getKey());
+                        repo.saveToCache(entry.getKey(), netNews);
 
-                List<Article> netNews = parser.parseXml(body.string());
-                repo.saveToCache(entry.getKey(), netNews);
+                        if (dbNews.size() == 0) {
+                            News news = new News();
+                            news.setNavId(id++);
+                            news.setTitleId(newsIds.get(entry.getKey()));
+                            news.setName(netNews.get(0).Title);
+                            subscriber.onNext(news);
+                            continue;
+                        }
 
-                Collections.sort(dbNews, new Comparator<Article>() {
-                    @Override
-                    public int compare(Article o1, Article o2) {
-                        return o1.PubDate.compareTo(o2.PubDate);
+                        Collections.sort(dbNews, new Comparator<Article>() {
+                            @Override
+                            public int compare(Article o1, Article o2) {
+                                return o1.PubDate.compareTo(o2.PubDate);
+                            }
+                        });
+
+                        Collections.sort(netNews, new Comparator<Article>() {
+                            @Override
+                            public int compare(Article o1, Article o2) {
+                                return o1.PubDate.compareTo(o2.PubDate);
+                            }
+                        });
+
+                        Article lastNetItem = netNews.get(netNews.size() - 1);
+                        Article lastDbItem = dbNews.get(dbNews.size() - 1);
+                        if (lastDbItem.PubDate.before(lastNetItem.PubDate)) {
+                            News news = new News();
+                            news.setNavId(id++);
+                            news.setTitleId(newsIds.get(entry.getKey()));
+                            news.setName(lastNetItem.Title);
+                            subscriber.onNext(news);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
 
-                Collections.sort(netNews, new Comparator<Article>() {
-                    @Override
-                    public int compare(Article o1, Article o2) {
-                        return o1.PubDate.compareTo(o2.PubDate);
-                    }
-                });
-
-                Article lastNetItem = netNews.get(netNews.size() - 1);
-                if (dbNews.size() == 0){
-                    News news = new News();
-                    news.setNavId(entry.getKey());
-                    news.setTitleId(newsIds.get(entry.getKey()));
-                    news.setName(lastNetItem.Title);
-                    result.add(news);
-                } else {
-
-                    Article lastDbItem = dbNews.get(dbNews.size() - 1);
-
-                    if (lastDbItem.PubDate.before(lastNetItem.PubDate)) {
-                        News news = new News();
-                        news.setNavId(entry.getKey());
-                        news.setTitleId(newsIds.get(entry.getKey()));
-                        news.setName(lastNetItem.Title);
-                        result.add(news);
-                    }
                 }
-            } catch(Exception e){
-                System.out.println("getNotificationNews: exception:"+e.getMessage());
-                e.printStackTrace();
+                subscriber.onComplete();
             }
-
-        }
-
-
-        return result;
+        }).observeOn(scheduler);
     }
 
 }

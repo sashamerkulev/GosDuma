@@ -1,9 +1,12 @@
 package ru.merkulyevsasha.gosduma.presentation.news;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
 import ru.merkulyevsasha.gosduma.models.Article;
@@ -13,9 +16,8 @@ import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 public class NewsPresenter implements MvpPresenter {
 
+    private final NewsInteractor inter;
     private NewsView view;
-
-    private NewsInteractor inter;
 
     public NewsPresenter(NewsInteractor inter){
         this.inter = inter;
@@ -31,67 +33,63 @@ public class NewsPresenter implements MvpPresenter {
         view = null;
     }
 
-    public void refresh(int id){
+    void refresh(int id){
+        if (view == null) return;
         view.showProgress();
-        inter.loadNews(id, new NewsInteractor.NewsCallback() {
-            @Override
-            public void success(List<Article> articles) {
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                view.showNews(articles);
-            }
-
-            @Override
-            public void failure(Exception e) {
-                FirebaseCrash.report(e);
-
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                view.showMessage(R.string.error_loading_news_message);
-            }
-        });
+        inter.getNews(id).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Article>>() {
+                    @Override
+                    public void accept(@NonNull List<Article> articles) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showNews(articles);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showMessage(R.string.error_loading_news_message);
+                    }
+                });
     }
 
     public void load(final int id){
+        if (view == null) return;
         view.showProgress();
-        inter.loadArticles(id, new NewsInteractor.NewsCallback() {
-            @Override
-            public void success(List<Article> articles) {
-                if (view == null)
-                    return;
+        inter.getArticles(id).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Article>>() {
+                    @Override
+                    public void accept(@NonNull List<Article> articles) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        if (articles.size() > 0){
+                            view.showNews(articles);
+                        } else {
+                            refresh(id);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showMessage(R.string.error_loading_news_message);
+                    }
+                });
+    }
 
-                view.hideProgress();
-
-                if (articles.size() > 0){
-                    view.showNews(articles);
-                } else {
-                    refresh(id);
-                }
+    void onItemClicked(Article item, InterstitialAd interstitialAd) {
+        if (view == null) return;
+        view.showDetailsItem(item);
+        if (inter.canShowInterstitialAd()) {
+            if (interstitialAd != null && interstitialAd.isLoaded()) {
+                inter.resetCounter();
+                interstitialAd.show();
             }
-
-            @Override
-            public void failure(Exception e) {
-                view.hideProgress();
-                view.showMessage(R.string.error_loading_news_message);
-            }
-        });
+        } else {
+            inter.incrementCounter();
+        }
 
     }
-
-    public boolean canShowIntersititalAd(){
-        return inter.canShowInterstitialAd();
-    }
-
-    public void resetCounter(){
-        inter.resetCounter();
-    }
-
-    public void incrementCounter(){
-        inter.incrementCounter();
-    }
-
 }

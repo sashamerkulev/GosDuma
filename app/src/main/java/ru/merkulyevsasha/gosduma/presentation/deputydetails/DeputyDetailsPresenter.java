@@ -1,20 +1,21 @@
 package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 
-import android.os.Bundle;
 
-import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.HashMap;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputyDetailsInteractor;
+import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
 import ru.merkulyevsasha.gosduma.presentation.MvpView;
-import ru.merkulyevsasha.gosduma.helpers.DialogHelper;
 
 
 public class DeputyDetailsPresenter implements MvpPresenter {
@@ -24,11 +25,11 @@ public class DeputyDetailsPresenter implements MvpPresenter {
     private final static int DATE_INDEX = 2;
 
     private int mDeputyId;
-    protected HashMap<Integer, String> mSortColumn;
+    private HashMap<Integer, String> mSortColumn;
 
-    protected int mSort;
-    protected String mSortDirection;
-    protected String mSearchText;
+    private int mSort;
+    private String mSortDirection;
+    private String mSearchText;
 
     private DeputyDetailsView view;
 
@@ -49,67 +50,59 @@ public class DeputyDetailsPresenter implements MvpPresenter {
         mSortColumn.put(DATE_INDEX, "l.introductionDate");
     }
 
-    public void search(String searchText) {
+    void onSearchTextSubmitted(String searchText) {
         mSearchText = searchText;
         load(mDeputyId);
     }
 
-    public void sort(int oldSort, int sort) {
+    void sort(int oldSort, int sort) {
         mSort = sort;
         mSortDirection = DatabaseHelper.getSortDirection(oldSort, mSort, mSortDirection);
         load(mDeputyId);
     }
 
-    public void load(int deputyId){
+    void load(int deputyId){
         mDeputyId = deputyId;
         view.showProgress();
-        inter.loadDeputyLaws(deputyId, mSearchText, mSortColumn.get(mSort) + mSortDirection, new DeputyDetailsInteractor.DeputyDetailsCallback() {
-            @Override
-            public void success(List<Law> items) {
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                if (items.size() > 0) {
-                    view.showData(items);
-                } else {
-                    view.showDataEmptyMessage();
-                }
-            }
-
-            @Override
-            public void failure(Exception e) {
-                FirebaseCrash.report(e);
-
-                if (view == null)
-                    return;
-
-                view.hideProgress();
-                view.showDataEmptyMessage();
-                //view.showMessage();
-            }
-        });
+        inter.getDeputyLaws(deputyId, mSearchText, mSortColumn.get(mSort) + mSortDirection)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Law>>() {
+                    @Override
+                    public void accept(@NonNull List<Law> laws) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        if (laws.size() > 0) view.showData(laws);
+                        else view.showDataEmptyMessage();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        if (view == null) return;
+                        view.hideProgress();
+                        view.showMessage(R.string.error_loading_news_message);
+                    }
+                });
     }
 
-    public Bundle getState() {
-        Bundle state = new Bundle();
-
-        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
-        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
-        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
-
-        state.putInt(KeysBundleHolder.KEY_DEPUTY_ID, mDeputyId);
-        return state;
-    }
-
-    public void restoreState(Bundle outState) {
-        if (outState != null){
-            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
-            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
-            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
-            mDeputyId = outState.getInt(KeysBundleHolder.KEY_DEPUTY_ID);
-        }
-    }
+//    public Bundle getState() {
+//        Bundle state = new Bundle();
+//
+//        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
+//        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
+//        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
+//
+//        state.putInt(KeysBundleHolder.KEY_DEPUTY_ID, mDeputyId);
+//        return state;
+//    }
+//
+//    public void restoreState(Bundle outState) {
+//        if (outState != null){
+//            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
+//            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
+//            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
+//            mDeputyId = outState.getInt(KeysBundleHolder.KEY_DEPUTY_ID);
+//        }
+//    }
 
     @Override
     public void onStart(MvpView view) {
@@ -121,13 +114,25 @@ public class DeputyDetailsPresenter implements MvpPresenter {
         view = null;
     }
 
-    public int getSortDialogType() {
-        return DialogHelper.IDD_LAWS_SORT;
+    void onLawClicked(Law law) {
+        if (view == null) return;
+        view.showLawDetailsScreen(law);
     }
 
-    public int getCurrentSortIndexValue() {
-        return mSort;
+    void onSharedClicked(Deputy deputy) {
+        if (view == null) return;
+        view.share(deputy);
     }
 
+    void onSearchTextChanged(int deputyId, String newText) {
+        if (newText == null || newText.isEmpty()){
+            mSearchText = newText;
+            load(deputyId);
+        }
+    }
 
+    void onSortItemClicked() {
+        if (view == null) return;
+        view.showSortDialog(mSort);
+    }
 }

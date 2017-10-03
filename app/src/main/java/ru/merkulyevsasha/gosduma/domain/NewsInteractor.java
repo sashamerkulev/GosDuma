@@ -3,19 +3,17 @@ package ru.merkulyevsasha.gosduma.domain;
 
 import java.util.List;
 
+import io.reactivex.Single;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import ru.merkulyevsasha.gosduma.models.Article;
 
 public interface NewsInteractor {
 
-    interface NewsCallback{
+    Call<ResponseBody> getCallResponseBody(int key);
 
-        void success(List<Article> articles);
-        void failure(Exception e);
-
-    }
-
-    void loadArticles(int id, NewsCallback callback);
-    void loadNews(int id, NewsCallback callback);
+    Single<List<Article>> getArticles(int id);
+    Single<List<Article>> getNews(int id);
 
     boolean canShowInterstitialAd();
     void resetCounter();
