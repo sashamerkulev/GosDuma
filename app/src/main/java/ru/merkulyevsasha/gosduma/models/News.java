@@ -3,6 +3,7 @@ package ru.merkulyevsasha.gosduma.models;
 
 public class News {
 
+    private int notifId;
     private int navId;
     private int titleId;
     private String name;
@@ -29,5 +30,13 @@ public class News {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getNotifId() {
+        return notifId;
+    }
+
+    public void setNotifId(int notifId) {
+        this.notifId = notifId;
     }
 }

@@ -1,5 +1,6 @@
 package ru.merkulyevsasha.gosduma;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,19 +25,25 @@ public class SplashActivity extends AppCompatActivity {
     private final static int MAX_PROGRESS = 200;
     private final static int DB_VERSION = 3;
 
-    private ProgressBar mProgress;
-
+    private ProgressBar progress;
+    private CopyDbTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splashscreen);
-        mProgress = (ProgressBar) findViewById(R.id.splash_screen_progress_bar);
-        mProgress.setMax(MAX_PROGRESS);
+        progress = findViewById(R.id.splash_screen_progress_bar);
+        progress.setMax(MAX_PROGRESS);
 
-        CopyDbTask task = new CopyDbTask();
+        task = new CopyDbTask();
         task.execute();
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (task != null) task.cancel(false);
     }
 
     private void startApp(){
@@ -44,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class CopyDbTask extends AsyncTask<Void, Integer, Void> {
 
         @Override
@@ -105,14 +113,16 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            startApp();
-            finish();
+            if (!isCancelled()) {
+                startApp();
+                finish();
+            }
         }
 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            mProgress.setProgress(values[0]);
+            progress.setProgress(values[0]);
         }
     }
 

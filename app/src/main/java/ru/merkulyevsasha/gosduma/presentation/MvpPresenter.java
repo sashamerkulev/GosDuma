@@ -1,9 +1,16 @@
 package ru.merkulyevsasha.gosduma.presentation;
 
 
-public interface MvpPresenter {
+public class MvpPresenter<T extends MvpView> {
 
-    void onStart(MvpView view);
-    void onStop();
+    protected T view;
+
+    public void bind(T view){
+        this.view = view;
+    }
+
+    public void unbind(){
+        this.view = null;
+    }
 
 }

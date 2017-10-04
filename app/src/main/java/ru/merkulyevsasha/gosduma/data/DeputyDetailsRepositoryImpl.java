@@ -4,6 +4,8 @@ package ru.merkulyevsasha.gosduma.data;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
@@ -12,6 +14,7 @@ public class DeputyDetailsRepositoryImpl implements DeputyDetailsRepository{
 
     private DatabaseHelper db;
 
+    @Inject
     public DeputyDetailsRepositoryImpl(DatabaseHelper db){
         this.db = db;
     }

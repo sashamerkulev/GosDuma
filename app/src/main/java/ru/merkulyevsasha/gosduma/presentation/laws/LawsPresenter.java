@@ -2,8 +2,12 @@ package ru.merkulyevsasha.gosduma.presentation.laws;
 
 
 
+import android.annotation.SuppressLint;
+
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -13,23 +17,23 @@ import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.LawsInteractor;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class LawsPresenter implements MvpPresenter{
+public class LawsPresenter extends MvpPresenter<LawsView>{
 
-    final static int NAME_INDEX = 0;
-    final static int NUMBER_INDEX = 1;
-    final static int DATE_INDEX = 2;
+    private final static int NAME_INDEX = 0;
+    private final static int NUMBER_INDEX = 1;
+    private final static int DATE_INDEX = 2;
 
     private int mSort;
     private String mSortDirection;
     private String mSearchText;
     private HashMap<Integer, String> mSortColumn;
 
-    private LawsView view;
-    private LawsInteractor inter;
+    private final LawsInteractor inter;
 
+    @SuppressLint("UseSparseArrays")
+    @Inject
     public LawsPresenter(LawsInteractor inter) {
 
         this.inter = inter;
@@ -62,16 +66,6 @@ public class LawsPresenter implements MvpPresenter{
         mSort = sort;
         mSortDirection = DatabaseHelper.getSortDirection(oldSort, mSort, mSortDirection);
         load();
-    }
-
-    @Override
-    public void onStart(MvpView view) {
-        this.view = (LawsView)view;
-    }
-
-    @Override
-    public void onStop() {
-        view = null;
     }
 
     private void loadIfSearchTextExists(){
@@ -119,9 +113,10 @@ public class LawsPresenter implements MvpPresenter{
         }
     }
 
-    void onLawClicked(Law law) {
+    void onLawClicked(boolean activity, Law law) {
         if (view == null) return;
-        view.showLawDetailsScreen(law);
+        if (activity) view.showLawDetailsScreen(law);
+        else view.showLawDetailsFragment(law);
     }
 
 }

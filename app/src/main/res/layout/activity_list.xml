@@ -2,6 +2,8 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -14,7 +16,7 @@
         >
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/list_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -25,28 +27,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
+
+        <include layout="@layout/include_adview_banner" />
+
+        <ProgressBar
+            android:id="@+id/progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:adSize="BANNER"
-            app:adUnitId="@string/banner_ad_unit_id">
-        </com.google.android.gms.ads.AdView>
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 
         <ListView
+            android:id="@+id/listview_listdata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listview_listdata"
-            android:layout_marginTop="8dp"
-            >
-        </ListView>
+            />
 
     </LinearLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>
 

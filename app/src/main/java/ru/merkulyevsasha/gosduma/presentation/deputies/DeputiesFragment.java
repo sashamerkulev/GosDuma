@@ -1,14 +1,16 @@
 package ru.merkulyevsasha.gosduma.presentation.deputies;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +20,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -39,17 +40,23 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.HasSupportFragmentInjector;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.Deputy;
-import ru.merkulyevsasha.gosduma.presentation.DrawerToolbarCombinator;
+import ru.merkulyevsasha.gosduma.presentation.ToolbarCombinator;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.commons.AppbarScrollExpander;
 import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.deputydetails.DeputyDetailsFragment;
 
 
-public class DeputiesFragment extends Fragment implements DeputiesView {
+public class DeputiesFragment extends Fragment implements DeputiesView,
+        HasSupportFragmentInjector, HasActivityInjector {
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.layout_empty) LinearLayout emptyLayout;
@@ -61,15 +68,16 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
     @BindView(R.id.appbar_layout) AppBarLayout appbarLayout;
 
     @Inject DeputiesPresenter pres;
+    @Inject DispatchingAndroidInjector<Fragment> fragmentInjector;
+    @Inject DispatchingAndroidInjector<Activity> activityInjector;
+
 
     private View rootView;
-    private DrawerToolbarCombinator combinator;
+    private ToolbarCombinator combinator;
 
     private DeputiesRecyclerViewAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-    private MenuItem filterItem;
-    private MenuItem sortItem;
     private MenuItem searchItem;
     private SearchView searchView;
     private String searchText;
@@ -78,17 +86,18 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
     private int position;
     private boolean expanded;
 
+    private FrameLayout frameDetails;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DrawerToolbarCombinator) {
-            combinator = (DrawerToolbarCombinator) context;
+        if (context instanceof ToolbarCombinator) {
+            combinator = (ToolbarCombinator) context;
         }
-        GosDumaApp.getComponent().inject(this);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(@NonNull Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putInt(KeysBundleHolder.KEY_POSITION, layoutManager.findFirstVisibleItemPosition());
         outState.putBoolean(KeysBundleHolder.KEY_EXPANDED, appbarScrollExpander.getExpanded());
@@ -111,23 +120,25 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputies, container, false);
         ButterKnife.bind(this, rootView);
+        AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
-
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(layoutManager);
 
         appbarScrollExpander = new AppbarScrollExpander(recyclerView, appbarLayout);
         appbarScrollExpander.setExpanded(expanded);
         collapsToolbar.setTitleEnabled(false);
 
+        frameDetails = rootView.findViewById(R.id.frame_details);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new DeputiesRecyclerViewAdapter(getActivity(), new ArrayList<Deputy>(), new OnDeputyClickListener() {
             @Override
             public void onDeputyClick(Deputy deputy) {
-                pres.onDeputyClicked(deputy);
+                pres.onDeputyClicked(frameDetails !=null, deputy);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -145,7 +156,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
         inflater.inflate(R.menu.deputies_menu, menu);
 
         searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) searchItem.getActionView();
         if (searchText !=null && !searchText.isEmpty()){
             searchItem.expandActionView();
             searchView.setQuery(searchText, false);
@@ -165,24 +176,20 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
                 return false;
             }
         });
+    }
 
-        filterItem = menu.findItem(R.id.action_filter);
-        filterItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_filter:
                 pres.onFilterItemClicked();
-                return false;
-            }
-        });
-
-        sortItem = menu.findItem(R.id.action_sort);
-        sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+                return true;
+            case R.id.action_sort:
                 pres.onSortItemClicked();
-                return false;
-            }
-        });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -190,7 +197,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
         if (adView != null) {
             adView.pause();
         }
-        pres.onStop();
+        pres.unbind();
         super.onPause();
     }
 
@@ -200,7 +207,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
         if (adView != null) {
             adView.resume();
         }
-        pres.onStart(this);
+        pres.bind(this);
         pres.load();
         appbarLayout.setExpanded(expanded);
     }
@@ -225,6 +232,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
 
     @Override
     public void showData(final List<Deputy> items) {
+        if (frameDetails !=null) frameDetails.setVisibility(View.INVISIBLE);
         adapter.setItems(items);
         if (position> 0) layoutManager.scrollToPosition(position);
         recyclerView.setVisibility(View.VISIBLE);
@@ -239,27 +247,33 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
 
     @Override
     public void showDeputyDetailsScreen(Deputy deputy) {
-//        if (mFrameLayoutDetails != null){
-//            mFrameLayoutDetails.setVisibility(View.VISIBLE);
-//            Fragment fragment = DeputyDetailsFragment.newInstance(deputy);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment)
-//                    .addToBackStack(null).commit();
-//        } else {
         DeputyDetailsActivity.startScreen(getContext(), deputy);
-//        }
+    }
+
+    @Override
+    public void showDeputyDetailsFragment(Deputy deputy) {
+        frameDetails.setVisibility(View.VISIBLE);
+        Fragment fragment = DeputyDetailsFragment.newInstance(deputy, true);
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_details, fragment)
+                .commit();
+        if (frameDetails !=null) frameDetails.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showFilterDialog(List<Integer> filterSettings) {
+        //noinspection ConstantConditions
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.title_filter);
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_deputy_filter, null);
+        //noinspection ConstantConditions
+        @SuppressLint("InflateParams") View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_deputy_filter, null);
         builder.setView(view);
-        final RadioButton rb_deputy = (RadioButton)view.findViewById(R.id.radiobox_deputy_gd);
-        final RadioButton rb_member = (RadioButton)view.findViewById(R.id.radiobox_member);
-        final RadioButton rb_working = (RadioButton)view.findViewById(R.id.radiobox_working);
-        final RadioButton rb_not_working = (RadioButton)view.findViewById(R.id.radiobox_not_working);
+        final RadioButton rb_deputy = view.findViewById(R.id.radiobox_deputy_gd);
+        final RadioButton rb_member = view.findViewById(R.id.radiobox_member);
+        final RadioButton rb_working = view.findViewById(R.id.radiobox_working);
+        final RadioButton rb_not_working = view.findViewById(R.id.radiobox_not_working);
 
         final int deputy =  filterSettings.get(0);
 
@@ -303,6 +317,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
                 getResources().getString(R.string.item_sort_birtdate),
                 getResources().getString(R.string.item_sort_fractionname)};
 
+        //noinspection ConstantConditions
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.title_sort);
         builder.setSingleChoiceItems(sortItems, currentItemIndex,
@@ -331,11 +346,21 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
         progressBar.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return activityInjector;
+    }
+
     private interface OnDeputyClickListener{
         void onDeputyClick(Deputy deputy);
     }
 
-    private class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRecyclerViewAdapter.DeputiesViewHolder> {
+    class DeputiesRecyclerViewAdapter extends RecyclerView.Adapter<DeputiesRecyclerViewAdapter.DeputiesViewHolder> {
 
         private final List<Deputy> items;
 
@@ -366,9 +391,9 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
             holder.deputyName.setText(item.getNameWithBirthday());
             holder.deputyPosition.setText(item.getCurrentPosition());
 
-            if (!fractionRole.isEmpty()) {
+            if (fractionRole != null && !fractionRole.isEmpty()) {
                 holder.deputyFractionName.setVisibility(View.VISIBLE);
-                holder.deputyFractionName.setText(fractionRole + " (" + fractionName + ")");
+                holder.deputyFractionName.setText(String.format("%s (%s)", fractionRole, fractionName));
             } else {
                 holder.deputyFractionName.setVisibility(View.GONE);
             }
@@ -403,17 +428,14 @@ public class DeputiesFragment extends Fragment implements DeputiesView {
 
         class DeputiesViewHolder extends RecyclerView.ViewHolder{
 
-            final TextView deputyName;
-            final TextView deputyPosition;
-            final TextView deputyFractionName;
-            final ImageView photo;
+            @BindView(R.id.deputy_name) TextView deputyName;
+            @BindView(R.id.deputy_fraction_name) TextView deputyPosition;
+            @BindView(R.id.deputy_position) TextView deputyFractionName;
+            @BindView(R.id.imageview_photo) ImageView photo;
 
             DeputiesViewHolder(final View itemView) {
                 super(itemView);
-                deputyName = (TextView)itemView.findViewById(R.id.deputy_name);
-                deputyFractionName = (TextView)itemView.findViewById(R.id.deputy_fraction_name);
-                deputyPosition = (TextView)itemView.findViewById(R.id.deputy_position);
-                photo = (ImageView)itemView.findViewById(R.id.imageview_photo);
+                ButterKnife.bind(this, itemView);
             }
         }
 

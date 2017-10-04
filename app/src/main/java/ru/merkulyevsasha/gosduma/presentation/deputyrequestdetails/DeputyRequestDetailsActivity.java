@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,27 +19,13 @@ import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 
-import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayoutGone;
-
 
 public class DeputyRequestDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.appbar_layout) AppBarLayout appbarLayout;
-    @BindView(R.id.tv_deputyrequest_name) TextView mDeputyrequestName;
-    @BindView(R.id.tv_deputyrequest_initiator) TextView mDeputyrequestInitiator;
-    @BindView(R.id.tv_deputyrequest_answer) TextView mDeputyrequestAnswer;
-    @BindView(R.id.tv_deputyrequest_resolution) TextView mDeputyrequestResolution;
-    @BindView(R.id.tv_deputyrequest_signed) TextView mDeputyrequestSignedBy;
-    @BindView(R.id.tv_deputyrequest_addressee) TextView mDeputyrequestAddressee;
-    @BindView(R.id.layout_initiator) LinearLayout mInitiatorLayout;
-    @BindView(R.id.layout_answer) LinearLayout mAnswerLayout;
-    @BindView(R.id.layout_resolution) LinearLayout mResolutionLayout;
-    @BindView(R.id.layout_signed) LinearLayout mSignedLayout;
-    @BindView(R.id.layout_addressee) LinearLayout mAddresseeLayout;
-    @BindView(R.id.fab) FloatingActionButton mFab;
 
-    private DeputyRequest mDeputyRequest;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,56 +40,62 @@ public class DeputyRequestDetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
-        mDeputyRequest = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTYREQUEST);
-        if (mDeputyRequest == null) finish();
+        final DeputyRequest deputyRequest = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTYREQUEST);
+        if (deputyRequest == null) {
+            finish();
+            return;
+        }
+
+        Fragment fragment = DeputyRequestDetailsFragment.newInstance(deputyRequest);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.framelayout, fragment)
+                .commit();
 
         setTitle(R.string.menu_deputies_requests);
 
-        mDeputyrequestName.setText(mDeputyRequest.getNameWithNumberAndDate());
-
-        setTextToTextViewOrLayoutGone(mDeputyRequest.initiator, mDeputyrequestInitiator, mInitiatorLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.answer, mDeputyrequestAnswer, mAnswerLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.resolution, mDeputyrequestResolution, mResolutionLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.signedBy_name, mDeputyrequestSignedBy, mSignedLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.addressee_name, mDeputyrequestAddressee, mAddresseeLayout);
-
-        mFab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-
-                final StringBuilder message = new StringBuilder();
-
-                message.append(mDeputyRequest.getNameWithNumberAndDate());
-                message.append("\n");
-                if (mDeputyRequest.initiator!= null && !mDeputyRequest.initiator.isEmpty()){
-                    message.append(getString(R.string.text_initiator));
-                    message.append(mDeputyRequest.initiator);
-                    message.append("\n");
-                }
-                if (mDeputyRequest.answer!= null && !mDeputyRequest.answer.isEmpty()){
-                    message.append(getString(R.string.text_answer));
-                    message.append(mDeputyRequest.answer);
-                    message.append("\n");
-                }
-                if (mDeputyRequest.resolution!= null && !mDeputyRequest.resolution.isEmpty()){
-                    message.append(getString(R.string.text_resolution));
-                    message.append(mDeputyRequest.resolution);
-                    message.append("\n");
-                }
-
-                sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
-
-                sendIntent.setType("text/plain");
-                startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
+                share(deputyRequest);
             }
         });
 
+    }
+
+    private void share(DeputyRequest deputyRequest) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+
+        final StringBuilder message = new StringBuilder();
+
+        message.append(deputyRequest.getNameWithNumberAndDate());
+        message.append("\n");
+        if (deputyRequest.initiator!= null && !deputyRequest.initiator.isEmpty()){
+            message.append(getString(R.string.text_initiator));
+            message.append(deputyRequest.initiator);
+            message.append("\n");
+        }
+        if (deputyRequest.answer!= null && !deputyRequest.answer.isEmpty()){
+            message.append(getString(R.string.text_answer));
+            message.append(deputyRequest.answer);
+            message.append("\n");
+        }
+        if (deputyRequest.resolution!= null && !deputyRequest.resolution.isEmpty()){
+            message.append(getString(R.string.text_resolution));
+            message.append(deputyRequest.resolution);
+            message.append("\n");
+        }
+
+        sendIntent.putExtra(Intent.EXTRA_TEXT, message.toString());
+
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.share_using)));
     }
 
     @Override

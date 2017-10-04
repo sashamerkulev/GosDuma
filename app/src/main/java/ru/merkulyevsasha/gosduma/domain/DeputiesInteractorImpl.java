@@ -3,6 +3,8 @@ package ru.merkulyevsasha.gosduma.domain;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.DeputiesRepository;
@@ -13,6 +15,7 @@ public class DeputiesInteractorImpl implements DeputiesInteractor {
     private final DeputiesRepository repo;
     private final Scheduler scheduler;
 
+    @Inject
     public DeputiesInteractorImpl(DeputiesRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;

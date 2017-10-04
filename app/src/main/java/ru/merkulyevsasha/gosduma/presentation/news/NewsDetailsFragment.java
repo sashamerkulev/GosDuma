@@ -1,6 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.news;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,10 @@ public class NewsDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news_details, container, false);
         ButterKnife.bind(this, v);
-
+        if (getArguments() == null) return v;
         final String topic = getArguments().getString(KeysBundleHolder.KEY_TOPIC);
         final String description = getArguments().getString(KeysBundleHolder.KEY_DESCRIPTION);
 

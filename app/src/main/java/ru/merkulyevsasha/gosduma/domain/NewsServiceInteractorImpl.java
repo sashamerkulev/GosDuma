@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
@@ -27,6 +29,7 @@ public class NewsServiceInteractorImpl implements NewsServiceInteractor {
     private final NewsInteractor news;
     private final Scheduler scheduler;
 
+    @Inject
     public NewsServiceInteractorImpl(NewsRepository repo, NewsInteractor news, Scheduler scheduler) {
 
         this.repo = repo;
@@ -66,10 +69,12 @@ public class NewsServiceInteractorImpl implements NewsServiceInteractor {
                         repo.saveToCache(entry.getKey(), netNews);
 
                         if (dbNews.size() == 0) {
-                            News news = new News();
-                            news.setNavId(id++);
-                            news.setTitleId(newsIds.get(entry.getKey()));
-                            news.setName(netNews.get(0).Title);
+//                            News news = new News();
+//                            news.setNotifId(id++);
+//                            news.setNavId(entry.getKey());
+//                            news.setTitleId(newsIds.get(entry.getKey()));
+//                            news.setName(netNews.get(0).Title);
+                            News news = aaa(id++, entry.getKey(), netNews.get(0).Title, newsIds.get(entry.getKey()));
                             subscriber.onNext(news);
                             continue;
                         }
@@ -91,10 +96,12 @@ public class NewsServiceInteractorImpl implements NewsServiceInteractor {
                         Article lastNetItem = netNews.get(netNews.size() - 1);
                         Article lastDbItem = dbNews.get(dbNews.size() - 1);
                         if (lastDbItem.PubDate.before(lastNetItem.PubDate)) {
-                            News news = new News();
-                            news.setNavId(id++);
-                            news.setTitleId(newsIds.get(entry.getKey()));
-                            news.setName(lastNetItem.Title);
+//                            News news = new News();
+//                            news.setNotifId(id++);
+//                            news.setNavId(entry.getKey());
+//                            news.setTitleId(newsIds.get(entry.getKey()));
+//                            news.setName(lastNetItem.Title);
+                            News news = aaa(id++, entry.getKey(), lastNetItem.Title, newsIds.get(entry.getKey()));
                             subscriber.onNext(news);
                         }
                     } catch (Exception e) {
@@ -105,6 +112,15 @@ public class NewsServiceInteractorImpl implements NewsServiceInteractor {
                 subscriber.onComplete();
             }
         }).observeOn(scheduler);
+    }
+
+    private News aaa(int id, int newsid, String title, int titleId){
+        News news = new News();
+        news.setNotifId(id);
+        news.setNavId(newsid);
+        news.setTitleId(titleId);
+        news.setName(title);
+        return news;
     }
 
 }

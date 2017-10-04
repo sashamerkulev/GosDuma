@@ -16,4 +16,5 @@ public interface LawsView extends MvpView{
     void showSortDialog(int currentItemIndex);
 
     void showLawDetailsScreen(Law law);
+    void showLawDetailsFragment(Law law);
 }

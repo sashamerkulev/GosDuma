@@ -1,12 +1,15 @@
 package ru.merkulyevsasha.gosduma.presentation.deputies;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -16,10 +19,9 @@ import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputiesInteractor;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class DeputiesPresenter implements MvpPresenter {
+public class DeputiesPresenter extends MvpPresenter<DeputiesView> {
 
     private final static int NAME_INDEX = 0;
     private final static int BIRTHDATE_INDEX = 1;
@@ -30,8 +32,6 @@ public class DeputiesPresenter implements MvpPresenter {
     public final static int WORKING_INDEX = 1;
     public final static int NOT_WORKING_INDEX = 0;
 
-    private DeputiesView view;
-
     private final HashMap<Integer, String> mSortColumn;
     private final HashMap<Integer, String> mFilterDeputyValues;
 
@@ -41,8 +41,10 @@ public class DeputiesPresenter implements MvpPresenter {
     private int mFilterWorking;
     private String mSearchText;
 
-    private DeputiesInteractor inter;
+    private final DeputiesInteractor inter;
 
+    @SuppressLint("UseSparseArrays")
+    @Inject
     public DeputiesPresenter(Context context, DeputiesInteractor inter){
 
         this.inter = inter;
@@ -113,19 +115,10 @@ public class DeputiesPresenter implements MvpPresenter {
                 });
     }
 
-    @Override
-    public void onStart(MvpView view) {
-        this.view = (DeputiesView)view;
-    }
-
-    @Override
-    public void onStop() {
-        view = null;
-    }
-
-    void onDeputyClicked(Deputy deputy) {
+    void onDeputyClicked(boolean frameDetailsExists, Deputy deputy) {
         if (view == null) return;
-        view.showDeputyDetailsScreen(deputy);
+        if (frameDetailsExists) view.showDeputyDetailsFragment(deputy);
+        else view.showDeputyDetailsScreen(deputy);
     }
 
     void onSortItemClicked() {

@@ -13,15 +13,12 @@ import com.evernote.android.job.JobRequest;
 
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import io.reactivex.functions.Consumer;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
-import ru.merkulyevsasha.gosduma.presentation.main.MainActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.NewsServiceInteractor;
 import ru.merkulyevsasha.gosduma.models.News;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
+import ru.merkulyevsasha.gosduma.presentation.main.MainActivity;
 import ru.merkulyevsasha.gosduma.presentation.news.NewsActivity;
 
 
@@ -33,13 +30,9 @@ public class GDJob extends Job {
 
     private static final String TAG = GDJob.class.getName();
 
-    private static int lastJobId;
+    private final NewsServiceInteractor inter;
 
-    @Inject NewsServiceInteractor inter;
-
-    GDJob(){
-        GosDumaApp.getComponent().inject(this);
-    }
+    GDJob(NewsServiceInteractor inter){ this.inter = inter;}
 
     @NonNull
     @Override
@@ -47,7 +40,7 @@ public class GDJob extends Job {
         inter.getNotificationNews2().subscribe(new Consumer<News>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull News news) throws Exception {
-                sendNotification(getContext(), news.getNavId(), getContext().getString(news.getTitleId()), news.getName());
+                sendNotification(getContext(), news.getNotifId(), news.getNavId(), getContext().getString(news.getTitleId()), news.getName());
             }
         }, new Consumer<Throwable>() {
             @Override
@@ -59,7 +52,7 @@ public class GDJob extends Job {
     }
 
     public static void scheduleJob() {
-        lastJobId = new JobRequest.Builder(GDJob.TAG)
+        new JobRequest.Builder(GDJob.TAG)
                 .setPeriodic(TimeUnit.MINUTES.toMillis(60))
                 .setRequiresCharging(false)
                 .setRequiresDeviceIdle(false)
@@ -69,7 +62,7 @@ public class GDJob extends Job {
                 .schedule();
     }
 
-    public static void sendNotification(Context context, int id, String name, String news){
+    private void sendNotification(Context context, int notifId, int navId, String name, String news){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_notification)
@@ -78,7 +71,7 @@ public class GDJob extends Job {
                         .setAutoCancel(true);
 // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, NewsActivity.class);
-        resultIntent.putExtra(KeysBundleHolder.KEY_ID, id);
+        resultIntent.putExtra(KeysBundleHolder.KEY_ID, navId);
         resultIntent.putExtra(KeysBundleHolder.KEY_NAME, name);
         resultIntent.putExtra(KeysBundleHolder.KEY_NOTIFICATION, true);
 
@@ -95,7 +88,7 @@ public class GDJob extends Job {
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(id, mBuilder.build());
+        mNotificationManager.notify(notifId, mBuilder.build());
     }
 
 

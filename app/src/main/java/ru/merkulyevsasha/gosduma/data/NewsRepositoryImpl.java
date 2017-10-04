@@ -3,6 +3,8 @@ package ru.merkulyevsasha.gosduma.data;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
@@ -16,6 +18,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     private NewsRssService serv;
     private AktRssService akt;
 
+    @Inject
     public NewsRepositoryImpl(DatabaseHelper db, NewsRssService service, AktRssService aktservice){
         this.db = db;
         this.serv = service;

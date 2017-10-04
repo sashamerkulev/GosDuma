@@ -3,10 +3,10 @@ package ru.merkulyevsasha.gosduma.presentation.news;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,8 +18,7 @@ import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 
 public class NewsDetailsActivity extends AppCompatActivity {
 
-    @BindView(R.id.textview_newsdetailstopic) TextView textViewTopic;
-    @BindView(R.id.textview_newsdetailsdescription) TextView textViewDescription;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +32,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_newsdetails);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.newsdetails_toolbar);
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -44,8 +43,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
         final String name = intent.getStringExtra(KeysBundleHolder.KEY_NAME);
         setTitle(name);
 
-        textViewTopic.setText(topic);
-        textViewDescription.setText(description);
+        Fragment fragment = NewsDetailsFragment.newInstance(topic, description);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.framelayout, fragment)
+                .commit();
+
     }
 
     @Override
@@ -61,10 +63,10 @@ public class NewsDetailsActivity extends AppCompatActivity {
     }
 
     public static void startScreen(Context context, String name, Article item){
-        Intent activityIntent = new Intent(context, NewsDetailsActivity.class);
-        activityIntent.putExtra(KeysBundleHolder.KEY_TOPIC, item.Title);
-        activityIntent.putExtra(KeysBundleHolder.KEY_DESCRIPTION, item.Description);
-        activityIntent.putExtra(KeysBundleHolder.KEY_NAME, name);
-        context.startActivity(activityIntent);
+        Intent intent = new Intent(context, NewsDetailsActivity.class);
+        intent.putExtra(KeysBundleHolder.KEY_TOPIC, item.Title);
+        intent.putExtra(KeysBundleHolder.KEY_DESCRIPTION, item.Description);
+        intent.putExtra(KeysBundleHolder.KEY_NAME, name);
+        context.startActivity(intent);
     }
 }

@@ -3,12 +3,12 @@ package ru.merkulyevsasha.gosduma.presentation.deputyrequests;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,14 +35,15 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
+import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
-import ru.merkulyevsasha.gosduma.presentation.DrawerToolbarCombinator;
+import ru.merkulyevsasha.gosduma.presentation.ToolbarCombinator;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.commons.AppbarScrollExpander;
 import ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails.DeputyRequestDetailsFragment;
 
 
 public class DeputyRequestsFragment extends Fragment implements DeputyRequestsView {
@@ -58,12 +60,11 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     @Inject DeputyRequestsPresenter pres;
 
     private View rootView;
-    private DrawerToolbarCombinator combinator;
+    private ToolbarCombinator combinator;
 
     private DeputyRequestsRecyclerViewAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-    private MenuItem sortItem;
     private MenuItem searchItem;
     private SearchView searchView;
     private String searchText;
@@ -72,17 +73,18 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     private int position;
     private boolean expanded;
 
+    private FrameLayout frameLayout;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DrawerToolbarCombinator) {
-            combinator = (DrawerToolbarCombinator) context;
+        if (context instanceof ToolbarCombinator) {
+            combinator = (ToolbarCombinator) context;
         }
-        GosDumaApp.getComponent().inject(this);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(@NonNull Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putInt(KeysBundleHolder.KEY_POSITION, layoutManager.findFirstVisibleItemPosition());
         outState.putBoolean(KeysBundleHolder.KEY_EXPANDED, appbarScrollExpander.getExpanded());
@@ -105,9 +107,10 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputyrequests, container, false);
         ButterKnife.bind(this, rootView);
+        AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
 
         layoutManager = new LinearLayoutManager(getActivity());
@@ -120,14 +123,16 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
 
         adapter = new DeputyRequestsRecyclerViewAdapter(new ArrayList<DeputyRequest>(), new OnDeputyRequestsClickListener() {
             @Override
-            public void onDeputyRequestwClick(DeputyRequest deputyRequest) {
-                pres.onDeputyRequestClicked(deputyRequest);
+            public void onDeputyRequestwClick(boolean activity, DeputyRequest deputyRequest) {
+                pres.onDeputyRequestClicked(activity, deputyRequest);
             }
         });
         recyclerView.setAdapter(adapter);
 
         AdRequest adRequest = AdRequestHelper.getAdRequest();
         adView.loadAd(adRequest);
+
+        frameLayout = rootView.findViewById(R.id.frame_details);
 
         return rootView;
     }
@@ -139,7 +144,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
         inflater.inflate(R.menu.deputiesrequests_menu, menu);
 
         searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) searchItem.getActionView();
         if (searchText !=null && !searchText.isEmpty()){
             searchItem.expandActionView();
             searchView.setQuery(searchText, false);
@@ -159,15 +164,17 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
                 return false;
             }
         });
+    }
 
-        sortItem = menu.findItem(R.id.action_sort);
-        sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort:
                 pres.onSortItemClicked();
-                return false;
-            }
-        });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -175,7 +182,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
         if (adView != null) {
             adView.pause();
         }
-        pres.onStop();
+        pres.unbind();
         super.onPause();
     }
 
@@ -185,7 +192,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
         if (adView != null) {
             adView.resume();
         }
-        pres.onStart(this);
+        pres.bind(this);
         pres.load();
         appbarLayout.setExpanded(expanded);
     }
@@ -216,6 +223,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
                 getResources().getString(R.string.item_sort_date),
                 getResources().getString(R.string.item_sort_initiator)};
 
+        //noinspection ConstantConditions
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.title_sort);
         builder.setSingleChoiceItems(sortItems, currentItemIndex,
@@ -235,6 +243,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
         if (position> 0) layoutManager.scrollToPosition(position);
         recyclerView.setVisibility(View.VISIBLE);
         emptyLayout.setVisibility(View.GONE);
+        if (frameLayout !=null) frameLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -245,15 +254,15 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
 
     @Override
     public void showDeputyRequestDetailsScreen(DeputyRequest deputyRequest) {
-
-//        if (mFrameLayoutDetails != null){
-//            mFrameLayoutDetails.setVisibility(View.VISIBLE);
-//            Fragment fragment = DeputyRequestDetailsFragment.newInstance(deputyRequest);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment)
-//                    .addToBackStack(null).commit();
-//        } else {
         DeputyRequestDetailsActivity.startScreen(getContext(), deputyRequest);
-//        }
+    }
+
+    @Override
+    public void showDeputyRequestDetailsFragment(DeputyRequest deputyRequest) {
+            Fragment fragment = DeputyRequestDetailsFragment.newInstance(deputyRequest);
+            getChildFragmentManager().beginTransaction().replace(R.id.frame_details, fragment)
+                    .addToBackStack(null).commit();
+        if (frameLayout !=null) frameLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -272,7 +281,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     }
 
     interface OnDeputyRequestsClickListener {
-        void onDeputyRequestwClick(DeputyRequest deputyRequest);
+        void onDeputyRequestwClick(boolean activity, DeputyRequest deputyRequest);
     }
 
     class DeputyRequestsRecyclerViewAdapter extends RecyclerView.Adapter<DeputyRequestsRecyclerViewAdapter.DeputyRequestsViewHolder> {
@@ -302,7 +311,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDeputyRequestsClickListener.onDeputyRequestwClick(deputyRequest);
+                    onDeputyRequestsClickListener.onDeputyRequestwClick(frameLayout == null, deputyRequest);
                 }
             });
         }
@@ -320,14 +329,12 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
 
         class DeputyRequestsViewHolder extends RecyclerView.ViewHolder{
 
-            final TextView deputyRequestName;
-            final TextView deputyRequestInitiator;
+            @BindView(R.id.deputyrequest_name) TextView deputyRequestName;
+            @BindView(R.id.deputyrequest_initiator) TextView deputyRequestInitiator;
 
             DeputyRequestsViewHolder(final View itemView) {
                 super(itemView);
-                deputyRequestName = (TextView)itemView.findViewById(R.id.deputyrequest_name);
-                deputyRequestInitiator = (TextView)itemView.findViewById(R.id.deputyrequest_initiator);
-
+                ButterKnife.bind(this, itemView);
             }
 
         }

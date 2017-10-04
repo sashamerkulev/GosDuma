@@ -3,12 +3,12 @@ package ru.merkulyevsasha.gosduma.presentation.laws;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -33,15 +34,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
+import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
 import ru.merkulyevsasha.gosduma.models.Law;
-import ru.merkulyevsasha.gosduma.presentation.DrawerToolbarCombinator;
+import ru.merkulyevsasha.gosduma.presentation.ToolbarCombinator;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.commons.AppbarScrollExpander;
 import ru.merkulyevsasha.gosduma.presentation.commons.LawsRecyclerViewAdapter;
 import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsFragment;
 
 
 public class LawsFragment extends Fragment implements LawsView {
@@ -57,13 +59,14 @@ public class LawsFragment extends Fragment implements LawsView {
 
     @Inject LawsPresenter pres;
 
+    private FrameLayout frameDetails;
+
     private View rootView;
-    private DrawerToolbarCombinator combinator;
+    private ToolbarCombinator combinator;
 
     private LawsRecyclerViewAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-    private MenuItem sortItem;
     private MenuItem searchItem;
     private SearchView searchView;
     private String searchText;
@@ -75,14 +78,13 @@ public class LawsFragment extends Fragment implements LawsView {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DrawerToolbarCombinator) {
-            combinator = (DrawerToolbarCombinator) context;
+        if (context instanceof ToolbarCombinator) {
+            combinator = (ToolbarCombinator) context;
         }
-        GosDumaApp.getComponent().inject(this);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState){
+    public void onSaveInstanceState(@NonNull Bundle outState){
         super.onSaveInstanceState(outState);
         outState.putInt(KeysBundleHolder.KEY_POSITION, layoutManager.findFirstVisibleItemPosition());
         outState.putBoolean(KeysBundleHolder.KEY_EXPANDED, appbarScrollExpander.getExpanded());
@@ -105,9 +107,10 @@ public class LawsFragment extends Fragment implements LawsView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_laws, container, false);
         ButterKnife.bind(this, rootView);
+        AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
 
         layoutManager = new LinearLayoutManager(getActivity());
@@ -118,16 +121,18 @@ public class LawsFragment extends Fragment implements LawsView {
         appbarScrollExpander.setExpanded(expanded);
         collapsToolbar.setTitleEnabled(false);
 
-        adapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), new LawsRecyclerViewAdapter.OnLawClickListener() {
+        adapter = new LawsRecyclerViewAdapter(getContext(), new ArrayList<Law>(), new LawsRecyclerViewAdapter.OnLawClickListener() {
             @Override
             public void onLawClick(Law law) {
-                pres.onLawClicked(law);
+                pres.onLawClicked(frameDetails==null, law);
             }
         });
         recyclerView.setAdapter(adapter);
 
         AdRequest adRequest = AdRequestHelper.getAdRequest();
         mAdView.loadAd(adRequest);
+
+        frameDetails = rootView.findViewById(R.id.frame_details);
 
         return rootView;
     }
@@ -139,7 +144,7 @@ public class LawsFragment extends Fragment implements LawsView {
         inflater.inflate(R.menu.laws_menu, menu);
 
         searchItem = menu.findItem(R.id.action_search);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) searchItem.getActionView();
         if (searchText !=null && !searchText.isEmpty()){
             searchItem.expandActionView();
             searchView.setQuery(searchText, false);
@@ -159,15 +164,17 @@ public class LawsFragment extends Fragment implements LawsView {
                 return false;
             }
         });
+    }
 
-        sortItem = menu.findItem(R.id.action_sort);
-        sortItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort:
                 pres.onSortItemClicked();
-                return false;
-            }
-        });
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -175,7 +182,7 @@ public class LawsFragment extends Fragment implements LawsView {
         if (mAdView != null) {
             mAdView.pause();
         }
-        pres.onStop();
+        pres.unbind();
         super.onPause();
     }
 
@@ -185,7 +192,7 @@ public class LawsFragment extends Fragment implements LawsView {
         if (mAdView != null) {
             mAdView.resume();
         }
-        pres.onStart(this);
+        pres.bind(this);
         pres.load();
         appbarLayout.setExpanded(expanded);
     }
@@ -214,6 +221,7 @@ public class LawsFragment extends Fragment implements LawsView {
         if (position> 0) layoutManager.scrollToPosition(position);
         recyclerView.setVisibility(View.VISIBLE);
         mEmptyLayout.setVisibility(View.GONE);
+        if (frameDetails != null) frameDetails.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -229,6 +237,7 @@ public class LawsFragment extends Fragment implements LawsView {
                 getResources().getString(R.string.item_sort_number),
                 getResources().getString(R.string.item_sort_date)};
 
+        //noinspection ConstantConditions
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.title_sort);
 
@@ -246,25 +255,17 @@ public class LawsFragment extends Fragment implements LawsView {
 
     @Override
     public void showLawDetailsScreen(Law law) {
+        LawDetailsActivity.startScreen(getContext(), law, false);
+    }
 
-//        if (mFrameLayoutDetails != null && mDeputy == null){
-//            mFrameLayoutDetails.setVisibility(View.VISIBLE);
-//            Fragment fragment = LawDetailsFragment.newInstance(law);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.frame_searchdetails, fragment)
-//                    .addToBackStack(null).commit();
-//        } else {
-//            if (mDeputy == null) {
-//                Intent activityIntent = new Intent(this, LawDetailsActivity.class);
-//                activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
-//                startActivity(activityIntent);
-        LawDetailsActivity.startScreen(getContext(), law);
-//            } else {
-//                Intent activityIntent = new Intent(this, DeputyLawDetailsActivity.class);
-//                activityIntent.putExtra(LawDetailsActivity.KEY_LAW, law);
-//                startActivity(activityIntent);
-//            }
-//        }
-
+    @Override
+    public void showLawDetailsFragment(Law law) {
+        Fragment fragment = LawDetailsFragment.newInstance(law);
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.frame_details, fragment)
+                .addToBackStack(null)
+                .commit();
+        frameDetails.setVisibility(View.VISIBLE);
     }
 
     @Override

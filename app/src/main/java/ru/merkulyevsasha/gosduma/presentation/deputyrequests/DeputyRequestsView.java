@@ -14,6 +14,8 @@ interface DeputyRequestsView extends MvpView {
     void showDataEmptyMessage();
 
     void showDeputyRequestDetailsScreen(DeputyRequest deputyRequest);
+    void showDeputyRequestDetailsFragment(DeputyRequest deputyRequest);
 
     void prepareToSearch(String searchText);
+
 }

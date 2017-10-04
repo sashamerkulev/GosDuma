@@ -3,8 +3,12 @@ package ru.merkulyevsasha.gosduma.presentation.deputyrequests;
 
 
 
+import android.annotation.SuppressLint;
+
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -14,17 +18,15 @@ import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputyRequestsInteractor;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class DeputyRequestsPresenter implements MvpPresenter {
+public class DeputyRequestsPresenter extends MvpPresenter<DeputyRequestsView> {
 
     private final static int NAME_INDEX = 0;
     private final static int REQUESTDATE_INDEX = 1;
     private final static int INITIATOR_INDEX = 2;
 
-    private DeputyRequestsInteractor inter;
-    private DeputyRequestsView view;
+    private final DeputyRequestsInteractor inter;
 
     private final HashMap<Integer, String> mSortColumn;
 
@@ -32,6 +34,8 @@ public class DeputyRequestsPresenter implements MvpPresenter {
     private String mSortDirection;
     private String mSearchText;
 
+    @SuppressLint("UseSparseArrays")
+    @Inject
     public DeputyRequestsPresenter(DeputyRequestsInteractor inter){
 
         this.inter = inter;
@@ -82,16 +86,6 @@ public class DeputyRequestsPresenter implements MvpPresenter {
                 });
     }
 
-    @Override
-    public void onStart(MvpView view) {
-        this.view = (DeputyRequestsView)view;
-    }
-
-    @Override
-    public void onStop() {
-        view = null;
-    }
-
     void onSortItemClicked() {
         if (view == null) return;
         view.showSortDialog(mSort);
@@ -113,8 +107,9 @@ public class DeputyRequestsPresenter implements MvpPresenter {
         }
     }
 
-    void onDeputyRequestClicked(DeputyRequest deputyRequest) {
+    void onDeputyRequestClicked(boolean activity, DeputyRequest deputyRequest) {
         if (view == null) return;
-        view.showDeputyRequestDetailsScreen(deputyRequest);
+        if (activity) view.showDeputyRequestDetailsScreen(deputyRequest);
+        else view.showDeputyRequestDetailsFragment(deputyRequest);
     }
 }

@@ -14,7 +14,7 @@
         >
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/newsdetails_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -22,15 +22,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
-
-        <include layout="@layout/fragment_news_details" />
-
-    </LinearLayout>
+        />
 
 </android.support.design.widget.CoordinatorLayout>
 

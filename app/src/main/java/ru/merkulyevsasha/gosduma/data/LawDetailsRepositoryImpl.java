@@ -4,6 +4,8 @@ package ru.merkulyevsasha.gosduma.data;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.models.Codifier;
@@ -12,10 +14,10 @@ public class LawDetailsRepositoryImpl implements LawDetailsRepository {
 
     private DatabaseHelper db;
 
+    @Inject
     public LawDetailsRepositoryImpl(DatabaseHelper db){
         this.db = db;
     }
-
 
     @Override
     public Codifier getStageById(int lastEventStageId) {

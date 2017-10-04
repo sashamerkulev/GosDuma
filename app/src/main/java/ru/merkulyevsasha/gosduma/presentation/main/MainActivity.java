@@ -1,5 +1,6 @@
 package ru.merkulyevsasha.gosduma.presentation.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,12 +20,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import ru.merkulyevsasha.apprate.AppRateRequester;
 import ru.merkulyevsasha.gosduma.BuildConfig;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.preferences.SettingsSharedPreferences;
-import ru.merkulyevsasha.gosduma.presentation.DrawerToolbarCombinator;
+import ru.merkulyevsasha.gosduma.presentation.ToolbarCombinator;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 import ru.merkulyevsasha.gosduma.presentation.listdata.ListDataActivity;
 import ru.merkulyevsasha.gosduma.presentation.deputies.DeputiesFragment;
@@ -35,23 +40,22 @@ import ru.merkulyevsasha.gosduma.presentation.services.GDJob;
 
 
 public class MainActivity extends AppCompatActivity
-        implements DrawerToolbarCombinator, NavigationView.OnNavigationItemSelectedListener
-{
+        implements ToolbarCombinator, NavigationView.OnNavigationItemSelectedListener,
+        HasSupportFragmentInjector, HasActivityInjector {
+
     private static final String DEPUTIES_TAG_FRAGMENT = "deputies";
     private static final String DEPUTIES_REQUESTS_TAG_FRAGMENT = "deputies_requests";
     private static final String LAWS_TAG_FRAGMENT = "laws";
+
+    @Inject DispatchingAndroidInjector<Fragment> fragmentInjector;
+    @Inject DispatchingAndroidInjector<Activity> activityInjector;
+    @Inject SettingsSharedPreferences prefs;
 
 
     @BindView(R.id.progressBar) ProgressBar mProgress;
     @BindView(R.id.frame_searchlist) FrameLayout mFrameLayout;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
-//    @BindView(R.id.frame_searchdetails) FrameLayout mFrameLayoutDetails;
-    private FrameLayout mFrameLayoutDetails;
-
-    @Inject SettingsSharedPreferences prefs;
-
-    private ActionBarDrawerToggle drawerToggle;
 
     private Fragment mFragment;
 
@@ -81,9 +85,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        GosDumaApp.getComponent().inject(this);
-
-        mFrameLayoutDetails = (FrameLayout) findViewById(R.id.frame_searchdetails);
+        AndroidInjection.inject(this);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -100,7 +102,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity
                     setDeputiesFragment();
                 } else if (navItemId == R.id.nav_laws) {
                     setLawsFragment();
-                } else if (navItemId == R.id.nav_depqueries) {
+                } else {
                     setDeputyRequestsFragment();
                 }
                 closeDrawer();
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void closeDrawer(){
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
 
@@ -210,11 +211,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void connectToolbar(Toolbar toolbar) {
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        drawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawer,
+                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-
     }
 
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return activityInjector;
+    }
 }

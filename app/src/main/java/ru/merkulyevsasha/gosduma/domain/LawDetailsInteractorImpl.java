@@ -7,6 +7,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 
+import javax.inject.Inject;
+
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.LawDetailsRepository;
@@ -26,6 +28,7 @@ public class LawDetailsInteractorImpl implements LawDetailsInteractor {
     private final LawDetailsRepository repo;
     private final Scheduler scheduler;
 
+    @Inject
     public LawDetailsInteractorImpl(LawDetailsRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;

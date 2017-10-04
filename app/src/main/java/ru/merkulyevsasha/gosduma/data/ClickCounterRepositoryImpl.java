@@ -1,12 +1,15 @@
 package ru.merkulyevsasha.gosduma.data;
 
 
+import javax.inject.Inject;
+
 import ru.merkulyevsasha.gosduma.data.preferences.SettingsSharedPreferences;
 
 public class ClickCounterRepositoryImpl implements ClickCounterRepository {
 
     private SettingsSharedPreferences pref;
 
+    @Inject
     public ClickCounterRepositoryImpl(SettingsSharedPreferences pref){
         this.pref = pref;
     }

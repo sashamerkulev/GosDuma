@@ -3,6 +3,8 @@ package ru.merkulyevsasha.gosduma.domain;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import ru.merkulyevsasha.gosduma.data.ListDataRepository;
@@ -13,6 +15,7 @@ public class ListDataInteractorImpl implements ListDataInteractor {
     private final ListDataRepository repo;
     private final Scheduler scheduler;
 
+    @Inject
     public ListDataInteractorImpl(ListDataRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;

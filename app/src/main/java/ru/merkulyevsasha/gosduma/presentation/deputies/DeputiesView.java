@@ -14,6 +14,7 @@ interface DeputiesView extends MvpView {
     void showDataEmptyMessage();
 
     void showDeputyDetailsScreen(Deputy deputy);
+    void showDeputyDetailsFragment(Deputy deputy);
 
     void showFilterDialog(List<Integer> filter);
     void showSortDialog(int currentItemIndex);

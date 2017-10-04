@@ -4,6 +4,8 @@ package ru.merkulyevsasha.gosduma.domain;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
@@ -23,6 +25,7 @@ public class NewsInteractorImpl implements NewsInteractor {
     private final ClickCounterRepository clickRepo;
     private final Scheduler scheduler;
 
+    @Inject
     public NewsInteractorImpl(NewsRepository repo, ClickCounterRepository clickRepo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;

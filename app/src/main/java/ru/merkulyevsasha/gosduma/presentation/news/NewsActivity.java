@@ -34,7 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
+import dagger.android.AndroidInjection;
 import ru.merkulyevsasha.gosduma.presentation.main.MainActivity;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
@@ -67,9 +67,10 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
 
-        GosDumaApp.getComponent().inject(this);
+        AndroidInjection.inject(this);
 
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -92,7 +93,6 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 pres.onItemClicked(adapter.getItem(position), interstitialAd);
-                //showInterstitial();
             }
         });
 
@@ -122,7 +122,7 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
         if (adView != null) {
             adView.pause();
         }
-        pres.onStop();
+        pres.unbind();
         super.onPause();
     }
 
@@ -136,7 +136,7 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
             interstitialAd.loadAd(adRequest);
         }
 
-        pres.onStart(this);
+        pres.bind(this);
         pres.load(mId);
     }
 
@@ -170,8 +170,8 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
 
     @Override
     public void showDetailsItem(Article item) {
-        FrameLayout fl = (FrameLayout) findViewById(R.id.frame_newsdetails);
-        if (fl != null){
+        FrameLayout framelayout = findViewById(R.id.frame_newsdetails);
+        if (framelayout != null){
             NewsDetailsFragment fragment = NewsDetailsFragment.newInstance(item.Title, item.Description);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_newsdetails, fragment).commit();
         } else {
@@ -196,7 +196,7 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
         private final LayoutInflater inflater;
 
         ListViewNewsAdapter(Context context, List<Article> items) {
-            super(context, R.layout.listview_newsitem);
+            super(context, R.layout.row_listdata_item);
 
             this.items = items;
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -219,7 +219,7 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
             if (convertView == null){
-                convertView = inflater.inflate(R.layout.listview_newsitem, parent, false);
+                convertView = inflater.inflate(R.layout.row_listdata_item, parent, false);
                 convertView.setTag(convertView.findViewById(R.id.textview_topic));
             }
 
@@ -228,15 +228,15 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
             Article item = items.get(position);
 
             DateFormat format = SimpleDateFormat.getDateInstance();
-            textViewTopic.setText(format.format(item.PubDate) + " " + item.Title);
+            textViewTopic.setText(String.format("%s %s", format.format(item.PubDate), item.Title));
 
             return convertView;
         }
 
         public void setItems(List<Article> articles) {
-            adapter.clear();
-            adapter.addAll(articles);
-            adapter.notifyDataSetChanged();
+            clear();
+            addAll(articles);
+            notifyDataSetChanged();
         }
     }
 

@@ -1,5 +1,6 @@
 package ru.merkulyevsasha.gosduma.presentation.commons;
 
+import android.annotation.SuppressLint;
 import android.support.design.widget.AppBarLayout;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ public class AppbarScrollExpander {
         touchPoint = new TouchPoint();
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
+            @SuppressLint("ClickableViewAccessibility")
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
@@ -27,7 +29,7 @@ public class AppbarScrollExpander {
                     case MotionEvent.ACTION_CANCEL:
                     case MotionEvent.ACTION_UP:
                         float y = event.getY();
-                        float x = event.getX();
+                        //float x = event.getX();
                         expanded = y - touchPoint.y > 0;
                         appbarlayout.setExpanded(expanded);
                         break;

@@ -1,6 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.deputyrequestdetails;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.DeputyRequest;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
@@ -18,39 +20,17 @@ import static ru.merkulyevsasha.gosduma.helpers.UiUtils.setTextToTextViewOrLayou
 
 public class DeputyRequestDetailsFragment extends Fragment {
 
-    @BindView(R.id.tv_deputyrequest_name)
-    TextView mDeputyrequestName;
-
-    @BindView(R.id.tv_deputyrequest_initiator)
-    TextView mDeputyrequestInitiator;
-
-    @BindView(R.id.tv_deputyrequest_answer)
-    TextView mDeputyrequestAnswer;
-
-    @BindView(R.id.tv_deputyrequest_resolution)
-    TextView mDeputyrequestResolution;
-
-    @BindView(R.id.tv_deputyrequest_signed)
-    TextView mDeputyrequestSignedBy;
-
-    @BindView(R.id.tv_deputyrequest_addressee)
-    TextView mDeputyrequestAddressee;
-
-
-    @BindView(R.id.layout_initiator)
-    public LinearLayout mInitiatorLayout;
-
-    @BindView(R.id.layout_answer)
-    public LinearLayout mAnswerLayout;
-
-    @BindView(R.id.layout_resolution)
-    public LinearLayout mResolutionLayout;
-
-    @BindView(R.id.layout_signed)
-    public LinearLayout mSignedLayout;
-
-    @BindView(R.id.layout_addressee)
-    public LinearLayout mAddresseeLayout;
+    @BindView(R.id.tv_deputyrequest_name) TextView deputyrequestName;
+    @BindView(R.id.tv_deputyrequest_initiator) TextView deputyrequestInitiator;
+    @BindView(R.id.tv_deputyrequest_answer) TextView deputyrequestAnswer;
+    @BindView(R.id.tv_deputyrequest_resolution) TextView deputyrequestResolution;
+    @BindView(R.id.tv_deputyrequest_signed) TextView deputyrequestSignedBy;
+    @BindView(R.id.tv_deputyrequest_addressee) TextView deputyrequestAddressee;
+    @BindView(R.id.layout_initiator) LinearLayout initiatorLayout;
+    @BindView(R.id.layout_answer) LinearLayout answerLayout;
+    @BindView(R.id.layout_resolution) LinearLayout resolutionLayout;
+    @BindView(R.id.layout_signed) LinearLayout signedLayout;
+    @BindView(R.id.layout_addressee) LinearLayout addresseeLayout;
 
     public static DeputyRequestDetailsFragment newInstance(DeputyRequest deputyRequest) {
         DeputyRequestDetailsFragment fragment = new DeputyRequestDetailsFragment();
@@ -61,34 +41,19 @@ public class DeputyRequestDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_deputyrequest_details, container, false);
+        ButterKnife.bind(this, v);
+        if (getArguments() == null) return v;
+        final DeputyRequest deputyRequest = getArguments().getParcelable(KeysBundleHolder.KEY_DEPUTYREQUEST);
+        if (deputyRequest == null) return v;
+        deputyrequestName.setText(deputyRequest.getNameWithNumberAndDate());
 
-        final DeputyRequest mDeputyRequest = getArguments().getParcelable(KeysBundleHolder.KEY_DEPUTYREQUEST);
-
-        assert mDeputyRequest != null;
-
-        TextView mDeputyrequestName = (TextView)v.findViewById(R.id.tv_deputyrequest_name);
-        TextView mDeputyrequestInitiator = (TextView)v.findViewById(R.id.tv_deputyrequest_initiator);
-        TextView mDeputyrequestAnswer = (TextView)v.findViewById(R.id.tv_deputyrequest_answer);
-        TextView mDeputyrequestResolution = (TextView)v.findViewById(R.id.tv_deputyrequest_resolution);
-        TextView mDeputyrequestSignedBy = (TextView)v.findViewById(R.id.tv_deputyrequest_signed);
-        TextView mDeputyrequestAddressee = (TextView)v.findViewById(R.id.tv_deputyrequest_addressee);
-
-        LinearLayout mInitiatorLayout = (LinearLayout)v.findViewById(R.id.layout_initiator);
-        LinearLayout mAnswerLayout = (LinearLayout)v.findViewById(R.id.layout_answer);
-        LinearLayout mResolutionLayout = (LinearLayout)v.findViewById(R.id.layout_resolution);
-        LinearLayout mSignedLayout = (LinearLayout)v.findViewById(R.id.layout_signed);
-        LinearLayout mAddresseeLayout = (LinearLayout)v.findViewById(R.id.layout_addressee);
-
-        mDeputyrequestName.setText(mDeputyRequest.getNameWithNumberAndDate());
-
-        setTextToTextViewOrLayoutGone(mDeputyRequest.initiator, mDeputyrequestInitiator, mInitiatorLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.answer, mDeputyrequestAnswer, mAnswerLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.resolution, mDeputyrequestResolution, mResolutionLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.signedBy_name, mDeputyrequestSignedBy, mSignedLayout);
-        setTextToTextViewOrLayoutGone(mDeputyRequest.addressee_name, mDeputyrequestAddressee, mAddresseeLayout);
-
+        setTextToTextViewOrLayoutGone(deputyRequest.initiator, deputyrequestInitiator, initiatorLayout);
+        setTextToTextViewOrLayoutGone(deputyRequest.answer, deputyrequestAnswer, answerLayout);
+        setTextToTextViewOrLayoutGone(deputyRequest.resolution, deputyrequestResolution, resolutionLayout);
+        setTextToTextViewOrLayoutGone(deputyRequest.signedBy_name, deputyrequestSignedBy, signedLayout);
+        setTextToTextViewOrLayoutGone(deputyRequest.addressee_name, deputyrequestAddressee, addresseeLayout);
 
         return v;
     }

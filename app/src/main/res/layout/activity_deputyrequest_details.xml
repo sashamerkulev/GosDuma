@@ -24,159 +24,19 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
-        android:id="@+id/scrollview_content"
+    <FrameLayout
+        android:id="@+id/framelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:orientation="vertical"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_deputyrequest_name"
-                />
-
-            <LinearLayout
-                android:id="@+id/layout_initiator"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/text_initiator"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_deputyrequest_initiator"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_answer"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/text_answer"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_deputyrequest_answer"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_resolution"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/text_resolution"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_deputyrequest_resolution"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_signed"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/text_signedby"
-                    android:layout_weight="1"
-                    />
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:id="@+id/tv_deputyrequest_signed"
-                    android:layout_weight="2"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout_addressee"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/text_addressee"
-                    android:layout_weight="1"
-                    />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:id="@+id/tv_deputyrequest_addressee"
-                    android:layout_weight="2"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share_white_24dp"
+        app:srcCompat="@drawable/ic_share_white_24px"
         app:layout_anchor="@id/scrollview_content"
         app:layout_anchorGravity="bottom|right|end"
         app:backgroundTint="@color/colorPrimary"

@@ -1,10 +1,12 @@
 package ru.merkulyevsasha.gosduma.presentation.listdata;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -13,13 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,7 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ru.merkulyevsasha.gosduma.GosDumaApp;
+import dagger.android.AndroidInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
@@ -37,21 +39,20 @@ import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
 public class ListDataActivity extends AppCompatActivity implements ListDataView {
 
-    @BindView(R.id.list_toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.listview_listdata)
-    ListView listView;
-    @BindView(R.id.adView)
-    AdView adView;
+    @BindView(R.id.root) View root;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.listview_listdata) ListView listView;
+    @BindView(R.id.progressbar) ProgressBar progressbar;
 
-    @Inject
-    ListDataPresenter pres;
+    @BindView(R.id.adView) AdView adView;
 
+    @Inject ListDataPresenter pres;
+
+    @SuppressLint("UseSparseArrays")
     private final HashMap<Integer, String> listDataTableName = new HashMap<>();
 
     private int menuId;
     private ListViewListDataAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,10 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
 
-        GosDumaApp.getComponent().inject(this);
+        AndroidInjection.inject(this);
 
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -103,7 +105,7 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         if (adView != null) {
             adView.pause();
         }
-        pres.onStop();
+        pres.unbind();
         super.onPause();
     }
 
@@ -113,7 +115,7 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         if (adView != null) {
             adView.resume();
         }
-        pres.onStart(this);
+        pres.bind(this);
         pres.load(listDataTableName.get(menuId));
     }
 
@@ -127,27 +129,22 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
 
     @Override
     public void showMessage(@StringRes int resId) {
-
+        Snackbar.make(root, resId, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void hideProgress() {
-
+        progressbar.setVisibility(View.GONE);
     }
 
     @Override
     public void showProgress() {
-
+        progressbar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showList(final List<ListData> items) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setItems(items);
-            }
-        });
+        adapter.setItems(items);
     }
 
     private class ListViewListDataAdapter extends ArrayAdapter<ListData> {
@@ -156,20 +153,10 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         private final LayoutInflater mInflater;
 
         ListViewListDataAdapter(Context context, List<ListData> items) {
-            super(context, R.layout.listview_newsitem, items);
+            super(context, R.layout.row_listdata_item, items);
 
             mItems = items;
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public void clear() {
-            super.clear();
-        }
-
-        @Override
-        public void addAll(@NonNull Collection<? extends ListData> collection) {
-            super.addAll(collection);
         }
 
         @NonNull
@@ -177,7 +164,7 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
             if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.listview_newsitem, parent, false);
+                convertView = mInflater.inflate(R.layout.row_listdata_item, parent, false);
                 convertView.setTag(convertView.findViewById(R.id.textview_topic));
             }
             TextView textViewTopic = (TextView) convertView.getTag();

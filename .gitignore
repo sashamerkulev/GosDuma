@@ -1,6 +1,9 @@
 *.iml
 .gradle
 /local.properties
-/.idea/workspace.xml
 /build
 .idea
+google-services.json
+*.apk
+gosduma.db
+/app/src/main/res/raw/*.jpg

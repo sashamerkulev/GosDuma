@@ -4,6 +4,8 @@ import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -11,26 +13,15 @@ import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.NewsInteractor;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class NewsPresenter implements MvpPresenter {
+public class NewsPresenter extends MvpPresenter<NewsView> {
 
     private final NewsInteractor inter;
-    private NewsView view;
 
+    @Inject
     public NewsPresenter(NewsInteractor inter){
         this.inter = inter;
-    }
-
-    @Override
-    public void onStart(MvpView view) {
-        this.view = (NewsView)view;
-    }
-
-    @Override
-    public void onStop() {
-        view = null;
     }
 
     void refresh(int id){

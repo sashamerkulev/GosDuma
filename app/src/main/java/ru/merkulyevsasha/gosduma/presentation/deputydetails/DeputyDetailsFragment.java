@@ -1,176 +1,242 @@
 package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import ru.merkulyevsasha.gosduma.GosDumaApp;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
+import ru.merkulyevsasha.gosduma.presentation.ToolbarCombinator;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
+import ru.merkulyevsasha.gosduma.presentation.commons.AppbarScrollExpander;
 import ru.merkulyevsasha.gosduma.presentation.commons.LawsRecyclerViewAdapter;
-import ru.merkulyevsasha.gosduma.presentation.laws.LawsView;
+import ru.merkulyevsasha.gosduma.presentation.lawdetails.LawDetailsActivity;
 
 
 public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView {
 
-    private Deputy mDeputy;
+    public final static String KEY_DEPUTY_FRAGMENT = "DEPUTY_FRAGMENT";
 
-    private LawsRecyclerViewAdapter mAdapter;
+    @Inject DeputyDetailsPresenter pres;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.appbar_layout) AppBarLayout appbarLayout;
+    @BindView(R.id.collapsinng_toolbar_layout) CollapsingToolbarLayout collapsToolbar;
 
-    @Inject
-    DeputyDetailsPresenter mPresenter;
+    @BindView(R.id.progressbar) ProgressBar progressbar;
+    @BindView(R.id.recyclerview) RecyclerView recyclerView;
+    @BindView(R.id.layout_empty) LinearLayout emptyLayout;
+
+    private View rootView;
+    private Deputy deputy;
+    private LawsRecyclerViewAdapter adapter;
+    private ToolbarCombinator combinator;
+    private AppbarScrollExpander appbarScrollExpander;
+    private boolean expanded;
+
+    private Bundle args;
+    private boolean deputyFragment;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        args = getArguments();
+        if (args != null) {
+            deputyFragment = args.getBoolean(DeputyDetailsFragment.KEY_DEPUTY_FRAGMENT, false);
+            setHasOptionsMenu(!deputyFragment);
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        GosDumaApp.getComponent().inject(this);
+        if (context instanceof ToolbarCombinator) {
+            combinator = (ToolbarCombinator) context;
+        }
     }
 
-    public static DeputyDetailsFragment newInstance(Deputy deputy) {
+    public static DeputyDetailsFragment newInstance(Deputy deputy, boolean deputyFragment) {
         DeputyDetailsFragment fragment = new DeputyDetailsFragment();
         Bundle args = new Bundle();
         args.putParcelable(KeysBundleHolder.KEY_DEPUTY, deputy);
+        args.putBoolean(DeputyDetailsFragment.KEY_DEPUTY_FRAGMENT, deputyFragment);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_deputy_details, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_deputy_details, container, false);
+        ButterKnife.bind(this, rootView);
+        AndroidSupportInjection.inject(this);
 
-        mDeputy = getArguments().getParcelable(KeysBundleHolder.KEY_DEPUTY);
+        if (args == null) return rootView;
+        deputy = args.getParcelable(KeysBundleHolder.KEY_DEPUTY);
+        if (deputy == null) return rootView;
 
-        TextView mDeputyName = (TextView)v.findViewById(R.id.textview_deputy_name);
-        TextView mDeputyPosition = (TextView)v.findViewById(R.id.textview_position);
-        TextView mFractionName = (TextView)v.findViewById(R.id.textview_deputy_fractionName);
-        TextView mFractionRole = (TextView)v.findViewById(R.id.textview_deputy_fractionRole);
-        TextView mDeputyRanks = (TextView)v.findViewById(R.id.textview_deputy_ranks);
-
-        assert mDeputy != null;
-        mDeputyName.setText(mDeputy.getNameWithBirthday());
-
-        mDeputyPosition.setText(mDeputy.getPositionWithStartAndEndDates());
-
-        String ranks = mDeputy.getRanksWithDegrees();
-        if (ranks.isEmpty()){
-            mDeputyRanks.setVisibility(View.GONE);
+        if (deputyFragment){
+            toolbar.setVisibility(View.GONE);
         } else {
-            mDeputyRanks.setText(ranks);
+            appbarScrollExpander = new AppbarScrollExpander(recyclerView, appbarLayout);
+            appbarScrollExpander.setExpanded(expanded);
+            collapsToolbar.setTitleEnabled(false);
+
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar.setTitle(deputy.name);
+            combinator.connectToolbar(toolbar);
         }
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(true);
 
-        mFractionName.setText(mDeputy.fractionName);
-        mFractionRole.setText(mDeputy.fractionRole + " " + mDeputy.fractionRegion);
-
-        RecyclerView mRecyclerView = (RecyclerView)v.findViewById(R.id.recyclerview);
-
-        mAdapter = new LawsRecyclerViewAdapter(new ArrayList<Law>(), new LawsRecyclerViewAdapter.OnLawClickListener() {
+        adapter = new LawsRecyclerViewAdapter(getContext(), new ArrayList<Law>(), new LawsRecyclerViewAdapter.OnLawClickListener() {
             @Override
             public void onLawClick(Law law) {
+                pres.onLawClicked(law);
+            }
+        });
+        recyclerView.setAdapter(adapter);
 
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(adapter);
+
+        return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.deputy_details_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                pres.onSearchTextSubmitted(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                pres.onSearchTextChanged(deputy.id, newText);
+                return false;
             }
         });
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mRecyclerView.setAdapter(mAdapter);
-
-        return v;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                onBackPressed();
+//                return true;
+            case R.id.action_sort:
+                pres.onSortItemClicked();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mPresenter != null) {
-            mPresenter.onStop();
-        }
+        pres.unbind();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (mPresenter != null) {
-            mPresenter.onStart(this);
-            mPresenter.load(mDeputy.id);
-        }
+        pres.bind(this);
+        pres.load(deputy.id);
     }
 
     @Override
-    public void showData(final List<Law> items){
-        if (isAdded()) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.setItems(items);
-//                    recyclerView.setVisibility(View.VISIBLE);
-//                    emptyLayout.setVisibility(View.GONE);
-                }
-            });
-        }
+    public void showData(final List<Law> items) {
+        adapter.setDeputyItem(deputy);
+        adapter.setItems(items);
+        recyclerView.setVisibility(View.VISIBLE);
+        emptyLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void showDataEmptyMessage() {
-        if (isAdded()) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-//                    recyclerView.setVisibility(View.GONE);
-//                    emptyLayout.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+        recyclerView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showLawDetailsScreen(Law law) {
-
+        LawDetailsActivity.startScreen(getContext(), law, true);
     }
 
     @Override
-    public void share(Deputy deputy) {
+    public void showSortDialog(final int currentItemIndex) {
+        final String[] sortItems = {
+                getResources().getString(R.string.item_sort_lawname),
+                getResources().getString(R.string.item_sort_number),
+                getResources().getString(R.string.item_sort_date)};
 
+        @SuppressWarnings("ConstantConditions") AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.title_sort);
+
+        builder.setSingleChoiceItems(sortItems, currentItemIndex,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        dialog.dismiss();
+                        pres.sort(currentItemIndex, item);
+                    }
+                });
+        builder.show();
     }
 
     @Override
-    public void showSortDialog(int currentItemIndex) {
-
-    }
-
-    @Override
-    public void showMessage(int resId) {
-        if (isAdded()){
-            ((MvpView)getActivity()).showMessage(resId);
-        }
+    public void showMessage(@StringRes int resId) {
+        Snackbar.make(rootView, resId, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void hideProgress() {
-        if (isAdded()){
-            ((MvpView)getActivity()).hideProgress();
-        }
+        progressbar.setVisibility(View.GONE);
     }
 
     @Override
     public void showProgress() {
-        if (isAdded()){
-            ((MvpView)getActivity()).showProgress();
-        }
+        progressbar.setVisibility(View.VISIBLE);
     }
 
 }

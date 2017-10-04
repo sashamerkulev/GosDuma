@@ -1,38 +1,25 @@
 package ru.merkulyevsasha.gosduma.presentation.lawdetails;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import java.util.HashMap;
-import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractor;
-import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class LawDetailsPresenter implements MvpPresenter {
+public class LawDetailsPresenter extends MvpPresenter<LawDetailsView> {
 
-    private LawDetailsView view;
-    private LawDetailsInteractor inter;
+    private final LawDetailsInteractor inter;
 
+    @Inject
     public LawDetailsPresenter(LawDetailsInteractor inter) {
         this.inter = inter;
-    }
-
-    @Override
-    public void onStart(MvpView view) {
-        this.view = (LawDetailsView)view;
-    }
-
-    @Override
-    public void onStop() {
-        view = null;
     }
 
     public void load(Law law) {
@@ -58,8 +45,4 @@ public class LawDetailsPresenter implements MvpPresenter {
                 });
     }
 
-    void onSharedClicked(Law law) {
-        if (view == null) return;
-        view.share(law);
-    }
 }

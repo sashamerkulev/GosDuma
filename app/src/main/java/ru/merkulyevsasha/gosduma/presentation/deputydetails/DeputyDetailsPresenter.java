@@ -3,8 +3,12 @@ package ru.merkulyevsasha.gosduma.presentation.deputydetails;
 
 
 
+import android.annotation.SuppressLint;
+
 import java.util.HashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -12,13 +16,11 @@ import io.reactivex.functions.Consumer;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
 import ru.merkulyevsasha.gosduma.domain.DeputyDetailsInteractor;
-import ru.merkulyevsasha.gosduma.models.Deputy;
 import ru.merkulyevsasha.gosduma.models.Law;
 import ru.merkulyevsasha.gosduma.presentation.MvpPresenter;
-import ru.merkulyevsasha.gosduma.presentation.MvpView;
 
 
-public class DeputyDetailsPresenter implements MvpPresenter {
+public class DeputyDetailsPresenter extends MvpPresenter<DeputyDetailsView> {
 
     private final static int NAME_INDEX = 0;
     private final static int NUMBER_INDEX = 1;
@@ -31,10 +33,10 @@ public class DeputyDetailsPresenter implements MvpPresenter {
     private String mSortDirection;
     private String mSearchText;
 
-    private DeputyDetailsView view;
+    private final DeputyDetailsInteractor inter;
 
-    private DeputyDetailsInteractor inter;
-
+    @SuppressLint("UseSparseArrays")
+    @Inject
     public DeputyDetailsPresenter(DeputyDetailsInteractor inter){
 
         this.inter = inter;
@@ -84,44 +86,9 @@ public class DeputyDetailsPresenter implements MvpPresenter {
                 });
     }
 
-//    public Bundle getState() {
-//        Bundle state = new Bundle();
-//
-//        state.putInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE, mSort);
-//        state.putString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE, mSortDirection);
-//        state.putString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE, mSearchText);
-//
-//        state.putInt(KeysBundleHolder.KEY_DEPUTY_ID, mDeputyId);
-//        return state;
-//    }
-//
-//    public void restoreState(Bundle outState) {
-//        if (outState != null){
-//            mSort = outState.getInt(KeysBundleHolder.KEY_CURRENT_SORT_VALUE);
-//            mSortDirection = outState.getString(KeysBundleHolder.KEY_CURRENT_SORT_DIRECTIONVALUE);
-//            mSearchText = outState.getString(KeysBundleHolder.KEY_CURRENT_SEARCHTEXT_VALUE);
-//            mDeputyId = outState.getInt(KeysBundleHolder.KEY_DEPUTY_ID);
-//        }
-//    }
-
-    @Override
-    public void onStart(MvpView view) {
-        this.view = (DeputyDetailsView)view;
-    }
-
-    @Override
-    public void onStop() {
-        view = null;
-    }
-
     void onLawClicked(Law law) {
         if (view == null) return;
         view.showLawDetailsScreen(law);
-    }
-
-    void onSharedClicked(Deputy deputy) {
-        if (view == null) return;
-        view.share(deputy);
     }
 
     void onSearchTextChanged(int deputyId, String newText) {
