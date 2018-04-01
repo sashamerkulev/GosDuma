@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity
     private String mTitle;
 
     private int navItemId;
+    private Unbinder unbinder;
 
     @Override
     public void onSaveInstanceState(Bundle outState){
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         AndroidInjection.inject(this);
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -98,6 +100,12 @@ public class MainActivity extends AppCompatActivity
             GDJob.scheduleJob();
             prefs.setFirstRunFlag();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 
     @Override

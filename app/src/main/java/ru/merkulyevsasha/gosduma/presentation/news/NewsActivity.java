@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.AndroidInjection;
 import ru.merkulyevsasha.gosduma.presentation.main.MainActivity;
 import ru.merkulyevsasha.gosduma.R;
@@ -58,14 +59,15 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
     private AdRequest adRequest;
     private InterstitialAd interstitialAd;
 
-    @Inject
-    NewsPresenter pres;
+    @Inject NewsPresenter pres;
+
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         AndroidInjection.inject(this);
 
@@ -145,6 +147,8 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
         if (adView != null) {
             adView.destroy();
         }
+        pres.onDestroy();
+        unbinder.unbind();
         super.onDestroy();
     }
 

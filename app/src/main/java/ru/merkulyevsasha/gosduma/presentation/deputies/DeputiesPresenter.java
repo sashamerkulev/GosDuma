@@ -94,11 +94,11 @@ public class DeputiesPresenter extends MvpPresenter<DeputiesView> {
     void load(){
         if (view ==null) return;
         view.showProgress();
-        inter.getDeputies(mSearchText, mSortColumn.get(mSort) + mSortDirection, mFilterDeputyValues.get(mFilterDeputy), mFilterWorking)
+        compositeDisposable.add(inter.getDeputies(mSearchText, mSortColumn.get(mSort) + mSortDirection, mFilterDeputyValues.get(mFilterDeputy), mFilterWorking)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Deputy>>() {
                     @Override
-                    public void accept(@NonNull List<Deputy> deputies) throws Exception {
+                    public void accept(@NonNull List<Deputy> deputies) {
                         if (view == null) return;
                         view.hideProgress();
                         if (deputies.size() > 0) view.showData(deputies);
@@ -107,12 +107,12 @@ public class DeputiesPresenter extends MvpPresenter<DeputiesView> {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    public void accept(@NonNull Throwable throwable) {
                         if (view == null) return;
                         view.hideProgress();
                         view.showMessage(R.string.error_loading_news_message);
                     }
-                });
+                }));
     }
 
     void onDeputyClicked(boolean frameDetailsExists, Deputy deputy) {

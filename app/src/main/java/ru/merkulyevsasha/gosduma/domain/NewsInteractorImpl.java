@@ -26,7 +26,7 @@ public class NewsInteractorImpl implements NewsInteractor {
     private final Scheduler scheduler;
 
     @Inject
-    public NewsInteractorImpl(NewsRepository repo, ClickCounterRepository clickRepo, Scheduler scheduler){
+    NewsInteractorImpl(NewsRepository repo, ClickCounterRepository clickRepo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;
         this.clickRepo = clickRepo;

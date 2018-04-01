@@ -27,31 +27,31 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
     void refresh(int id){
         if (view == null) return;
         view.showProgress();
-        inter.getNews(id).observeOn(AndroidSchedulers.mainThread())
+        compositeDisposable.add(inter.getNews(id).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Article>>() {
                     @Override
-                    public void accept(@NonNull List<Article> articles) throws Exception {
+                    public void accept(@NonNull List<Article> articles) {
                         if (view == null) return;
                         view.hideProgress();
                         view.showNews(articles);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    public void accept(@NonNull Throwable throwable) {
                         if (view == null) return;
                         view.hideProgress();
                         view.showMessage(R.string.error_loading_news_message);
                     }
-                });
+                }));
     }
 
     public void load(final int id){
         if (view == null) return;
         view.showProgress();
-        inter.getArticles(id).observeOn(AndroidSchedulers.mainThread())
+        compositeDisposable.add(inter.getArticles(id).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Article>>() {
                     @Override
-                    public void accept(@NonNull List<Article> articles) throws Exception {
+                    public void accept(@NonNull List<Article> articles) {
                         if (view == null) return;
                         view.hideProgress();
                         if (articles.size() > 0){
@@ -62,12 +62,12 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    public void accept(@NonNull Throwable throwable) {
                         if (view == null) return;
                         view.hideProgress();
                         view.showMessage(R.string.error_loading_news_message);
                     }
-                });
+                }));
     }
 
     void onItemClicked(Article item, InterstitialAd interstitialAd) {

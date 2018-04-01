@@ -40,6 +40,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
@@ -88,6 +89,8 @@ public class DeputiesFragment extends Fragment implements DeputiesView,
 
     private FrameLayout frameDetails;
 
+    private Unbinder unbinder;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -122,7 +125,7 @@ public class DeputiesFragment extends Fragment implements DeputiesView,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputies, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
 
@@ -218,6 +221,13 @@ public class DeputiesFragment extends Fragment implements DeputiesView,
             adView.destroy();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        pres.onDestroy();
+        super.onDestroyView();
     }
 
     @Override
@@ -373,14 +383,15 @@ public class DeputiesFragment extends Fragment implements DeputiesView,
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public DeputiesRecyclerViewAdapter.DeputiesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public DeputiesRecyclerViewAdapter.DeputiesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_deputy_item, parent, false);
             return new DeputiesRecyclerViewAdapter.DeputiesViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(DeputiesRecyclerViewAdapter.DeputiesViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull DeputiesRecyclerViewAdapter.DeputiesViewHolder holder, int position) {
 
             final Deputy item = items.get(position);
 

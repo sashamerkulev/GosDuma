@@ -30,7 +30,7 @@ public class NewsServiceInteractorImpl implements NewsServiceInteractor {
     private final Scheduler scheduler;
 
     @Inject
-    public NewsServiceInteractorImpl(NewsRepository repo, NewsInteractor news, Scheduler scheduler) {
+    NewsServiceInteractorImpl(NewsRepository repo, NewsInteractor news, Scheduler scheduler) {
 
         this.repo = repo;
         this.news = news;

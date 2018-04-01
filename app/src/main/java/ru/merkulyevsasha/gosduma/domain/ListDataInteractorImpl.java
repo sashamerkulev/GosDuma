@@ -16,7 +16,7 @@ public class ListDataInteractorImpl implements ListDataInteractor {
     private final Scheduler scheduler;
 
     @Inject
-    public ListDataInteractorImpl(ListDataRepository repo, Scheduler scheduler){
+    ListDataInteractorImpl(ListDataRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;
     }

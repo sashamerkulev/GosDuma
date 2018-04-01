@@ -19,7 +19,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     private AktRssService akt;
 
     @Inject
-    public NewsRepositoryImpl(DatabaseHelper db, NewsRssService service, AktRssService aktservice){
+    NewsRepositoryImpl(DatabaseHelper db, NewsRssService service, AktRssService aktservice){
         this.db = db;
         this.serv = service;
         this.akt = aktservice;

@@ -29,6 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.AndroidInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.data.db.DatabaseHelper;
@@ -53,12 +54,13 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
 
     private int menuId;
     private ListViewListDataAdapter adapter;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         AndroidInjection.inject(this);
 
@@ -124,6 +126,8 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
         if (adView != null) {
             adView.destroy();
         }
+        unbinder.unbind();
+        pres.onDestroy();
         super.onDestroy();
     }
 

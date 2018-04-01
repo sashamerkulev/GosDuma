@@ -18,6 +18,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.domain.LawDetailsInteractorImpl;
@@ -63,6 +64,8 @@ public class LawDetailsFragment extends Fragment implements LawDetailsView{
 
     private View rootView;
 
+    private Unbinder unbinder;
+
     public static LawDetailsFragment newInstance(Law law) {
         LawDetailsFragment fragment = new LawDetailsFragment();
         Bundle args = new Bundle();
@@ -82,7 +85,7 @@ public class LawDetailsFragment extends Fragment implements LawDetailsView{
         if (getArguments() == null) return rootView;
         law = getArguments().getParcelable(KEY_LAW);
         if (law == null) return rootView;
-        ButterKnife.bind(this, rootView );
+        unbinder = ButterKnife.bind(this, rootView );
         AndroidSupportInjection.inject(this);
 
         lawType.setText(law.type);
@@ -109,6 +112,13 @@ public class LawDetailsFragment extends Fragment implements LawDetailsView{
             pres.bind(this);
             pres.load(law);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        pres.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

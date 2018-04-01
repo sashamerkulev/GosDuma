@@ -35,6 +35,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
@@ -75,6 +76,8 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
 
     private FrameLayout frameLayout;
 
+    private Unbinder unbinder;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -109,7 +112,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputyrequests, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
 
@@ -206,6 +209,13 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     }
 
     @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        pres.onDestroy();
+        super.onDestroyView();
+    }
+
+    @Override
     public void prepareToSearch(String searchText) {
         this.searchText = searchText;
         if (searchText !=null && !searchText.isEmpty() && searchItem !=null && searchView !=null){
@@ -294,14 +304,15 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
             this.onDeputyRequestsClickListener = onDeputyRequestsClickListener;
         }
 
+        @NonNull
         @Override
-        public DeputyRequestsRecyclerViewAdapter.DeputyRequestsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public DeputyRequestsRecyclerViewAdapter.DeputyRequestsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_deputy_request_item, parent, false);
             return new DeputyRequestsRecyclerViewAdapter.DeputyRequestsViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(DeputyRequestsRecyclerViewAdapter.DeputyRequestsViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull DeputyRequestsRecyclerViewAdapter.DeputyRequestsViewHolder holder, int position) {
 
             final DeputyRequest deputyRequest = items.get(position);
 

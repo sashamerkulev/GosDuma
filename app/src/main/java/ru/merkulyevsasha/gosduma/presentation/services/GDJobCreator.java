@@ -1,5 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.services;
 
+import android.support.annotation.NonNull;
+
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobCreator;
 
@@ -21,7 +23,7 @@ public class GDJobCreator implements JobCreator {
     }
 
     @Override
-    public Job create(String tag) {
+    public Job create(@NonNull String tag) {
         return new GDJob(inter);
     }
 }

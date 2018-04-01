@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.AdRequestHelper;
@@ -74,6 +75,7 @@ public class LawsFragment extends Fragment implements LawsView {
     private AppbarScrollExpander appbarScrollExpander;
     private int position;
     private boolean expanded;
+    private Unbinder unbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -109,7 +111,7 @@ public class LawsFragment extends Fragment implements LawsView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_laws, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
 
@@ -203,6 +205,13 @@ public class LawsFragment extends Fragment implements LawsView {
             mAdView.destroy();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        pres.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

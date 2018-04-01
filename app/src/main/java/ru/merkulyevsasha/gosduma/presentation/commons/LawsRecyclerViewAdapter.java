@@ -1,6 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.commons;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,9 @@ public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<RecyclerView.
         return position == 0 ? 1 : 0;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1 && deputy != null) {
             final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_deputy_item2, parent, false);
             return new DeputyViewHolder(view);
@@ -51,7 +53,7 @@ public class LawsRecyclerViewAdapter  extends RecyclerView.Adapter<RecyclerView.
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof LawsViewHolder) bindLawsViewHolder((LawsViewHolder) holder, position);
         else if (holder instanceof DeputyViewHolder)
             bindDeputyViewHolder((DeputyViewHolder) holder, position);

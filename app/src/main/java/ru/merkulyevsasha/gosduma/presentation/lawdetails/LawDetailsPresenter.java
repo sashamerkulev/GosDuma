@@ -25,7 +25,7 @@ public class LawDetailsPresenter extends MvpPresenter<LawDetailsView> {
     public void load(Law law) {
         if (view == null) return;
         view.showProgress();
-        inter.getLawDetails(law)
+        compositeDisposable.add(inter.getLawDetails(law)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<HashMap<String, String>>() {
                     @Override
@@ -42,7 +42,7 @@ public class LawDetailsPresenter extends MvpPresenter<LawDetailsView> {
                         view.showMessage(R.string.error_loading_news_message);
                         view.showEmptyData();
                     }
-                });
+                }));
     }
 
 }

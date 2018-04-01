@@ -10,7 +10,7 @@ public class ClickCounterRepositoryImpl implements ClickCounterRepository {
     private SettingsSharedPreferences pref;
 
     @Inject
-    public ClickCounterRepositoryImpl(SettingsSharedPreferences pref){
+    ClickCounterRepositoryImpl(SettingsSharedPreferences pref){
         this.pref = pref;
     }
 

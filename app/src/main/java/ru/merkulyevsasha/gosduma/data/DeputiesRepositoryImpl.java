@@ -15,7 +15,7 @@ public class DeputiesRepositoryImpl implements DeputiesRepository {
     private DatabaseHelper db;
 
     @Inject
-    public DeputiesRepositoryImpl(DatabaseHelper db){
+    DeputiesRepositoryImpl(DatabaseHelper db){
         this.db = db;
     }
 

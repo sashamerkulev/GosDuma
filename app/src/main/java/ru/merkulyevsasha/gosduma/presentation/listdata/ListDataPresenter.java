@@ -25,7 +25,7 @@ public class ListDataPresenter extends MvpPresenter<ListDataView> {
     public void load(String tableName){
         if (view == null) return;
         view.showProgress();
-        inter.getList(tableName).observeOn(AndroidSchedulers.mainThread())
+        compositeDisposable.add(inter.getList(tableName).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<ListData>>() {
                     @Override
                     public void accept(@NonNull List<ListData> listDatas) throws Exception {
@@ -40,7 +40,7 @@ public class ListDataPresenter extends MvpPresenter<ListDataView> {
                         view.hideProgress();
                         view.showMessage(R.string.error_loading_news_message);
                     }
-                });
+                }));
 
 
     }

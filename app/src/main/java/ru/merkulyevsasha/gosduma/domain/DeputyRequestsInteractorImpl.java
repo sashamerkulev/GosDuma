@@ -16,7 +16,7 @@ public class DeputyRequestsInteractorImpl implements DeputyRequestsInteractor {
     private final Scheduler scheduler;
 
     @Inject
-    public DeputyRequestsInteractorImpl(DeputyRequestsRepository repo, Scheduler scheduler){
+    DeputyRequestsInteractorImpl(DeputyRequestsRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;
     }

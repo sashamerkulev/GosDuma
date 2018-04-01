@@ -16,7 +16,7 @@ public class LawsInteractorImpl implements LawsInteractor {
     private final Scheduler scheduler;
 
     @Inject
-    public LawsInteractorImpl(LawsRepository repo, Scheduler scheduler){
+    LawsInteractorImpl(LawsRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;
     }

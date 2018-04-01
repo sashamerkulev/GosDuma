@@ -29,7 +29,7 @@ public class LawDetailsInteractorImpl implements LawDetailsInteractor {
     private final Scheduler scheduler;
 
     @Inject
-    public LawDetailsInteractorImpl(LawDetailsRepository repo, Scheduler scheduler){
+    LawDetailsInteractorImpl(LawDetailsRepository repo, Scheduler scheduler){
         this.repo = repo;
         this.scheduler = scheduler;
     }

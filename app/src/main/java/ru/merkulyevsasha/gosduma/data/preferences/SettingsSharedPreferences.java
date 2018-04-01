@@ -16,10 +16,6 @@ public class SettingsSharedPreferences {
         prefs = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
     }
 
-    public SharedPreferences getSharedPreferences(){
-        return prefs;
-    }
-
     public int getClickCounter(){
         return prefs.getInt("clicks", 0);
     }

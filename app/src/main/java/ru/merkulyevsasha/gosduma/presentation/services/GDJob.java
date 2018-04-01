@@ -36,7 +36,7 @@ public class GDJob extends Job {
 
     @NonNull
     @Override
-    protected Result onRunJob(Params params) {
+    protected Result onRunJob(@NonNull Params params) {
         inter.getNotificationNews2().subscribe(new Consumer<News>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull News news) throws Exception {
@@ -57,14 +57,13 @@ public class GDJob extends Job {
                 .setRequiresCharging(false)
                 .setRequiresDeviceIdle(false)
                 .setRequiredNetworkType(JobRequest.NetworkType.ANY)
-                .setPersisted(true)
                 .build()
                 .schedule();
     }
 
     private void sendNotification(Context context, int notifId, int navId, String name, String news){
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
+                new NotificationCompat.Builder(context, "gosduma_channel")
                         .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle(context.getString(R.string.app_name))
                         .setContentText(news)
@@ -86,9 +85,9 @@ public class GDJob extends Job {
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT );
         mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(notifId, mBuilder.build());
+        if (notificationManager != null) notificationManager.notify(notifId, mBuilder.build());
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
 
@@ -18,6 +19,8 @@ public class NewsDetailsFragment extends Fragment {
 
     @BindView(R.id.textview_newsdetailstopic) TextView textViewTopic;
     @BindView(R.id.textview_newsdetailsdescription) TextView textViewDescription;
+
+    private Unbinder unbinder;
 
     public static NewsDetailsFragment newInstance(String topic, String description) {
         NewsDetailsFragment details = new NewsDetailsFragment();
@@ -31,7 +34,7 @@ public class NewsDetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_news_details, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
         if (getArguments() == null) return v;
         final String topic = getArguments().getString(KeysBundleHolder.KEY_TOPIC);
         final String description = getArguments().getString(KeysBundleHolder.KEY_DESCRIPTION);
@@ -42,4 +45,9 @@ public class NewsDetailsFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
+    }
 }

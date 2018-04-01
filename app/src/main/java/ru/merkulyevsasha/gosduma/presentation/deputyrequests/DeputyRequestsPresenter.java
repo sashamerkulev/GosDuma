@@ -65,7 +65,7 @@ public class DeputyRequestsPresenter extends MvpPresenter<DeputyRequestsView> {
     public void load(){
         if (view == null) return;
         view.showProgress();
-        inter.getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection)
+        compositeDisposable.add(inter.getDeputyRequests(mSearchText, mSortColumn.get(mSort) + mSortDirection)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<DeputyRequest>>() {
                     @Override
@@ -83,7 +83,7 @@ public class DeputyRequestsPresenter extends MvpPresenter<DeputyRequestsView> {
                         view.hideProgress();
                         view.showMessage(R.string.error_loading_news_message);
                     }
-                });
+                }));
     }
 
     void onSortItemClicked() {

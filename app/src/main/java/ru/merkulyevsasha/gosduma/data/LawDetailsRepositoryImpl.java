@@ -15,7 +15,7 @@ public class LawDetailsRepositoryImpl implements LawDetailsRepository {
     private DatabaseHelper db;
 
     @Inject
-    public LawDetailsRepositoryImpl(DatabaseHelper db){
+    LawDetailsRepositoryImpl(DatabaseHelper db){
         this.db = db;
     }
 

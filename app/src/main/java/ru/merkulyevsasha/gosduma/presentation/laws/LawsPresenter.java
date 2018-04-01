@@ -71,11 +71,11 @@ public class LawsPresenter extends MvpPresenter<LawsView>{
     private void loadIfSearchTextExists(){
         if (view==null) return;
         view.showProgress();
-        inter.getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection)
+        compositeDisposable.add(inter.getLaws(mSearchText, mSortColumn.get(mSort) + mSortDirection)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Law>>() {
                     @Override
-                    public void accept(@NonNull List<Law> laws) throws Exception {
+                    public void accept(@NonNull List<Law> laws) {
                         if (view == null) return;
                         view.hideProgress();
                         if (laws.size() > 0) view.showData(laws);
@@ -84,12 +84,12 @@ public class LawsPresenter extends MvpPresenter<LawsView>{
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    public void accept(@NonNull Throwable throwable) {
                         if (view == null) return;
                         view.hideProgress();
                         view.showMessage(R.string.error_loading_news_message);
                     }
-                });
+                }));
     }
 
     void onSortItemClicked() {

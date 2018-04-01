@@ -31,6 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Deputy;
@@ -64,6 +65,7 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
 
     private Bundle args;
     private boolean deputyFragment;
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputy_details, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         AndroidSupportInjection.inject(this);
 
         if (args == null) return rootView;
@@ -182,6 +184,13 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
         super.onStart();
         pres.bind(this);
         pres.load(deputy.id);
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        pres.onDestroy();
+        super.onDestroyView();
     }
 
     @Override

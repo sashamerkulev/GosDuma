@@ -15,7 +15,7 @@ public class ListDataRepositoryImpl implements ListDataRepository {
     private DatabaseHelper db;
 
     @Inject
-    public ListDataRepositoryImpl(DatabaseHelper db){
+    ListDataRepositoryImpl(DatabaseHelper db){
         this.db = db;
     }
 
