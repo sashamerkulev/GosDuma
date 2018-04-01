@@ -42,3 +42,6 @@
 -dontwarn retrofit2.Platform$Java8
 -dontwarn rx.internal.util.unsafe.**
 
+#dagger
+-dontwarn dagger.android.**
+-dontwarn com.google.errorprone.annotations.*
