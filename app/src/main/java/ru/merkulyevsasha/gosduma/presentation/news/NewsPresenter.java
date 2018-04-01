@@ -21,6 +21,7 @@ public class NewsPresenter extends MvpPresenter<NewsView> {
 
     @Inject
     public NewsPresenter(NewsInteractor inter){
+        super();
         this.inter = inter;
     }
 

@@ -80,6 +80,7 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        AndroidSupportInjection.inject(this);
         if (context instanceof ToolbarCombinator) {
             combinator = (ToolbarCombinator) context;
         }
@@ -98,7 +99,6 @@ public class DeputyDetailsFragment extends Fragment implements DeputyDetailsView
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputy_details, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        AndroidSupportInjection.inject(this);
 
         if (args == null) return rootView;
         deputy = args.getParcelable(KeysBundleHolder.KEY_DEPUTY);

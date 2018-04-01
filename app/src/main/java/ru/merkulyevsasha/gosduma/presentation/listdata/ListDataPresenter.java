@@ -19,6 +19,7 @@ public class ListDataPresenter extends MvpPresenter<ListDataView> {
 
     @Inject
     public ListDataPresenter(ListDataInteractor inter) {
+        super();
         this.inter = inter;
     }
 

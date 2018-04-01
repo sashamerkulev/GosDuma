@@ -77,6 +77,7 @@ public class LawDetailsFragment extends Fragment implements LawDetailsView{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        AndroidSupportInjection.inject(this);
     }
 
     @Override
@@ -86,7 +87,6 @@ public class LawDetailsFragment extends Fragment implements LawDetailsView{
         law = getArguments().getParcelable(KEY_LAW);
         if (law == null) return rootView;
         unbinder = ButterKnife.bind(this, rootView );
-        AndroidSupportInjection.inject(this);
 
         lawType.setText(law.type);
         lawName.setText(law.getLawNameWithNumberAndDate());

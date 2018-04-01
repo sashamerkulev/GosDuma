@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.models.Article;
 import ru.merkulyevsasha.gosduma.presentation.KeysBundleHolder;
@@ -19,6 +20,8 @@ import ru.merkulyevsasha.gosduma.helpers.UiUtils;
 public class NewsDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_newsdetails);
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -68,5 +71,11 @@ public class NewsDetailsActivity extends AppCompatActivity {
         intent.putExtra(KeysBundleHolder.KEY_DESCRIPTION, item.Description);
         intent.putExtra(KeysBundleHolder.KEY_NAME, name);
         context.startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbinder.unbind();
+        super.onDestroy();
     }
 }

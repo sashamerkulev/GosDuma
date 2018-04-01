@@ -58,11 +58,10 @@ public class ListDataActivity extends AppCompatActivity implements ListDataView 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         unbinder = ButterKnife.bind(this);
-
-        AndroidInjection.inject(this);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions

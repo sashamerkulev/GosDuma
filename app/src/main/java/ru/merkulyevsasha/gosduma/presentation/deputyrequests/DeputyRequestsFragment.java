@@ -81,6 +81,7 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        AndroidSupportInjection.inject(this);
         if (context instanceof ToolbarCombinator) {
             combinator = (ToolbarCombinator) context;
         }
@@ -113,7 +114,6 @@ public class DeputyRequestsFragment extends Fragment implements DeputyRequestsVi
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_deputyrequests, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-        AndroidSupportInjection.inject(this);
         combinator.connectToolbar(toolbar);
 
         layoutManager = new LinearLayoutManager(getActivity());

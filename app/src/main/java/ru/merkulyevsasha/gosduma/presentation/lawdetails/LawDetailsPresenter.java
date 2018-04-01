@@ -19,6 +19,7 @@ public class LawDetailsPresenter extends MvpPresenter<LawDetailsView> {
 
     @Inject
     public LawDetailsPresenter(LawDetailsInteractor inter) {
+        super();
         this.inter = inter;
     }
 

@@ -8,9 +8,12 @@ public class MvpPresenter<T extends MvpView> {
     protected T view;
     protected CompositeDisposable compositeDisposable;
 
+    public MvpPresenter(){
+        compositeDisposable = new CompositeDisposable();
+    }
+
     public void bind(T view){
         this.view = view;
-        compositeDisposable = new CompositeDisposable();
     }
 
     public void unbind(){

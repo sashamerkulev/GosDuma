@@ -38,6 +38,7 @@ public class DeputyDetailsPresenter extends MvpPresenter<DeputyDetailsView> {
     @SuppressLint("UseSparseArrays")
     @Inject
     public DeputyDetailsPresenter(DeputyDetailsInteractor inter){
+        super();
 
         this.inter = inter;
 

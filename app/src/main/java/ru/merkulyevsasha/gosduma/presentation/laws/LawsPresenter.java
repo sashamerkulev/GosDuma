@@ -35,6 +35,7 @@ public class LawsPresenter extends MvpPresenter<LawsView>{
     @SuppressLint("UseSparseArrays")
     @Inject
     public LawsPresenter(LawsInteractor inter) {
+        super();
 
         this.inter = inter;
 

@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.HasSupportFragmentInjector;
 import ru.merkulyevsasha.gosduma.R;
 import ru.merkulyevsasha.gosduma.helpers.UiUtils;
@@ -35,6 +36,7 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         if (UiUtils.isLargeLandscape(this)) {
@@ -44,7 +46,6 @@ public class DeputyDetailsActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_deputy_details);
         ButterKnife.bind(this);
-        AndroidInjection.inject(this);
 
         Intent intent = getIntent();
         final Deputy deputy = intent.getParcelableExtra(KeysBundleHolder.KEY_DEPUTY);

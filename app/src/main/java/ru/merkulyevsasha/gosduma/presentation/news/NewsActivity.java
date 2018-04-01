@@ -65,11 +65,10 @@ public class NewsActivity extends AppCompatActivity implements NewsView{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         unbinder = ButterKnife.bind(this);
-
-        AndroidInjection.inject(this);
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions

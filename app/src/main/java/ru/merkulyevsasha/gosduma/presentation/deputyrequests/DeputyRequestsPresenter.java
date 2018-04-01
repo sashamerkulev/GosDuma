@@ -37,6 +37,7 @@ public class DeputyRequestsPresenter extends MvpPresenter<DeputyRequestsView> {
     @SuppressLint("UseSparseArrays")
     @Inject
     public DeputyRequestsPresenter(DeputyRequestsInteractor inter){
+        super();
 
         this.inter = inter;
 

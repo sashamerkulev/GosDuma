@@ -40,6 +40,7 @@ public class LawDetailsActivity extends AppCompatActivity implements HasSupportF
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lawdetails);
         ButterKnife.bind(this);
@@ -59,8 +60,6 @@ public class LawDetailsActivity extends AppCompatActivity implements HasSupportF
         }
 
         setTitle(R.string.menu_laws);
-
-        AndroidInjection.inject(this);
 
         law = intent.getParcelableExtra(KEY_LAW);
         if (law == null) {
