@@ -18,6 +18,7 @@ import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
 import ru.merkulyevsasha.data.database.DatabaseRepositoryImpl
+import ru.merkulyevsasha.data.database.NewsDatabaseSourceImpl
 import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.data.network.comments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
@@ -54,6 +55,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
             .databaseBuilder(context, NewsRoomDatabase::class.java, BuildConfig.DB_NAME)
             .fallbackToDestructiveMigration()
             .build()
+        val newsDatabaseSource = NewsDatabaseSourceImpl(newsRoomDatabase)
         val prefs = SettingsSharedPreferencesImpl(context)
         val resourceProvider = ResourceProviderImpl(context)
         maps[KeyValueStorage::class.java] = prefs
@@ -64,7 +66,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[ArticlesApiRepository::class.java] = ArticlesApiRepositoryImpl(prefs, BuildConfig.API_URL)
         maps[ArticleCommentsApiRepository::class.java] = ArticleCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL)
         maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL)
-        maps[DatabaseRepository::class.java] = DatabaseRepositoryImpl(newsRoomDatabase, prefs)
+        maps[DatabaseRepository::class.java] = DatabaseRepositoryImpl(newsDatabaseSource, prefs)
     }
 
     @Suppress("UNCHECKED_CAST")

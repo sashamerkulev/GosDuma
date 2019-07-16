@@ -13,11 +13,11 @@ dependencies {
     compileOnly project(path: ':gdcore')
     compileOnly project(path: ':coreandroid')
     compileOnly project(path: ':gdcoreandroid')
-    implementation project(path: ':preferences')
-    implementation project(path: ':data')
-    implementation project(path: ':newsdata')
-    implementation project(path: ':database')
-    implementation project(path: ':domain')
-    implementation project(path: ':newsdomain')
+    api project(path: ':preferences')
+    api project(path: ':data')
+    api project(path: ':newsdata')
+    api project(path: ':database')
+    api project(path: ':domain')
+    api project(path: ':newsdomain')
 }
 apply from: "$rootDir/room.gradle"
