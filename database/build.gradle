@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 apply from: "$rootDir/android.gradle"
@@ -7,7 +8,13 @@ apply from: "$rootDir/ktlint.gradle"
 apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"
 
+def room = '2.1.0'
+
 dependencies {
     compileOnly project(path: ':core')
     compileOnly project(path: ':gdcore')
+
+    implementation "androidx.room:room-runtime:$room"
+    kapt "androidx.room:room-compiler:$room"
+    implementation "androidx.room:room-rxjava2:$room"
 }
