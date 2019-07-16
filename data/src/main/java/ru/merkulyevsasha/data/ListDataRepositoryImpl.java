@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
-import ru.merkulyevsasha.gdcore.database.DatabaseHelper;
+import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository;
 import ru.merkulyevsasha.gdcore.models.ListData;
 import ru.merkulyevsasha.gdcore.repositories.ListDataRepository;
 
 
 public class ListDataRepositoryImpl implements ListDataRepository {
 
-    private DatabaseHelper db;
+    private GDDatabaseRepository db;
 
-    ListDataRepositoryImpl(DatabaseHelper db) {
+    ListDataRepositoryImpl(GDDatabaseRepository db) {
         this.db = db;
     }
 

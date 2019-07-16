@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
-import ru.merkulyevsasha.gdcore.database.DatabaseHelper;
+import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository;
 import ru.merkulyevsasha.gdcore.models.Codifier;
 import ru.merkulyevsasha.gdcore.repositories.LawDetailsRepository;
 
 public class LawDetailsRepositoryImpl implements LawDetailsRepository {
 
-    private DatabaseHelper db;
+    private GDDatabaseRepository db;
 
-    LawDetailsRepositoryImpl(DatabaseHelper db) {
+    LawDetailsRepositoryImpl(GDDatabaseRepository db) {
         this.db = db;
     }
 

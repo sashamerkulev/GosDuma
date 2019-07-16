@@ -1,4 +1,4 @@
-include ':app', ':core', ':gdcore', ':preferences', ':domain', ':data', ':database', ':coreandroid', ':newsdata', ':network', ':newsdomain',
+include ':app', ':core', ':gdcore', ':preferences', ':domain', ':data', ':gddatabase', ':coreandroid', ':database', ':newsdata', ':network', ':newsdomain',
         ':gdcoreandroid', ':deputies', ':deputydetails', ':deputyrequestdetails', ':deputyrequests', ':lawdetails', ':laws', ':sl',
         ':articles', ':articledetails', ':articlecomments', ':userinfo'
 
@@ -6,6 +6,7 @@ project(':core').projectDir = new File('../News2/core')
 project(':coreandroid').projectDir = new File('../News2/coreandroid')
 project(':newsdomain').projectDir = new File('../News2/domain')
 project(':network').projectDir = new File('../News2/network')
+project(':database').projectDir = new File('../News2/database')
 project(':newsdata').projectDir = new File('../News2/data')
 project(':articles').projectDir = new File('../News2/articles')
 project(':articledetails').projectDir = new File('../News2/articledetails')

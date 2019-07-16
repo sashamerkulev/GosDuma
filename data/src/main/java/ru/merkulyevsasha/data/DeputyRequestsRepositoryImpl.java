@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
-import ru.merkulyevsasha.gdcore.database.DatabaseHelper;
+import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository;
 import ru.merkulyevsasha.gdcore.models.DeputyRequest;
 import ru.merkulyevsasha.gdcore.repositories.DeputyRequestsRepository;
 
 public class DeputyRequestsRepositoryImpl implements DeputyRequestsRepository {
 
-    private DatabaseHelper db;
+    private GDDatabaseRepository db;
 
-    DeputyRequestsRepositoryImpl(DatabaseHelper db) {
+    DeputyRequestsRepositoryImpl(GDDatabaseRepository db) {
         this.db = db;
     }
 

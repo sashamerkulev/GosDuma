@@ -1,6 +1,7 @@
 package ru.merkulyevsasha.sl
 
 import android.content.Context
+import androidx.room.Room
 import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.core.domain.ArticleCommentsInteractor
@@ -16,11 +17,12 @@ import ru.merkulyevsasha.core.repositories.UsersApiRepository
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
-import ru.merkulyevsasha.data.articles.ArticlesApiRepositoryImpl
-import ru.merkulyevsasha.data.comments.ArticleCommentsApiRepositoryImpl
-import ru.merkulyevsasha.data.setup.SetupApiRepositoryImpl
-import ru.merkulyevsasha.data.users.UsersApiRepositoryImpl
-import ru.merkulyevsasha.database.DatabaseRepositoryImpl
+import ru.merkulyevsasha.data.database.DatabaseRepositoryImpl
+import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
+import ru.merkulyevsasha.data.network.comments.ArticleCommentsApiRepositoryImpl
+import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
+import ru.merkulyevsasha.data.network.users.UsersApiRepositoryImpl
+import ru.merkulyevsasha.database.data.NewsRoomDatabase
 import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
 import ru.merkulyevsasha.domain.ArticlesInteractorImpl
 import ru.merkulyevsasha.domain.NewsDistributorImpl
@@ -48,6 +50,10 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
     private val maps = HashMap<Any, Any>()
 
     init {
+        val newsRoomDatabase = Room
+            .databaseBuilder(context, NewsRoomDatabase::class.java, BuildConfig.DB_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
         val prefs = SettingsSharedPreferencesImpl(context)
         val resourceProvider = ResourceProviderImpl(context)
         maps[KeyValueStorage::class.java] = prefs
@@ -58,7 +64,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[ArticlesApiRepository::class.java] = ArticlesApiRepositoryImpl(prefs, BuildConfig.API_URL)
         maps[ArticleCommentsApiRepository::class.java] = ArticleCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL)
         maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL)
-        maps[DatabaseRepository::class.java] = DatabaseRepositoryImpl(context, prefs)
+        maps[DatabaseRepository::class.java] = DatabaseRepositoryImpl(newsRoomDatabase, prefs)
     }
 
     @Suppress("UNCHECKED_CAST")

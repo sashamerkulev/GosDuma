@@ -35,14 +35,14 @@ class MainFragment : Fragment(), RequireServiceLocator {
                     mainFragmentRouter.showArticles()
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.navigation_actions -> {
-                    mainFragmentRouter.showUserActivities()
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.navigation_user -> {
-                    mainFragmentRouter.showUserInfo()
-                    return@OnNavigationItemSelectedListener true
-                }
+//                R.id.navigation_actions -> {
+//                    mainFragmentRouter.showUserActivities()
+//                    return@OnNavigationItemSelectedListener true
+//                }
+//                R.id.navigation_user -> {
+//                    mainFragmentRouter.showUserInfo()
+//                    return@OnNavigationItemSelectedListener true
+//                }
             }
             false
         }

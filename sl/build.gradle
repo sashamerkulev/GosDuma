@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 apply from: "$rootDir/android.gradle"
 apply from: "$rootDir/ktlint.gradle"
@@ -12,10 +13,11 @@ dependencies {
     compileOnly project(path: ':gdcore')
     compileOnly project(path: ':coreandroid')
     compileOnly project(path: ':gdcoreandroid')
-    compileOnly project(path: ':preferences')
-    compileOnly project(path: ':data')
-    compileOnly project(path: ':newsdata')
-    compileOnly project(path: ':database')
-    compileOnly project(path: ':domain')
-    compileOnly project(path: ':newsdomain')
+    implementation project(path: ':preferences')
+    implementation project(path: ':data')
+    implementation project(path: ':newsdata')
+    implementation project(path: ':database')
+    implementation project(path: ':domain')
+    implementation project(path: ':newsdomain')
 }
+apply from: "$rootDir/room.gradle"

@@ -1,0 +1,7 @@
+def room = '2.1.0'
+
+dependencies {
+    implementation "androidx.room:room-runtime:$room"
+    kapt "androidx.room:room-compiler:$room"
+    implementation "androidx.room:room-rxjava2:$room"
+}
