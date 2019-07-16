@@ -8,12 +8,14 @@ apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"
 
 dependencies {
-    implementation project(path: ':core')
-    implementation project(path: ':gdcore')
-    implementation project(path: ':coreandroid')
-    implementation project(path: ':gdcoreandroid')
-    implementation project(path: ':preferences')
-    implementation project(path: ':data')
-    implementation project(path: ':database')
-    implementation project(path: ':domain')
+    compileOnly project(path: ':core')
+    compileOnly project(path: ':gdcore')
+    compileOnly project(path: ':coreandroid')
+    compileOnly project(path: ':gdcoreandroid')
+    compileOnly project(path: ':preferences')
+    compileOnly project(path: ':data')
+    compileOnly project(path: ':newsdata')
+    compileOnly project(path: ':database')
+    compileOnly project(path: ':domain')
+    compileOnly project(path: ':newsdomain')
 }

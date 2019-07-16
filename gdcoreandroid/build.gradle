@@ -10,7 +10,7 @@ apply from: "$rootDir/jacoco.gradle"
 apply from: "$rootDir/image.gradle"
 
 dependencies {
-    implementation project(path: ':gdcore')
+    compileOnly project(path: ':gdcore')
 }
 
 apply from: "$rootDir/firebase.gradle"

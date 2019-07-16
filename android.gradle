@@ -13,14 +13,14 @@ android {
         debug {
             minifyEnabled false
             buildConfigField "Boolean", "DEBUG_MODE", "true"
-            buildConfigField "String", "API_URL", "\"http://myapp74.ru:9000\""
-            buildConfigField "String", "DB_NAME", "\"rssnews\""
+            buildConfigField "String", "API_URL", "\"http://myapp74.ru:9003\""
+            buildConfigField "String", "DB_NAME", "\"gosdumadb\""
             testCoverageEnabled = true
         }
         release {
             buildConfigField "Boolean", "DEBUG_MODE", "false"
-            buildConfigField "String", "API_URL", "\"http://myapp74.ru:9000\""
-            buildConfigField "String", "DB_NAME", "\"rssnews\""
+            buildConfigField "String", "API_URL", "\"http://myapp74.ru:9003\""
+            buildConfigField "String", "DB_NAME", "\"gosdumadb\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

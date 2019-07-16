@@ -13,9 +13,9 @@ apply from: "$rootDir/androidx.gradle"
 apply from: "$rootDir/image.gradle"
 
 dependencies {
-    implementation project(path: ':core')
-    implementation project(path: ':gdcore')
-    implementation project(path: ':coreandroid')
+    compileOnly project(path: ':core')
+    compileOnly project(path: ':gdcore')
+    compileOnly project(path: ':coreandroid')
 }
 
 apply from: "$rootDir/firebase.gradle"

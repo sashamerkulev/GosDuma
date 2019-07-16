@@ -11,6 +11,7 @@ import com.facebook.stetho.Stetho
 import com.google.android.gms.ads.MobileAds
 import com.squareup.leakcanary.LeakCanary
 import ru.merkulyevsasha.core.RequireServiceLocator
+import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 import ru.merkulyevsasha.gosduma.presentation.main.MainActivity
 import ru.merkulyevsasha.gosduma.presentation.main.MainFragment
@@ -20,7 +21,7 @@ import ru.merkulyevsasha.sl.ServiceLocatorImpl
 
 class GosDumaApp : Application() {
 
-    private lateinit var serviceLocator: ServiceLocatorImpl
+    private lateinit var serviceLocator: GDServiceLocator
 
     override fun onCreate() {
         super.onCreate()
