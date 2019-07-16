@@ -1,0 +1,72 @@
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode 40
+        versionName "2.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "Boolean", "DEBUG_MODE", "true"
+            buildConfigField "String", "API_URL", "\"http://myapp74.ru:9000\""
+            buildConfigField "String", "DB_NAME", "\"rssnews\""
+            testCoverageEnabled = true
+        }
+        release {
+            buildConfigField "Boolean", "DEBUG_MODE", "false"
+            buildConfigField "String", "API_URL", "\"http://myapp74.ru:9000\""
+            buildConfigField "String", "DB_NAME", "\"rssnews\""
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+    lintOptions {
+        ignoreTestSources = true
+        abortOnError false
+    }
+    sourceSets {
+        main {
+            //manifest.srcFile 'AndroidManifest.xml'
+            //java.srcDirs = ['src']
+            resources.srcDirs = ['/src/main/res',"$rootDir/resources"]
+            //aidl.srcDirs = ['src']
+            //renderscript.srcDirs = ['src']
+            res.srcDirs = ['/src/main/res', "$rootDir/resources"]
+            //assets.srcDirs = ['assets']
+        }
+
+    }
+}
+
+dependencies {
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava2"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava2Android"
+
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "com.google.android.material:material:$material"
+
+    implementation "com.jakewharton.timber:timber:$timber"
+
+    testImplementation "junit:junit:$junit"
+    testImplementation "org.assertj:assertj-core:$assertJ"
+    testImplementation "org.mockito:mockito-core:$mockito"
+    androidTestImplementation "junit:junit:$junit"
+    androidTestImplementation "org.assertj:assertj-core:$assertJ"
+    androidTestImplementation "org.mockito:mockito-core:$mockito"
+    androidTestImplementation "androidx.test:runner:$testRunner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+repositories {
+    mavenCentral()
+}

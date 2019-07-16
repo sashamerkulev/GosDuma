@@ -1,3 +1,10 @@
-include ':app', ':apprate'
+include ':app', ':core', ':gdcore', ':preferences', ':domain', ':data', ':database', ':coreandroid',
+        ':gdcoreandroid', ':deputies', ':deputydetails', ':deputyrequestdetails', ':deputyrequests', ':lawdetails', ':laws', ':sl',
+        ':articles', ':articledetails', ':articlecomments', ':userinfo'
 
-project(':apprate').projectDir = new File('../News/apprate')
+project(':core').projectDir = new File('../News2/core')
+project(':coreandroid').projectDir = new File('../News2/coreandroid')
+project(':articles').projectDir = new File('../News2/articles')
+project(':articledetails').projectDir = new File('../News2/articledetails')
+project(':articlecomments').projectDir = new File('../News2/articlecomments')
+project(':userinfo').projectDir = new File('../News2/userinfo')

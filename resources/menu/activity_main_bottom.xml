@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_articles"
+        android:icon="@drawable/ic_rss_feed_black_24px"
+        android:title="@string/bottom_button_articles_title" />
+
+    <item
+        android:id="@+id/navigation_deputies"
+        android:icon="@drawable/ic_rss_feed_black_24px"
+        android:title="@string/bottom_button_deputies_title" />
+
+    <item
+        android:id="@+id/navigation_laws"
+        android:icon="@drawable/ic_rss_feed_black_24px"
+        android:title="@string/bottom_button_laws_title" />
+
+    <item
+        android:id="@+id/navigation_requests"
+        android:icon="@drawable/ic_rss_feed_black_24px"
+        android:title="@string/bottom_button_requests_title" />
+
+    <item
+        android:id="@+id/navigation_akt"
+        android:icon="@drawable/ic_rss_feed_black_24px"
+        android:title="@string/bottom_button_akt_title" />
+
+    <item
+        android:id="@+id/navigation_actions"
+        android:icon="@drawable/ic_bookmark_border_black_24px"
+        android:title="@string/bottom_button_actions_title" />
+
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@drawable/ic_person_outline_black_24px"
+        android:title="@string/bottom_button_user_title" />
+
+</menu>

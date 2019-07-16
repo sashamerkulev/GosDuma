@@ -1,0 +1,78 @@
+<resources>
+    <string name="APPLICATION_ID">ru.merkulyevsasha.gosduma</string>
+
+    <string name="navigation_drawer_open">Открыть навигационную панель</string>
+    <string name="navigation_drawer_close">Закрыть навигационную панель</string>
+
+    <string name="bottom_button_articles_title">Новости</string>
+    <string name="bottom_button_actions_title">Активности</string>
+    <string name="bottom_button_user_title">Профиль</string>
+    <string name="bottom_button_deputies_title">Депутаты и Члены СФ</string>
+    <string name="bottom_button_laws_title">Законопроекты</string>
+    <string name="bottom_button_requests_title">Депутатские запросы</string>
+    <string name="bottom_button_akt_title">Правовые акты</string>
+
+    <string name="button_up_title">Наверх</string>
+    <string name="menu_refresh">Обновить</string>
+
+    <string name="menu_news">Новости</string>
+    <string name="menu_news_gd">Новости ГД</string>
+    <string name="menu_news_preds">Новости председателя ГД</string>
+    <string name="menu_akt_pres">Президент РФ</string>
+    <string name="menu_akt_gover">Правительство РФ</string>
+    <string name="menu_akt_sf">Совет Федерации РФ</string>
+    <string name="menu_akt_gd">Государственная Дума РФ</string>
+    <string name="menu_lists">Справочники</string>
+    <string name="menu_comittee">Список комитетов</string>
+    <string name="menu_blocks">Список тематических блоков</string>
+    <string name="menu_otras">Список отраслей законодательства</string>
+    <string name="menu_reg">Список региональных органов власти</string>
+    <string name="menu_fed">Список федеральных органов власти</string>
+    <string name="menu_stad">Список стадий рассмотрения</string>
+    <string name="menu_inst">Список инстанций рассмотрения</string>
+
+    <string name="title_sort">Сортировка</string>
+    <string name="title_filter">Фильтр</string>
+    <string name="item_sort_name">По имени</string>
+    <string name="item_sort_birtdate">По дате рождения</string>
+    <string name="item_sort_fractionname">По фракции</string>
+    <string name="share_using">Поделиться</string>
+    <string name="item_sort_date">По дате</string>
+    <string name="item_sort_number">По номеру</string>
+    <string name="item_sort_lawname">По наименованию</string>
+    <string name="item_sort_initiator">По инициатору</string>
+    <string name="text_deputy">Депутат ГД</string>
+    <string name="text_member_sf">Член СФ</string>
+    <string name="text_working">Действующий</string>
+    <string name="text_not_working">Не действующий</string>
+    <string name="text_phase">Фаза: </string>
+    <string name="text_stage">Стадия: </string>
+    <string name="text_comment">Комментарий: </string>
+    <string name="text_resp_comittee">Отв. комитет: </string>
+    <string name="text_solution">Решение: </string>
+    <string name="text_prof_comittee">Профильные комитеты: </string>
+    <string name="text_coexec_comittee">Соисп. комитеты: </string>
+    <string name="text_department">Департамент: </string>
+    <string name="text_deputies">Депутаты: </string>
+    <string name="text_nothing_found">Ничего не найдено!</string>
+    <string name="text_initiator">Инициатор: </string>
+    <string name="text_answer">Ответ: </string>
+    <string name="text_resolution">Резолюция: </string>
+    <string name="text_signedby">Подписан: </string>
+    <string name="text_addressee">Адресован: </string>
+
+    <string name="APP_ID" translatable="false">ca-app-pub-1794194967807366~5105008330</string>
+    <string name="APP_UNIT_ID" translatable="false">ca-app-pub-1794194967807366/9535207937</string>
+    <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-1794194967807366/8058474731</string>
+    <string name="native_ad_unit_id" translatable="false">ca-app-pub-1794194967807366/9141268332</string>
+    <string name="template_native_id" translatable="false">S001</string>
+
+
+    <string name="error_loading_news_message">Ошибка загрузки новостей.</string>
+    <string name="first_loading_error_message">Ошибка первого запуска - проверьте наличие соединения с интернет.</string>
+
+    <string name="search_lvalidation_message">Строка поиска должна быть не менее 3 символов.</string>
+    <string name="image_content_description">фото</string>
+    <string name="open_details_image">открыть</string>
+
+</resources>

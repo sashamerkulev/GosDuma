@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="separatorColor" format="reference" />
+    <attr name="blackColor" format="reference" />
+    <attr name="actionBarTextColor" format="reference" />
+    <attr name="inactiveColor" format="reference" />
+</resources>
