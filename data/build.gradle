@@ -11,8 +11,9 @@ apply from: "$rootDir/jacoco.gradle"
 dependencies {
     compileOnly project(path: ':gdcore')
     compileOnly project(path: ':preferences')
-//    compileOnly project(path: ':database')
-//    compileOnly project(path: ':network')
+    api project(path: ':newsdata')
+    api project(path: ':network')
+    api project(path: ':gddatabase')
 }
 
 apply from: "$rootDir/room.gradle"
