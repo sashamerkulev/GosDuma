@@ -31,6 +31,12 @@ dependencies {
     implementation project(path: ':articledetails')
     implementation project(path: ':articlecomments')
     implementation project(path: ':userinfo')
+    implementation project(path: ':deputies')
+    implementation project(path: ':deputydetails')
+    implementation project(path: ':deputyrequestdetails')
+    implementation project(path: ':deputyrequests')
+    implementation project(path: ':lawdetails')
+    implementation project(path: ':laws')
 
     implementation "com.facebook.stetho:stetho:$stetho"
     implementation "com.facebook.stetho:stetho-okhttp3:$stetho"

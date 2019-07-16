@@ -12,8 +12,10 @@ import com.google.android.material.appbar.CollapsingToolbarLayout
 import ru.merkulyevsasha.coreandroid.common.AppbarScrollExpander
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
+import ru.merkulyevsasha.gdcore.GDServiceLocator
+import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 
-class LawDetailsFragment : Fragment(), LawDetailsView {
+class LawDetailsFragment : Fragment(), LawDetailsView, RequireGDServiceLocator {
 
     companion object {
         @JvmStatic
@@ -36,6 +38,9 @@ class LawDetailsFragment : Fragment(), LawDetailsView {
     private var combinator: ToolbarCombinator? = null
     private var presenter: LawDetailsPresenter? = null
 
+    override fun setGDServiceLocator(serviceLocator: GDServiceLocator) {
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,19 +62,19 @@ class LawDetailsFragment : Fragment(), LawDetailsView {
 
     override fun onPause() {
 //        adView?.pause()
-//        presenter?.unbindView()
+        presenter?.unbindView()
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
 //        adView?.resume()
-//        presenter?.bindView(this)
+        presenter?.bindView(this)
     }
 
     override fun onDestroyView() {
 //        adView?.destroy()
-//        presenter?.onDestroy()
+        presenter?.onDestroy()
         super.onDestroyView()
     }
 

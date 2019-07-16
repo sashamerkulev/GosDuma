@@ -20,8 +20,10 @@ import ru.merkulyevsasha.coreandroid.common.AppbarScrollExpander
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.coreandroid.common.ShowActionBarListener
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
+import ru.merkulyevsasha.gdcore.GDServiceLocator
+import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 
-class LawsFragment : Fragment(), LawsView {
+class LawsFragment : Fragment(), LawsView, RequireGDServiceLocator {
 
     companion object {
         @JvmStatic
@@ -43,6 +45,9 @@ class LawsFragment : Fragment(), LawsView {
 
     private var combinator: ToolbarCombinator? = null
     private var presenter: LawsPresenter? = null
+
+    override fun setGDServiceLocator(serviceLocator: GDServiceLocator) {
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

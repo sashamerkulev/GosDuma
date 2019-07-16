@@ -20,8 +20,10 @@ import ru.merkulyevsasha.coreandroid.common.AppbarScrollExpander
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.coreandroid.common.ShowActionBarListener
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
+import ru.merkulyevsasha.gdcore.GDServiceLocator
+import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 
-class DeputiesFragment : Fragment(), DeputiesView {
+class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
 
     companion object {
         @JvmStatic
@@ -43,6 +45,9 @@ class DeputiesFragment : Fragment(), DeputiesView {
 
     private var combinator: ToolbarCombinator? = null
     private var presenter: DeputiesPresenter? = null
+
+    override fun setGDServiceLocator(serviceLocator: GDServiceLocator) {
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

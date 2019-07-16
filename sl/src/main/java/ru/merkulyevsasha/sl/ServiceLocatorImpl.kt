@@ -11,8 +11,8 @@ import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
 class ServiceLocatorImpl private constructor(context: Context) : ServiceLocator, GDServiceLocator {
 
     companion object {
-        private var instance: ServiceLocator? = null
-        fun getInstance(context: Context): ServiceLocator {
+        private var instance: ServiceLocatorImpl? = null
+        fun getInstance(context: Context): ServiceLocatorImpl {
             if (instance == null) {
                 instance = ServiceLocatorImpl(context)
             }
