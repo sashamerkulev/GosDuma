@@ -88,7 +88,7 @@ complexity:
     active: false
   LargeClass:
     active: true
-    threshold: 150
+    threshold: 300
   LongMethod:
     active: true
     threshold: 50
@@ -441,7 +441,7 @@ style:
     active: false
   ReturnCount:
     active: true
-    max: 2
+    max: 5
     excludedFunctions: "equals"
   SafeCast:
     active: true
