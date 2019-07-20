@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 apply from: "$rootDir/android.gradle"
@@ -9,9 +8,6 @@ apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"
 
 dependencies {
-    compileOnly project(path: ':core')
     compileOnly project(path: ':gdcore')
-    compileOnly project(path: ':database')
+    compileOnly project(path: ':preferences')
 }
-
-apply from: "$rootDir/room.gradle"

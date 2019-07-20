@@ -17,13 +17,13 @@ import ru.merkulyevsasha.core.repositories.UsersApiRepository
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
-import ru.merkulyevsasha.data.GosdumaDatabaseSourceImpl
+import ru.merkulyevsasha.gddata.GosdumaDatabaseSourceImpl
 import ru.merkulyevsasha.data.database.DatabaseRepositoryImpl
 import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.data.network.comments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
 import ru.merkulyevsasha.data.network.users.UsersApiRepositoryImpl
-import ru.merkulyevsasha.database.data.GosdumaRoomDatabase
+import ru.merkulyevsasha.gddatabase.data.GosdumaRoomDatabase
 import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
 import ru.merkulyevsasha.domain.ArticlesInteractorImpl
 import ru.merkulyevsasha.domain.NewsDistributorImpl

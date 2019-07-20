@@ -7,3 +7,13 @@ google-services.json
 *.apk
 gosduma.db
 /app/src/main/res/raw/*.jpg
+/articlecomments
+/articledetails
+/articles
+/core
+/coreandroid
+/data
+/database
+/domain
+/network
+/userinfo
