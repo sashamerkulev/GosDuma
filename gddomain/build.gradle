@@ -11,3 +11,8 @@ dependencies {
     compileOnly project(path: ':gdcore')
     compileOnly project(path: ':preferences')
 }
+
+afterEvaluate {
+    generateDebugBuildConfig.enabled = false
+    generateReleaseBuildConfig.enabled = false
+}

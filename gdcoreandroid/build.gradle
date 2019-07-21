@@ -13,4 +13,9 @@ dependencies {
     compileOnly project(path: ':gdcore')
 }
 
+afterEvaluate {
+    generateDebugBuildConfig.enabled = false
+    generateReleaseBuildConfig.enabled = false
+}
+
 apply from: "$rootDir/firebase.gradle"

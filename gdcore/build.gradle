@@ -10,3 +10,8 @@ apply from: "$rootDir/jacoco.gradle"
 dependencies {
     compileOnly project(path: ':core')
 }
+
+afterEvaluate {
+    generateDebugBuildConfig.enabled = false
+    generateReleaseBuildConfig.enabled = false
+}

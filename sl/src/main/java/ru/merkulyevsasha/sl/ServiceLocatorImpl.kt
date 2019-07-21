@@ -17,13 +17,11 @@ import ru.merkulyevsasha.core.repositories.UsersApiRepository
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
-import ru.merkulyevsasha.gddata.GosdumaDatabaseSourceImpl
 import ru.merkulyevsasha.data.database.DatabaseRepositoryImpl
 import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.data.network.comments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
 import ru.merkulyevsasha.data.network.users.UsersApiRepositoryImpl
-import ru.merkulyevsasha.gddatabase.data.GosdumaRoomDatabase
 import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
 import ru.merkulyevsasha.domain.ArticlesInteractorImpl
 import ru.merkulyevsasha.domain.NewsDistributorImpl
@@ -34,6 +32,8 @@ import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
+import ru.merkulyevsasha.gddata.GosdumaDatabaseSourceImpl
+import ru.merkulyevsasha.gddatabase.data.GosdumaRoomDatabase
 import ru.merkulyevsasha.preferences.SettingsSharedPreferencesImpl
 
 class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocator {
@@ -62,11 +62,11 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[SettingsSharedPreferences::class.java] = prefs
         maps[ResourceProvider::class.java] = resourceProvider
         maps[NewsDistributor::class.java] = NewsDistributorImpl(context, resourceProvider)
-        maps[SetupApiRepository::class.java] = SetupApiRepositoryImpl(prefs, BuildConfig.API_URL)
-        maps[ArticlesApiRepository::class.java] = ArticlesApiRepositoryImpl(prefs, BuildConfig.API_URL)
-        maps[ArticleCommentsApiRepository::class.java] = ArticleCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL)
-        maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL)
-        maps[DatabaseRepository::class.java] = DatabaseRepositoryImpl(databaseSource, prefs)
+        maps[SetupApiRepository::class.java] = SetupApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
+        maps[ArticlesApiRepository::class.java] = ArticlesApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
+        maps[ArticleCommentsApiRepository::class.java] = ArticleCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
+        maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
+        maps[DatabaseRepository::class.java] = DatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
     }
 
     @Suppress("UNCHECKED_CAST")

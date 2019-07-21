@@ -87,7 +87,7 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         swipeRefreshLayout.setOnRefreshListener { }
         colorThemeResolver.initSwipeRefreshColorScheme(swipeRefreshLayout)
 
-        AdViewHelper.loadBannerAd(adView)
+        AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

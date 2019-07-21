@@ -85,7 +85,7 @@ class DeputyRequestsFragment : Fragment(), DeputyRequestsView, RequireGDServiceL
         swipeRefreshLayout.setOnRefreshListener { }
         colorThemeResolver.initSwipeRefreshColorScheme(swipeRefreshLayout)
 
-        AdViewHelper.loadBannerAd(adView)
+        AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
 
     }
 

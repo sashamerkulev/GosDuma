@@ -16,4 +16,9 @@ dependencies {
     api project(path: ':gddatabase')
 }
 
+afterEvaluate {
+    generateDebugBuildConfig.enabled = false
+    generateReleaseBuildConfig.enabled = false
+}
+
 apply from: "$rootDir/room.gradle"

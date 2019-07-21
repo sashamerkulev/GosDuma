@@ -14,4 +14,9 @@ dependencies {
     compileOnly project(path: ':database')
 }
 
+afterEvaluate {
+    generateDebugBuildConfig.enabled = false
+    generateReleaseBuildConfig.enabled = false
+}
+
 apply from: "$rootDir/room.gradle"
