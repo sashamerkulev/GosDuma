@@ -12,8 +12,6 @@ gosduma.db
 /articles
 /core
 /coreandroid
-/data
-/database
 /domain
 /network
 /userinfo

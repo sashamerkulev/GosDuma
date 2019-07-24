@@ -1,7 +1,6 @@
 package ru.merkulyevsasha.sl
 
 import android.content.Context
-import androidx.room.Room
 import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.core.domain.ArticleCommentsInteractor
@@ -18,6 +17,7 @@ import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
 import ru.merkulyevsasha.data.database.DatabaseRepositoryImpl
+import ru.merkulyevsasha.data.database.GosdumaRoomDatabaseSourceCreator
 import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.data.network.comments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
@@ -32,8 +32,6 @@ import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
-import ru.merkulyevsasha.gddata.GosdumaDatabaseSourceImpl
-import ru.merkulyevsasha.gddatabase.data.GosdumaRoomDatabase
 import ru.merkulyevsasha.preferences.SettingsSharedPreferencesImpl
 
 class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocator {
@@ -51,11 +49,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
     private val maps = HashMap<Any, Any>()
 
     init {
-        val roomDatabase = Room
-            .databaseBuilder(context, GosdumaRoomDatabase::class.java, BuildConfig.DB_NAME)
-            .fallbackToDestructiveMigration()
-            .build()
-        val databaseSource = GosdumaDatabaseSourceImpl(roomDatabase)
+        val databaseSource = GosdumaRoomDatabaseSourceCreator.create(context, BuildConfig.DB_NAME)
         val prefs = SettingsSharedPreferencesImpl(context)
         val resourceProvider = ResourceProviderImpl(context)
         maps[KeyValueStorage::class.java] = prefs
