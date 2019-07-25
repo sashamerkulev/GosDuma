@@ -1,0 +1,32 @@
+package ru.merkulyevsasha.database.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
+import io.reactivex.Single
+import ru.merkulyevsasha.database.entities.AktCommentEntity
+
+@Dao
+interface AktCommentsDao {
+    @Query("select * from aktComments where articleId = :articleId order by pubDate desc")
+    fun getAktComments(articleId: Int): Single<List<AktCommentEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOrUpdate(items: List<AktCommentEntity>)
+
+    @Update
+    fun update(item: AktCommentEntity)
+
+    @Query("update akts set usersCommentCount = usersCommentCount + :commentsCount, isUserCommented = 1 where articleId = :articleId")
+    fun updateAkt(articleId: Int, commentsCount: Int)
+
+    @Transaction
+    fun updateAktComment(comment: AktCommentEntity, commentsCount: Int) {
+        update(comment)
+        updateAkt(comment.articleId, commentsCount)
+    }
+
+}

@@ -1,6 +1,4 @@
-package ru.merkulyevsasha.gddata.database
-
-import ru.merkulyevsasha.data.database.NewsDatabaseSource
+package ru.merkulyevsasha.data.database
 
 interface GosdumaDatabaseSource : NewsDatabaseSource {
 }

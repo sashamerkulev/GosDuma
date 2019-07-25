@@ -1,12 +1,10 @@
-package ru.merkulyevsasha.gddata.database
+package ru.merkulyevsasha.data.database
 
 import io.reactivex.Single
 import ru.merkulyevsasha.database.data.GosdumaRoomDatabase
-
 import ru.merkulyevsasha.database.entities.ArticleCommentEntity
 import ru.merkulyevsasha.database.entities.ArticleEntity
 import ru.merkulyevsasha.database.entities.RssSourceEntity
-
 import java.util.*
 
 class GosdumaDatabaseSourceImpl(private val database: GosdumaRoomDatabase) : GosdumaDatabaseSource {
