@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.data.network.comments
+package ru.merkulyevsasha.data.network.articlecomments
 
 import io.reactivex.Completable
 import io.reactivex.Single
