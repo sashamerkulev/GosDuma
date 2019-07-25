@@ -15,8 +15,8 @@ import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 import ru.merkulyevsasha.gosduma.presentation.main.MainActivity
 import ru.merkulyevsasha.gosduma.presentation.main.MainFragment
-import ru.merkulyevsasha.gosduma.presentation.routers.MainActivityRouterImpl
-import ru.merkulyevsasha.gosduma.presentation.routers.MainFragmentRouterImpl
+import ru.merkulyevsasha.gosduma.presentation.routers.GDMainActivityRouterImpl
+import ru.merkulyevsasha.gosduma.presentation.routers.GDMainFragmentRouterImpl
 import ru.merkulyevsasha.sl.ServiceLocatorImpl
 
 class GosDumaApp : Application() {
@@ -59,7 +59,8 @@ class GosDumaApp : Application() {
 
         override fun onFragmentCreated(fm: FragmentManager, fragment: Fragment, savedInstanceState: Bundle?) {
             if (fragment.javaClass.simpleName == MainFragment::class.java.simpleName) {
-                serviceLocator.addFragmentRouter(MainFragmentRouterImpl(fragment.childFragmentManager))
+                serviceLocator.addFragmentRouter(GDMainFragmentRouterImpl(fragment.childFragmentManager))
+                serviceLocator.addGDFragmentRouter(GDMainFragmentRouterImpl(fragment.childFragmentManager))
             }
             if (fragment is RequireServiceLocator) {
                 fragment.setServiceLocator(serviceLocator)
@@ -110,8 +111,8 @@ class GosDumaApp : Application() {
                     val supportFragmentManager = (activity as AppCompatActivity).supportFragmentManager
                     supportFragmentManager.registerFragmentLifecycleCallbacks(this, true)
                     serviceLocator = ServiceLocatorImpl.getInstance(this@GosDumaApp)
-                    serviceLocator.addMainRouter(MainActivityRouterImpl(supportFragmentManager))
-                    serviceLocator.addGDMainRouter(MainActivityRouterImpl(supportFragmentManager))
+                    serviceLocator.addMainRouter(GDMainActivityRouterImpl(supportFragmentManager))
+                    serviceLocator.addGDMainRouter(GDMainActivityRouterImpl(supportFragmentManager))
                 }
                 if (activityInstance is RequireServiceLocator) {
                     activityInstance.setServiceLocator(serviceLocator)

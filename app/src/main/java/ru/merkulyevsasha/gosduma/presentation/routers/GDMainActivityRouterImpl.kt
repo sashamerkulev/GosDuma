@@ -3,7 +3,6 @@ package ru.merkulyevsasha.gosduma.presentation.routers
 import androidx.fragment.app.FragmentManager
 import ru.merkulyevsasha.articlecomments.ArticleCommentsFragment
 import ru.merkulyevsasha.articledetails.ArticleDetailsFragment
-import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.routers.BaseRouter
 import ru.merkulyevsasha.deputydetails.DeputyDetailsFragment
 import ru.merkulyevsasha.deputyrequestdetails.DeputyRequestDetailsFragment
@@ -12,8 +11,8 @@ import ru.merkulyevsasha.gosduma.R
 import ru.merkulyevsasha.gosduma.presentation.main.MainFragment
 import ru.merkulyevsasha.lawdetails.LawDetailsFragment
 
-class MainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.id.container, fragmentManager),
-    MainActivityRouter, GDMainActivityRouter {
+class GDMainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.id.container, fragmentManager),
+    GDMainActivityRouter {
 
     override fun showMain() {
         val tag = MainFragment.TAG

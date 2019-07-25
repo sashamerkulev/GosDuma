@@ -2,7 +2,6 @@ package ru.merkulyevsasha.gosduma.presentation.routers
 
 import androidx.fragment.app.FragmentManager
 import ru.merkulyevsasha.articles.ArticlesFragment
-import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.routers.BaseRouter
 import ru.merkulyevsasha.deputies.DeputiesFragment
 import ru.merkulyevsasha.deputyrequests.DeputyRequestsFragment
@@ -11,8 +10,8 @@ import ru.merkulyevsasha.gosduma.R
 import ru.merkulyevsasha.laws.LawsFragment
 import ru.merkulyevsasha.userinfo.UserInfoFragment
 
-class MainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.id.mainContainer, fragmentManager),
-    MainFragmentRouter, GDMainFragmentRouter {
+class GDMainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.id.mainContainer, fragmentManager),
+    GDMainFragmentRouter {
 
     override fun showArticles() {
         val tag = ArticlesFragment.TAG
@@ -45,8 +44,8 @@ class MainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.id
     }
 
     override fun showAkts() {
-//        val tag = LawsFragment.TAG
-//        val fragment = findOrCreateFragment(tag) { LawsFragment.newInstance() }
+//        val tag = AktsFragment.TAG
+//        val fragment = findOrCreateFragment(tag) { AktsFragment.newInstance() }
 //        replaceFragment(tag, fragment)
     }
 
@@ -54,6 +53,12 @@ class MainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.id
         val tag = DeputyRequestsFragment.TAG
         val fragment = findOrCreateFragment(tag) { DeputyRequestsFragment.newInstance() }
         replaceFragment(tag, fragment)
+    }
+
+    override fun showMore() {
+//        val tag = MenuFragment.TAG
+//        val fragment = findOrCreateFragment(tag) { MenuFragment.newInstance() }
+//        replaceFragment(tag, fragment)
     }
 
 }

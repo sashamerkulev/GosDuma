@@ -1,6 +1,8 @@
 package ru.merkulyevsasha.gdcore.routers
 
-interface GDMainActivityRouter {
+import ru.merkulyevsasha.core.routers.MainActivityRouter
+
+interface GDMainActivityRouter : MainActivityRouter{
     fun showDeputyDetails()
     fun showLawDetails()
     fun showDeputyRequestDetails()

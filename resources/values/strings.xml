@@ -8,10 +8,10 @@
     <string name="bottom_button_articles_title">Новости</string>
     <string name="bottom_button_actions_title">Активности</string>
     <string name="bottom_button_user_title">Профиль</string>
-    <string name="bottom_button_deputies_title">Депутаты и Члены СФ</string>
-    <string name="bottom_button_laws_title">Законопроекты</string>
-    <string name="bottom_button_requests_title">Депутатские запросы</string>
-    <string name="bottom_button_akt_title">Правовые акты</string>
+    <string name="bottom_button_deputies_title">Депутаты</string>
+    <string name="bottom_button_laws_title">Законы</string>
+    <string name="bottom_button_requests_title">Запросы</string>
+    <string name="bottom_button_akt_title">Акты</string>
 
     <string name="button_up_title">Наверх</string>
     <string name="menu_refresh">Обновить</string>

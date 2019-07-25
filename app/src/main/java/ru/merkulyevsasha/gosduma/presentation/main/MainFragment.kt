@@ -9,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.bottomNav
 import ru.merkulyevsasha.core.RequireServiceLocator
 import ru.merkulyevsasha.core.ServiceLocator
-import ru.merkulyevsasha.core.routers.MainFragmentRouter
+import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
 import ru.merkulyevsasha.gosduma.R
 
 class MainFragment : Fragment(), RequireServiceLocator {
@@ -26,7 +26,7 @@ class MainFragment : Fragment(), RequireServiceLocator {
         }
     }
 
-    private lateinit var mainFragmentRouter: MainFragmentRouter
+    private lateinit var mainFragmentRouter: GDMainFragmentRouter
 
     private val navigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -35,20 +35,28 @@ class MainFragment : Fragment(), RequireServiceLocator {
                     mainFragmentRouter.showArticles()
                     return@OnNavigationItemSelectedListener true
                 }
-//                R.id.navigation_actions -> {
-//                    mainFragmentRouter.showUserActivities()
-//                    return@OnNavigationItemSelectedListener true
-//                }
-//                R.id.navigation_user -> {
-//                    mainFragmentRouter.showUserInfo()
-//                    return@OnNavigationItemSelectedListener true
-//                }
+                R.id.navigation_deputies -> {
+                    mainFragmentRouter.showDeputies()
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_laws -> {
+                    mainFragmentRouter.showLaws()
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_user -> {
+                    mainFragmentRouter.showUserInfo()
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.navigation_more -> {
+                    mainFragmentRouter.showMore()
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         }
 
     override fun setServiceLocator(serviceLocator: ServiceLocator) {
-        mainFragmentRouter = serviceLocator.get(MainFragmentRouter::class.java)
+        mainFragmentRouter = serviceLocator.get(GDMainFragmentRouter::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
