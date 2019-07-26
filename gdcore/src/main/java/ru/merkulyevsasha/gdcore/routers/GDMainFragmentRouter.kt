@@ -6,6 +6,5 @@ interface GDMainFragmentRouter : MainFragmentRouter{
     fun showDeputies()
     fun showLaws()
     fun showAkts()
-    fun showDeputyRequests()
     fun showMore()
 }

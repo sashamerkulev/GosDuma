@@ -5,7 +5,6 @@ import ru.merkulyevsasha.articlecomments.ArticleCommentsFragment
 import ru.merkulyevsasha.articledetails.ArticleDetailsFragment
 import ru.merkulyevsasha.coreandroid.routers.BaseRouter
 import ru.merkulyevsasha.deputydetails.DeputyDetailsFragment
-import ru.merkulyevsasha.deputyrequestdetails.DeputyRequestDetailsFragment
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gosduma.R
 import ru.merkulyevsasha.gosduma.presentation.main.MainFragment
@@ -41,12 +40,6 @@ class GDMainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
     override fun showLawDetails() {
         val tag = LawDetailsFragment.TAG
         val fragment = findOrCreateFragment(tag) { LawDetailsFragment.newInstance() }
-        replaceFragment(tag, fragment, true)
-    }
-
-    override fun showDeputyRequestDetails() {
-        val tag = DeputyRequestDetailsFragment.TAG
-        val fragment = findOrCreateFragment(tag) { DeputyRequestDetailsFragment.newInstance() }
         replaceFragment(tag, fragment, true)
     }
 

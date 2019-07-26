@@ -33,8 +33,6 @@ dependencies {
     implementation project(path: ':userinfo')
     implementation project(path: ':deputies')
     implementation project(path: ':deputydetails')
-    implementation project(path: ':deputyrequestdetails')
-    implementation project(path: ':deputyrequests')
     implementation project(path: ':lawdetails')
     implementation project(path: ':laws')
 

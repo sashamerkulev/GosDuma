@@ -4,7 +4,6 @@ import androidx.fragment.app.FragmentManager
 import ru.merkulyevsasha.articles.ArticlesFragment
 import ru.merkulyevsasha.coreandroid.routers.BaseRouter
 import ru.merkulyevsasha.deputies.DeputiesFragment
-import ru.merkulyevsasha.deputyrequests.DeputyRequestsFragment
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
 import ru.merkulyevsasha.gosduma.R
 import ru.merkulyevsasha.laws.LawsFragment
@@ -47,12 +46,6 @@ class GDMainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
 //        val tag = AktsFragment.TAG
 //        val fragment = findOrCreateFragment(tag) { AktsFragment.newInstance() }
 //        replaceFragment(tag, fragment)
-    }
-
-    override fun showDeputyRequests() {
-        val tag = DeputyRequestsFragment.TAG
-        val fragment = findOrCreateFragment(tag) { DeputyRequestsFragment.newInstance() }
-        replaceFragment(tag, fragment)
     }
 
     override fun showMore() {
