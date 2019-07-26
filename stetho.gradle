@@ -1,0 +1,6 @@
+def stetho = '1.5.1'
+
+dependencies {
+    implementation "com.facebook.stetho:stetho:$stetho"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
+}

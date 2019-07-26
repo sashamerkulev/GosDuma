@@ -37,19 +37,13 @@ dependencies {
     implementation project(path: ':laws')
     implementation project(path: ':akts')
 
-    implementation "com.facebook.stetho:stetho:$stetho"
-    implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
-
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     // Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 }
 
-//configurations {
-//    implementation.exclude module: 'database'
-//}
-
+apply from: "$rootDir/stetho.gradle"
 apply from: "$rootDir/androidx.gradle"
 apply from: "$rootDir/image.gradle"
 apply from: "$rootDir/firebase.gradle"
