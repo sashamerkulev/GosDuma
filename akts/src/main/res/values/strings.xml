@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_akt_title">Акты</string>
+    <string name="akt_loading_error_message">Ошибка загрузки актов - проверьте соединение с интернет.</string>
+</resources>

@@ -1,6 +1,7 @@
 package ru.merkulyevsasha.gosduma.presentation.routers
 
 import androidx.fragment.app.FragmentManager
+import ru.merkulyevsasha.akts.AktsFragment
 import ru.merkulyevsasha.articles.ArticlesFragment
 import ru.merkulyevsasha.coreandroid.routers.BaseRouter
 import ru.merkulyevsasha.deputies.DeputiesFragment
@@ -43,9 +44,9 @@ class GDMainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
     }
 
     override fun showAkts() {
-//        val tag = AktsFragment.TAG
-//        val fragment = findOrCreateFragment(tag) { AktsFragment.newInstance() }
-//        replaceFragment(tag, fragment)
+        val tag = AktsFragment.TAG
+        val fragment = findOrCreateFragment(tag) { AktsFragment.newInstance() }
+        replaceFragment(tag, fragment)
     }
 
     override fun showMore() {
