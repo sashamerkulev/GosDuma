@@ -2,12 +2,15 @@ package ru.merkulyevsasha.data.database
 
 import io.reactivex.Single
 import ru.merkulyevsasha.database.data.GosdumaRoomDatabase
+import ru.merkulyevsasha.database.entities.AktCommentEntity
+import ru.merkulyevsasha.database.entities.AktEntity
 import ru.merkulyevsasha.database.entities.ArticleCommentEntity
 import ru.merkulyevsasha.database.entities.ArticleEntity
 import ru.merkulyevsasha.database.entities.RssSourceEntity
 import java.util.*
 
 class GosdumaDatabaseSourceImpl(private val database: GosdumaRoomDatabase) : GosdumaDatabaseSource {
+
     override fun getArticles(): Single<List<ArticleEntity>> {
         return database.articleDao.getArticles()
     }
@@ -67,4 +70,37 @@ class GosdumaDatabaseSourceImpl(private val database: GosdumaRoomDatabase) : Gos
     override fun updateArticleComment(comment: ArticleCommentEntity, commentsCount: Int) {
         database.articleCommentsDao.updateArticleComment(comment, commentsCount)
     }
+
+    override fun getAkts(): Single<List<AktEntity>> {
+        return database.aktDao.getAkts()
+    }
+
+    override fun searchAkts(searchText: String): Single<List<AktEntity>> {
+        return database.aktDao.searchAkts(searchText)
+    }
+
+    override fun getAktComments(articleId: Int): Single<List<AktCommentEntity>> {
+        return database.aktCommentsDao.getAktComments(articleId)
+    }
+
+    override fun addOrUpdateAkts(articles: List<AktEntity>) {
+        database.aktDao.insertOrUpdate(articles)
+    }
+
+    override fun updateAkt(article: AktEntity) {
+        database.aktDao.update(article)
+    }
+
+    override fun addOrUpdateAktComments(comments: List<AktCommentEntity>) {
+        database.aktCommentsDao.insertOrUpdate(comments)
+    }
+
+    override fun updateAktComment(comment: AktCommentEntity, commentsCount: Int) {
+        database.aktCommentsDao.update(comment)
+    }
+
+    override fun getAkt(articleId: Int): Single<AktEntity> {
+        return database.aktDao.getAkt(articleId)
+    }
+
 }

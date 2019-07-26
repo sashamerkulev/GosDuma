@@ -7,6 +7,11 @@
         android:title="@string/bottom_button_articles_title" />
 
     <item
+        android:id="@+id/navigation_akt"
+        android:icon="@drawable/ic_note_outline"
+        android:title="@string/bottom_button_akt_title" />
+
+    <item
         android:id="@+id/navigation_deputies"
         android:icon="@drawable/ic_account_group_outline"
         android:title="@string/bottom_button_deputies_title" />
@@ -19,11 +24,6 @@
     <item
         android:id="@+id/navigation_user"
         android:icon="@drawable/ic_person_outline_black_24px"
-        android:title="@string/bottom_button_user_title" />
-
-    <item
-        android:id="@+id/navigation_more"
-        android:icon="@drawable/ic_menu"
         android:title="@string/bottom_button_user_title" />
 
 </menu>
