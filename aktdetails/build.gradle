@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply from: "$rootDir/android.gradle"
+apply from: "$rootDir/ktlint.gradle"
+apply from: "$rootDir/detekt.gradle"
+apply from: "$rootDir/jacoco.gradle"
+
+apply from: "$rootDir/androidx.gradle"
+
+dependencies {
+    compileOnly project(path: ':core')
+    compileOnly project(path: ':gdcore')
+    compileOnly project(path: ':coreandroid')
+    compileOnly project(path: ':gdcoreandroid')
+}
+
+apply from: "$rootDir/firebase.gradle"

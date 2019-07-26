@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="40dp" />
+
+    <View
+        android:id="@+id/sep2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/separatorColor"
+        app:layout_constraintTop_toBottomOf="@+id/guidline1" />
+
+    <View
+        android:id="@+id/layoutButtonLike"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_40dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toStartOf="@+id/layoutButtonComment"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sep2" />
+
+    <View
+        android:id="@+id/layoutButtonComment"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_40dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toStartOf="@+id/layoutButtonDislike"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layoutButtonLike"
+        app:layout_constraintTop_toBottomOf="@+id/sep2" />
+
+    <View
+        android:id="@+id/layoutButtonDislike"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_40dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="@+id/layoutButtonShare"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layoutButtonComment"
+        app:layout_constraintTop_toBottomOf="@+id/sep2" />
+
+    <View
+        android:id="@+id/layoutButtonShare"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_40dp"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layoutButtonDislike"
+        app:layout_constraintTop_toBottomOf="@+id/sep2" />
+
+    <ImageView
+        android:id="@+id/imageViewLike"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
+        android:clickable="false"
+        android:tint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonLike"
+        app:layout_constraintEnd_toEndOf="@+id/layoutButtonLike"
+        app:layout_constraintStart_toStartOf="@+id/layoutButtonLike"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonLike"
+        app:srcCompat="@drawable/ic_mood_happy_24px"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/textViewLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_4dp"
+        android:layout_marginLeft="@dimen/margin_4dp"
+        android:color="?attr/separatorColor"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonLike"
+        app:layout_constraintStart_toEndOf="@+id/imageViewLike"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonLike"
+        tools:text="112" />
+
+    <ImageView
+        android:id="@+id/imageViewComment"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
+        android:clickable="false"
+        android:tint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonComment"
+        app:layout_constraintEnd_toEndOf="@+id/layoutButtonComment"
+        app:layout_constraintStart_toStartOf="@+id/layoutButtonComment"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonComment"
+        app:srcCompat="@drawable/ic_comment_black_24px"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/textViewComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_4dp"
+        android:layout_marginLeft="@dimen/margin_4dp"
+        android:color="?attr/separatorColor"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonLike"
+        app:layout_constraintStart_toEndOf="@+id/imageViewComment"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonLike"
+        tools:text="1" />
+
+    <ImageView
+        android:id="@+id/imageViewDislike"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
+        android:clickable="false"
+        android:tint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonDislike"
+        app:layout_constraintEnd_toEndOf="@+id/layoutButtonDislike"
+        app:layout_constraintStart_toStartOf="@+id/layoutButtonDislike"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonDislike"
+        app:srcCompat="@drawable/ic_mood_unhappy_24px"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/textViewDislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_4dp"
+        android:layout_marginLeft="@dimen/margin_4dp"
+        android:color="?attr/separatorColor"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonLike"
+        app:layout_constraintStart_toEndOf="@+id/imageViewDislike"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonLike"
+        tools:text="99" />
+
+    <ImageView
+        android:id="@+id/imageViewShare"
+        android:layout_width="@dimen/size_24dp"
+        android:layout_height="@dimen/size_24dp"
+        android:clickable="false"
+        android:tint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutButtonShare"
+        app:layout_constraintEnd_toEndOf="@+id/layoutButtonShare"
+        app:layout_constraintStart_toStartOf="@+id/layoutButtonShare"
+        app:layout_constraintTop_toTopOf="@+id/layoutButtonShare"
+        app:srcCompat="@drawable/ic_share_24px"
+        tools:ignore="ContentDescription,VectorDrawableCompat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

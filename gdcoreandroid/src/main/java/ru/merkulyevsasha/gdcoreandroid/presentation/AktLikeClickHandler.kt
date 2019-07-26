@@ -2,17 +2,17 @@ package ru.merkulyevsasha.gdcoreandroid.presentation
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import ru.merkulyevsasha.gdcore.domain.AktInteractor
+import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import timber.log.Timber
 
 class AktLikeClickHandler(
-    private val articlesInteractor: AktInteractor,
+    private val articlesInteractor: AktsInteractor,
     private val succes: (Akt) -> Unit,
     private val failure: () -> Unit
 ) {
     fun onArticleLikeClicked(articleId: Int): Disposable {
-        return articlesInteractor.likeArticle(articleId)
+        return articlesInteractor.likeAkt(articleId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { newItem -> succes(newItem) },
@@ -23,7 +23,7 @@ class AktLikeClickHandler(
     }
 
     fun onArticleDislikeClicked(articleId: Int): Disposable {
-        return articlesInteractor.dislikeArticle(articleId)
+        return articlesInteractor.dislikeAkt(articleId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { newItem -> succes(newItem) },

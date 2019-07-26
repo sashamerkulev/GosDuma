@@ -1,4 +1,4 @@
-include ':app', ':core', ':coreandroid', ':data', ':database', ':network', ':domain', ':gdcore', ':gdcoreandroid', ':gdnetwork', ':akts',
+include ':app', ':core', ':coreandroid', ':data', ':database', ':network', ':domain', ':gdcore', ':gdcoreandroid', ':gdnetwork', ':akts', ':aktdetails', ':aktcomments',
         ':gddomain', ':preferences',
         ':articles', ':articledetails', ':articlecomments', ':userinfo',
         ':deputies', ':deputydetails', ':lawdetails', ':laws', ':sl'

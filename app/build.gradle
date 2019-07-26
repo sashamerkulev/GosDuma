@@ -36,6 +36,8 @@ dependencies {
     implementation project(path: ':lawdetails')
     implementation project(path: ':laws')
     implementation project(path: ':akts')
+    implementation project(path: ':aktdetails')
+    implementation project(path: ':aktcomments')
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'

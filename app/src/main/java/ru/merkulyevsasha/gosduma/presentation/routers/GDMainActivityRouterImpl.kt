@@ -1,6 +1,8 @@
 package ru.merkulyevsasha.gosduma.presentation.routers
 
 import androidx.fragment.app.FragmentManager
+import ru.merkulyevsasha.aktcomments.AktCommentsFragment
+import ru.merkulyevsasha.aktdetails.AktDetailsFragment
 import ru.merkulyevsasha.articlecomments.ArticleCommentsFragment
 import ru.merkulyevsasha.articledetails.ArticleDetailsFragment
 import ru.merkulyevsasha.coreandroid.routers.BaseRouter
@@ -25,9 +27,21 @@ class GDMainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
         replaceFragment(tag, fragment, true)
     }
 
+    override fun showAktDetails(articleId: Int) {
+        val tag = AktDetailsFragment.TAG
+        val fragment = findOrCreateFragment(tag) { AktDetailsFragment.newInstance(articleId) }
+        replaceFragment(tag, fragment, true)
+    }
+
     override fun showArticleComments(articleId: Int) {
         val tag = ArticleCommentsFragment.TAG
         val fragment = findOrCreateFragment(tag) { ArticleCommentsFragment.newInstance(articleId) }
+        replaceFragment(tag, fragment, true)
+    }
+
+    override fun showAktComments(articleId: Int) {
+        val tag = AktCommentsFragment.TAG
+        val fragment = findOrCreateFragment(tag) { AktCommentsFragment.newInstance(articleId) }
         replaceFragment(tag, fragment, true)
     }
 

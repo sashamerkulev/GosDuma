@@ -32,7 +32,7 @@ import ru.merkulyevsasha.coreandroid.common.AppbarScrollExpander
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.coreandroid.common.ShowActionBarListener
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
-import ru.merkulyevsasha.gdcore.domain.AktInteractor
+import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcoreandroid.common.aktadapter.AktViewAdapter
 
@@ -128,7 +128,7 @@ class AktsFragment : Fragment(), AktsView, RequireServiceLocator {
 
         AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
 
-        val interactor = serviceLocator.get(AktInteractor::class.java)
+        val interactor = serviceLocator.get(AktsInteractor::class.java)
         presenter = AktsPresenterImpl(interactor, serviceLocator.get(NewsDistributor::class.java),
             serviceLocator.get(MainActivityRouter::class.java))
         presenter?.bindView(this)

@@ -4,7 +4,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
-import ru.merkulyevsasha.gdcore.domain.AktInteractor
+import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcoreandroid.common.aktadapter.AktClickCallbackHandler
 import ru.merkulyevsasha.gdcoreandroid.common.aktadapter.AktCommentCallbackClickHandler
@@ -15,7 +15,7 @@ import ru.merkulyevsasha.gdcoreandroid.presentation.SearchAktHandler
 import timber.log.Timber
 
 class AktsPresenterImpl(
-    private val articlesInteractor: AktInteractor,
+    private val articlesInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor,
     private val applicationRouter: MainActivityRouter
 ) : BasePresenterImpl<AktsView>(),
@@ -33,7 +33,7 @@ class AktsPresenterImpl(
 
     fun onFirstLoad() {
         compositeDisposable.add(
-            articlesInteractor.getArticles()
+            articlesInteractor.getAkts()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -47,7 +47,7 @@ class AktsPresenterImpl(
 
     fun onRefresh() {
         compositeDisposable.add(
-            articlesInteractor.refreshAndGetArticles()
+            articlesInteractor.refreshAndGetAkts()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }

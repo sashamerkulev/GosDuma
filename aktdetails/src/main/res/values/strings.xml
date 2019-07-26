@@ -1,0 +1,3 @@
+<resources>
+    <string name="akt_details_loading_error_message">Ошибка загрузки новости - проверьте соединение с интернет.</string>
+</resources>

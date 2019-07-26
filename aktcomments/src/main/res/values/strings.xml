@@ -1,0 +1,4 @@
+<resources>
+    <string name="comment_loading_error_message">Ошибка загрузки комментов - проверьте соединение с интернет.</string>
+    <string name="comment">Комментарий</string>
+</resources>
