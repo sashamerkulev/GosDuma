@@ -7,7 +7,7 @@ import ru.merkulyevsasha.core.preferences.KeyValueStorage
 import ru.merkulyevsasha.core.repositories.ArticleCommentsApiRepository
 import ru.merkulyevsasha.data.network.base.BaseApiRepository
 import ru.merkulyevsasha.data.network.mappers.ArticleCommentsMapper
-import ru.merkulyevsasha.network.data.CommentsApi
+import ru.merkulyevsasha.network.data.ArticleCommentsApi
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +19,7 @@ class ArticleCommentsApiRepositoryImpl(
 
     private val articleCommentsMapper by lazy { ArticleCommentsMapper("bearer " + sharedPreferences.getAccessToken(), baseUrl) }
 
-    private val api: CommentsApi = retrofit.create(CommentsApi::class.java)
+    private val api: ArticleCommentsApi = retrofit.create(ArticleCommentsApi::class.java)
 
     private val format = "yyyy-MM-dd'T'HH:mm:ss"
     private val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
