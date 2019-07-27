@@ -16,19 +16,19 @@ import ru.merkulyevsasha.gdcoreandroid.presentation.AktLikeClickHandler
 import timber.log.Timber
 
 class AktCommentsPresenterImpl(
-    private val articleCommentsInteractor: AktCommentsInteractor,
+    private val aktCommentsInteractor: AktCommentsInteractor,
     articlesInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor
 ) : BasePresenterImpl<AktCommentsView>(),
     AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentLikeCallbackClickHandler, AktCommentShareCallbackClickHandler {
 
-    private val articleLikeClickHandler = AktLikeClickHandler(articlesInteractor,
+    private val aktLikeClickHandler = AktLikeClickHandler(articlesInteractor,
         { view?.updateItem(it) },
         { view?.showError() })
 
     fun onFirstLoad(articleId: Int) {
         compositeDisposable.add(
-            articleCommentsInteractor.getAktComments(articleId)
+            aktCommentsInteractor.getAktComments(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -43,7 +43,7 @@ class AktCommentsPresenterImpl(
 
     fun onRefresh(articleId: Int) {
         compositeDisposable.add(
-            articleCommentsInteractor.refreshAndGetAktComments(articleId)
+            aktCommentsInteractor.refreshAndGetAktComments(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -62,7 +62,7 @@ class AktCommentsPresenterImpl(
             return
         }
         compositeDisposable.add(
-            articleCommentsInteractor.addAktComment(articleId, comment)
+            aktCommentsInteractor.addAktComment(articleId, comment)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -74,20 +74,20 @@ class AktCommentsPresenterImpl(
                 }))
     }
 
-    override fun onArticleLikeClicked(item: Akt) {
-        compositeDisposable.add(articleLikeClickHandler.onArticleLikeClicked(item.articleId))
+    override fun onAktLikeClicked(item: Akt) {
+        compositeDisposable.add(aktLikeClickHandler.onArticleLikeClicked(item.articleId))
     }
 
-    override fun onArticleDislikeClicked(item: Akt) {
-        compositeDisposable.add(articleLikeClickHandler.onArticleDislikeClicked(item.articleId))
+    override fun onAktDislikeClicked(item: Akt) {
+        compositeDisposable.add(aktLikeClickHandler.onArticleDislikeClicked(item.articleId))
     }
 
-    override fun onArticleShareClicked(item: Akt) {
+    override fun onAktShareClicked(item: Akt) {
     }
 
-    override fun onCommentLikeClicked(item: AktComment) {
+    override fun onAktCommentLikeClicked(item: AktComment) {
         compositeDisposable.add(
-            articleCommentsInteractor.likeAktComment(item.commentId)
+            aktCommentsInteractor.likeAktComment(item.commentId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -99,9 +99,9 @@ class AktCommentsPresenterImpl(
                 }))
     }
 
-    override fun onCommentDislikeClicked(item: AktComment) {
+    override fun onAktCommentDislikeClicked(item: AktComment) {
         compositeDisposable.add(
-            articleCommentsInteractor.dislikeAktComment(item.commentId)
+            aktCommentsInteractor.dislikeAktComment(item.commentId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -113,7 +113,7 @@ class AktCommentsPresenterImpl(
                 }))
     }
 
-    override fun onCommentShareClicked(item: AktComment) {
+    override fun onAktCommentShareClicked(item: AktComment) {
         //newsDistributor.distribute(item)
     }
 

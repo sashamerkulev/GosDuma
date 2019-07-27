@@ -4,27 +4,27 @@ import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.models.AktComment
 
 interface AktClickCallbackHandler {
-    fun onArticleCliked(item: Akt)
+    fun onAktCliked(item: Akt)
 }
 
 interface AktLikeCallbackClickHandler {
-    fun onArticleLikeClicked(item: Akt)
-    fun onArticleDislikeClicked(item: Akt)
+    fun onAktLikeClicked(item: Akt)
+    fun onAktDislikeClicked(item: Akt)
 }
 
 interface AktCommentLikeCallbackClickHandler {
-    fun onCommentLikeClicked(item: AktComment)
-    fun onCommentDislikeClicked(item: AktComment)
+    fun onAktCommentLikeClicked(item: AktComment)
+    fun onAktCommentDislikeClicked(item: AktComment)
 }
 
 interface AktCommentCallbackClickHandler {
-    fun onCommentArticleClicked(articleId: Int)
+    fun onAktCommentClicked(articleId: Int)
 }
 
 interface AktShareCallbackClickHandler {
-    fun onArticleShareClicked(item: Akt)
+    fun onAktShareClicked(item: Akt)
 }
 
 interface AktCommentShareCallbackClickHandler {
-    fun onCommentShareClicked(item: AktComment)
+    fun onAktCommentShareClicked(item: AktComment)
 }

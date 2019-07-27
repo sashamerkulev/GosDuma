@@ -15,17 +15,17 @@ import ru.merkulyevsasha.gdcoreandroid.presentation.SearchAktHandler
 import timber.log.Timber
 
 class AktsPresenterImpl(
-    private val articlesInteractor: AktsInteractor,
+    private val aktsInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor,
     private val applicationRouter: MainActivityRouter
 ) : BasePresenterImpl<AktsView>(),
     AktClickCallbackHandler, AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentCallbackClickHandler {
 
-    private val articleLikeClickHandler = AktLikeClickHandler(articlesInteractor,
+    private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
         { view?.updateItem(it) },
         { view?.showError() })
 
-    private val searchArticleHandler = SearchAktHandler(articlesInteractor, false,
+    private val searchAktHandler = SearchAktHandler(aktsInteractor, false,
         { view?.showProgress() },
         { view?.hideProgress() },
         { view?.showItems(it) },
@@ -33,7 +33,7 @@ class AktsPresenterImpl(
 
     fun onFirstLoad() {
         compositeDisposable.add(
-            articlesInteractor.getAkts()
+            aktsInteractor.getAkts()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -47,7 +47,7 @@ class AktsPresenterImpl(
 
     fun onRefresh() {
         compositeDisposable.add(
-            articlesInteractor.refreshAndGetAkts()
+            aktsInteractor.refreshAndGetAkts()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -60,26 +60,26 @@ class AktsPresenterImpl(
     }
 
     fun onSearch(searchText: String?) {
-        compositeDisposable.add(searchArticleHandler.onSearchArticles(searchText))
+        compositeDisposable.add(searchAktHandler.onSearchArticles(searchText))
     }
 
-    override fun onArticleCliked(item: Akt) {
+    override fun onAktCliked(item: Akt) {
         applicationRouter.showArticleDetails(item.articleId)
     }
 
-    override fun onArticleLikeClicked(item: Akt) {
-        compositeDisposable.add(articleLikeClickHandler.onArticleLikeClicked(item.articleId))
+    override fun onAktLikeClicked(item: Akt) {
+        compositeDisposable.add(aktLikeClickHandler.onArticleLikeClicked(item.articleId))
     }
 
-    override fun onArticleDislikeClicked(item: Akt) {
-        compositeDisposable.add(articleLikeClickHandler.onArticleDislikeClicked(item.articleId))
+    override fun onAktDislikeClicked(item: Akt) {
+        compositeDisposable.add(aktLikeClickHandler.onArticleDislikeClicked(item.articleId))
     }
 
-    override fun onCommentArticleClicked(articleId: Int) {
+    override fun onAktCommentClicked(articleId: Int) {
         applicationRouter.showArticleComments(articleId)
     }
 
-    override fun onArticleShareClicked(item: Akt) {
+    override fun onAktShareClicked(item: Akt) {
         //newsDistributor.distribute(item)
     }
 

@@ -9,18 +9,18 @@ import ru.merkulyevsasha.gdcoreandroid.presentation.AktLikeClickHandler
 import timber.log.Timber
 
 class AktDetailsPresenterImpl(
-    private val articlesInteractor: AktsInteractor,
+    private val aktsInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor,
     private val applicationRouter: MainActivityRouter
 ) : BasePresenterImpl<AktDetailsView>() {
 
-    private val articleLikeClickHandler = AktLikeClickHandler(articlesInteractor,
+    private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
         { view?.updateItem(it) },
         { view?.showError() })
 
     fun onFirstLoad(articleId: Int) {
         compositeDisposable.add(
-            articlesInteractor.getAkt(articleId)
+            aktsInteractor.getAkt(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }
@@ -32,21 +32,21 @@ class AktDetailsPresenterImpl(
                     }))
     }
 
-    fun onArticleLikeClicked(articleId: Int) {
-        compositeDisposable.add(articleLikeClickHandler.onArticleLikeClicked(articleId))
+    fun onAktLikeClicked(articleId: Int) {
+        compositeDisposable.add(aktLikeClickHandler.onArticleLikeClicked(articleId))
     }
 
-    fun onArticleDislikeClicked(articleId: Int) {
-        compositeDisposable.add(articleLikeClickHandler.onArticleDislikeClicked(articleId))
+    fun onAktDislikeClicked(articleId: Int) {
+        compositeDisposable.add(aktLikeClickHandler.onArticleDislikeClicked(articleId))
     }
 
-    fun onCommentClicked(articleId: Int) {
+    fun onAktCommentClicked(articleId: Int) {
         applicationRouter.showArticleComments(articleId)
     }
 
-    fun onShareClicked(articleId: Int) {
+    fun onAktShareClicked(articleId: Int) {
         compositeDisposable.add(
-            articlesInteractor.getAkt(articleId)
+            aktsInteractor.getAkt(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.hideProgress() }

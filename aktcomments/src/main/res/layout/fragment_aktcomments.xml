@@ -33,7 +33,7 @@
             android:clipToPadding="false"
             android:paddingTop="@dimen/margin_8dp"
             android:paddingBottom="@dimen/margin_8dp"
-            tools:listitem="@layout/row_comment" />
+            tools:listitem="@layout/row_aktcomment" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <View
@@ -49,7 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@null"
-        android:hint="@string/comment"
+        android:hint="@string/aktcomment"
         android:maxLength="200"
         android:maxLines="5"
         android:padding="@dimen/margin_8dp"

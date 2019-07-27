@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.row_news.view.textViewComment
 import kotlinx.android.synthetic.main.row_news.view.textViewDislike
 import kotlinx.android.synthetic.main.row_news.view.textViewLike
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
-import ru.merkulyevsasha.coreandroid.common.newsadapter.ArticleClickCallbackHandler
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcoreandroid.R
 import java.text.SimpleDateFormat
@@ -120,27 +119,27 @@ class AktViewAdapter constructor(
     private fun initClickListeners(holder: ItemViewHolder) {
         holder.itemView.setOnClickListener {
             val newItem = items[holder.adapterPosition]
-            articleCallbackClickHandler?.onArticleCliked(newItem)
+            articleCallbackClickHandler?.onAktCliked(newItem)
         }
 
         holder.itemView.layoutButtonLike.setOnClickListener {
             val newItem = items[holder.adapterPosition]
-            likeCallbackClickHandler?.onArticleLikeClicked(newItem)
+            likeCallbackClickHandler?.onAktLikeClicked(newItem)
         }
 
         holder.itemView.layoutButtonComment.setOnClickListener {
             val newItem = items[holder.adapterPosition]
-            commentCallbackClickHandler?.onCommentArticleClicked(newItem.articleId)
+            commentCallbackClickHandler?.onAktCommentClicked(newItem.articleId)
         }
 
         holder.itemView.layoutButtonDislike.setOnClickListener {
             val newItem = items[holder.adapterPosition]
-            likeCallbackClickHandler?.onArticleDislikeClicked(newItem)
+            likeCallbackClickHandler?.onAktDislikeClicked(newItem)
         }
 
         holder.itemView.layoutButtonShare.setOnClickListener {
             val newItem = items[holder.adapterPosition]
-            shareCallbackClickHandler?.onArticleShareClicked(newItem)
+            shareCallbackClickHandler?.onAktShareClicked(newItem)
         }
     }
 }

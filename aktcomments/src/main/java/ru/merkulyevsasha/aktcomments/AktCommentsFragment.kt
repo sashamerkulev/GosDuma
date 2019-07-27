@@ -125,7 +125,7 @@ class AktCommentsFragment : Fragment(), AktCommentsView, RequireServiceLocator {
     }
 
     override fun showError() {
-        Toast.makeText(requireContext(), getString(R.string.comment_loading_error_message), Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), getString(R.string.aktcomment_loading_error_message), Toast.LENGTH_LONG).show()
     }
 
     override fun showComments(items: List<ArticleOrComment>) {

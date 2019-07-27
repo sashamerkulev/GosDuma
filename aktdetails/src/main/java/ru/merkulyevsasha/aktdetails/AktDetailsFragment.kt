@@ -66,16 +66,16 @@ class AktDetailsFragment : Fragment(), AktDetailsView, RequireServiceLocator {
         colorThemeResolver = ColorThemeResolver(TypedValue(), requireContext().theme)
 
         layoutButtonLike.setOnClickListener {
-            presenter?.onArticleLikeClicked(articleId)
+            presenter?.onAktLikeClicked(articleId)
         }
         layoutButtonComment.setOnClickListener {
-            presenter?.onCommentClicked(articleId)
+            presenter?.onAktCommentClicked(articleId)
         }
         layoutButtonDislike.setOnClickListener {
-            presenter?.onArticleDislikeClicked(articleId)
+            presenter?.onAktDislikeClicked(articleId)
         }
         layoutButtonShare.setOnClickListener {
-            presenter?.onShareClicked(articleId)
+            presenter?.onAktShareClicked(articleId)
         }
 
         val bundle = savedInstanceState ?: arguments ?: return

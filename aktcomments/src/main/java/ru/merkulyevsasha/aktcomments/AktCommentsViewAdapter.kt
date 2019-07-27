@@ -6,27 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.row_comment.view.commentImageViewDislike
-import kotlinx.android.synthetic.main.row_comment.view.commentImageViewLike
-import kotlinx.android.synthetic.main.row_comment.view.commentTextViewDislike
-import kotlinx.android.synthetic.main.row_comment.view.commentTextViewLike
-import kotlinx.android.synthetic.main.row_comment.view.commenter
-import kotlinx.android.synthetic.main.row_comment.view.imageViewCommentAvatar
-import kotlinx.android.synthetic.main.row_comment.view.layoutCommentButtonDislike
-import kotlinx.android.synthetic.main.row_comment.view.layoutCommentButtonLike
-import kotlinx.android.synthetic.main.row_comment.view.layoutCommentButtonShare
-import kotlinx.android.synthetic.main.row_comment.view.textViewComment
-import kotlinx.android.synthetic.main.row_comment.view.textViewCommentDate
-import kotlinx.android.synthetic.main.row_comment_article.view.imageViewDislike
-import kotlinx.android.synthetic.main.row_comment_article.view.imageViewLike
-import kotlinx.android.synthetic.main.row_comment_article.view.imageViewThumb
-import kotlinx.android.synthetic.main.row_comment_article.view.layoutButtonDislike
-import kotlinx.android.synthetic.main.row_comment_article.view.layoutButtonLike
-import kotlinx.android.synthetic.main.row_comment_article.view.layoutButtonShare
-import kotlinx.android.synthetic.main.row_comment_article.view.newsDateSource
-import kotlinx.android.synthetic.main.row_comment_article.view.newsTitle
-import kotlinx.android.synthetic.main.row_comment_article.view.textViewDislike
-import kotlinx.android.synthetic.main.row_comment_article.view.textViewLike
+import kotlinx.android.synthetic.main.row_aktcomment.view.commentImageViewDislike
+import kotlinx.android.synthetic.main.row_aktcomment.view.commentImageViewLike
+import kotlinx.android.synthetic.main.row_aktcomment.view.commentTextViewDislike
+import kotlinx.android.synthetic.main.row_aktcomment.view.commentTextViewLike
+import kotlinx.android.synthetic.main.row_aktcomment.view.commenter
+import kotlinx.android.synthetic.main.row_aktcomment.view.imageViewCommentAvatar
+import kotlinx.android.synthetic.main.row_aktcomment.view.layoutCommentButtonDislike
+import kotlinx.android.synthetic.main.row_aktcomment.view.layoutCommentButtonLike
+import kotlinx.android.synthetic.main.row_aktcomment.view.layoutCommentButtonShare
+import kotlinx.android.synthetic.main.row_aktcomment.view.textViewComment
+import kotlinx.android.synthetic.main.row_aktcomment.view.textViewCommentDate
+import kotlinx.android.synthetic.main.row_comment_akt.view.imageViewDislike
+import kotlinx.android.synthetic.main.row_comment_akt.view.imageViewLike
+import kotlinx.android.synthetic.main.row_comment_akt.view.imageViewThumb
+import kotlinx.android.synthetic.main.row_comment_akt.view.layoutButtonDislike
+import kotlinx.android.synthetic.main.row_comment_akt.view.layoutButtonLike
+import kotlinx.android.synthetic.main.row_comment_akt.view.layoutButtonShare
+import kotlinx.android.synthetic.main.row_comment_akt.view.newsDateSource
+import kotlinx.android.synthetic.main.row_comment_akt.view.newsTitle
+import kotlinx.android.synthetic.main.row_comment_akt.view.textViewDislike
+import kotlinx.android.synthetic.main.row_comment_akt.view.textViewLike
 import ru.merkulyevsasha.core.models.Article
 import ru.merkulyevsasha.core.models.ArticleComment
 import ru.merkulyevsasha.core.models.ArticleOrComment
@@ -65,10 +65,10 @@ class AktCommentsViewAdapter constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == ARTICLE_DETAIL_VIEW_TYPE) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.row_comment_article, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.row_comment_akt, parent, false)
             return ArticleViewHolder(view)
         }
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_comment, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_aktcomment, parent, false)
         return CommentViewHolder(view)
     }
 
@@ -94,15 +94,15 @@ class AktCommentsViewAdapter constructor(
             holder.itemView.commentTextViewDislike, holder.itemView.commentImageViewDislike)
 
         holder.itemView.layoutCommentButtonLike.setOnClickListener {
-            commentLikeCallbackClickHandler?.onCommentLikeClicked(items[holder.adapterPosition] as AktComment)
+            commentLikeCallbackClickHandler?.onAktCommentLikeClicked(items[holder.adapterPosition] as AktComment)
         }
 
         holder.itemView.layoutCommentButtonDislike.setOnClickListener {
-            commentLikeCallbackClickHandler?.onCommentDislikeClicked(items[holder.adapterPosition] as AktComment)
+            commentLikeCallbackClickHandler?.onAktCommentDislikeClicked(items[holder.adapterPosition] as AktComment)
         }
 
         holder.itemView.layoutCommentButtonShare.setOnClickListener {
-            commentShareCallbackClickHandler?.onCommentShareClicked(items[holder.adapterPosition] as AktComment)
+            commentShareCallbackClickHandler?.onAktCommentShareClicked(items[holder.adapterPosition] as AktComment)
         }
 
     }
@@ -136,15 +136,15 @@ class AktCommentsViewAdapter constructor(
 //            colorThemeResolver.setArticleActivityColor(item.isUserCommented, holder.itemView.textViewComment, holder.itemView.imageViewComment)
 
         holder.itemView.layoutButtonLike.setOnClickListener {
-            likeCallbackClickHandler?.onArticleLikeClicked(items[holder.adapterPosition] as Akt)
+            likeCallbackClickHandler?.onAktLikeClicked(items[holder.adapterPosition] as Akt)
         }
 
         holder.itemView.layoutButtonDislike.setOnClickListener {
-            likeCallbackClickHandler?.onArticleDislikeClicked(items[holder.adapterPosition] as Akt)
+            likeCallbackClickHandler?.onAktDislikeClicked(items[holder.adapterPosition] as Akt)
         }
 
         holder.itemView.layoutButtonShare.setOnClickListener {
-            shareCallbackClickHandler?.onArticleShareClicked(items[holder.adapterPosition] as Akt)
+            shareCallbackClickHandler?.onAktShareClicked(items[holder.adapterPosition] as Akt)
         }
     }
 
