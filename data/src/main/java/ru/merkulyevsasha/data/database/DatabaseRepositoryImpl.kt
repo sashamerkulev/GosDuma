@@ -5,7 +5,7 @@ import ru.merkulyevsasha.core.models.Article
 import ru.merkulyevsasha.core.models.ArticleComment
 import ru.merkulyevsasha.core.models.RssSource
 import ru.merkulyevsasha.core.preferences.KeyValueStorage
-import ru.merkulyevsasha.core.repositories.DatabaseRepository
+import ru.merkulyevsasha.core.repositories.NewsDatabaseRepository
 import ru.merkulyevsasha.data.database.mappers.ArticleCommentEntityMapper
 import ru.merkulyevsasha.data.database.mappers.ArticleCommentMapper
 import ru.merkulyevsasha.data.database.mappers.ArticleEntityMapper
@@ -14,11 +14,11 @@ import ru.merkulyevsasha.data.database.mappers.RssSourceEntityMapper
 import ru.merkulyevsasha.data.database.mappers.RssSourceMapper
 import java.util.*
 
-class DatabaseRepositoryImpl(
+open class DatabaseRepositoryImpl(
     private val newsDatabaseSource: NewsDatabaseSource,
     keyValueStorage: KeyValueStorage,
     baseUrl: String
-) : DatabaseRepository {
+) : NewsDatabaseRepository {
 
     private val articleEntityMapper = ArticleEntityMapper()
     private val articleMapper = ArticleMapper()

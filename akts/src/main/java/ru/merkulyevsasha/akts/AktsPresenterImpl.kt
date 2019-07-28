@@ -2,10 +2,10 @@ package ru.merkulyevsasha.akts
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.merkulyevsasha.core.NewsDistributor
-import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
+import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcoreandroid.common.aktadapter.AktClickCallbackHandler
 import ru.merkulyevsasha.gdcoreandroid.common.aktadapter.AktCommentCallbackClickHandler
 import ru.merkulyevsasha.gdcoreandroid.common.aktadapter.AktLikeCallbackClickHandler
@@ -17,7 +17,7 @@ import timber.log.Timber
 class AktsPresenterImpl(
     private val aktsInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor,
-    private val applicationRouter: MainActivityRouter
+    private val applicationRouter: GDMainActivityRouter
 ) : BasePresenterImpl<AktsView>(),
     AktClickCallbackHandler, AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentCallbackClickHandler {
 
@@ -64,7 +64,7 @@ class AktsPresenterImpl(
     }
 
     override fun onAktCliked(item: Akt) {
-        applicationRouter.showArticleDetails(item.articleId)
+        applicationRouter.showAktDetails(item.articleId)
     }
 
     override fun onAktLikeClicked(item: Akt) {
@@ -76,7 +76,7 @@ class AktsPresenterImpl(
     }
 
     override fun onAktCommentClicked(articleId: Int) {
-        applicationRouter.showArticleComments(articleId)
+        applicationRouter.showAktComments(articleId)
     }
 
     override fun onAktShareClicked(item: Akt) {

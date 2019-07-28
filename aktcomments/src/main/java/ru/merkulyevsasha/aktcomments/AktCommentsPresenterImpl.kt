@@ -17,12 +17,12 @@ import timber.log.Timber
 
 class AktCommentsPresenterImpl(
     private val aktCommentsInteractor: AktCommentsInteractor,
-    articlesInteractor: AktsInteractor,
+    aktsInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor
 ) : BasePresenterImpl<AktCommentsView>(),
     AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentLikeCallbackClickHandler, AktCommentShareCallbackClickHandler {
 
-    private val aktLikeClickHandler = AktLikeClickHandler(articlesInteractor,
+    private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
         { view?.updateItem(it) },
         { view?.showError() })
 

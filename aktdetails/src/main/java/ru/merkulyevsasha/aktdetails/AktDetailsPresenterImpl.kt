@@ -2,16 +2,16 @@ package ru.merkulyevsasha.aktdetails
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import ru.merkulyevsasha.core.NewsDistributor
-import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
+import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcoreandroid.presentation.AktLikeClickHandler
 import timber.log.Timber
 
 class AktDetailsPresenterImpl(
     private val aktsInteractor: AktsInteractor,
     private val newsDistributor: NewsDistributor,
-    private val applicationRouter: MainActivityRouter
+    private val applicationRouter: GDMainActivityRouter
 ) : BasePresenterImpl<AktDetailsView>() {
 
     private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
@@ -41,7 +41,7 @@ class AktDetailsPresenterImpl(
     }
 
     fun onAktCommentClicked(articleId: Int) {
-        applicationRouter.showArticleComments(articleId)
+        applicationRouter.showAktComments(articleId)
     }
 
     fun onAktShareClicked(articleId: Int) {

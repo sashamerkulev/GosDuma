@@ -26,10 +26,10 @@ import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.RequireServiceLocator
 import ru.merkulyevsasha.core.ServiceLocator
 import ru.merkulyevsasha.core.domain.ArticlesInteractor
-import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
+import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 
 class AktDetailsFragment : Fragment(), AktDetailsView, RequireServiceLocator {
     companion object {
@@ -82,7 +82,7 @@ class AktDetailsFragment : Fragment(), AktDetailsView, RequireServiceLocator {
         articleId = bundle.getInt(ARTICLE_ID, 0)
         val interactor = serviceLocator.get(AktsInteractor::class.java)
         presenter = AktDetailsPresenterImpl(interactor,
-            serviceLocator.get(NewsDistributor::class.java), serviceLocator.get(MainActivityRouter::class.java))
+            serviceLocator.get(NewsDistributor::class.java), serviceLocator.get(GDMainActivityRouter::class.java))
         presenter?.bindView(this)
         presenter?.onFirstLoad(articleId)
     }
