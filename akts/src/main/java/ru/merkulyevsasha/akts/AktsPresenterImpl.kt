@@ -1,8 +1,8 @@
 package ru.merkulyevsasha.akts
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
+import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
@@ -16,7 +16,7 @@ import timber.log.Timber
 
 class AktsPresenterImpl(
     private val aktsInteractor: AktsInteractor,
-    private val newsDistributor: NewsDistributor,
+    private val aktDistributor: AktDistributor,
     private val applicationRouter: GDMainActivityRouter
 ) : BasePresenterImpl<AktsView>(),
     AktClickCallbackHandler, AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentCallbackClickHandler {
@@ -80,7 +80,7 @@ class AktsPresenterImpl(
     }
 
     override fun onAktShareClicked(item: Akt) {
-        //newsDistributor.distribute(item)
+        aktDistributor.distribute(item)
     }
 
 }

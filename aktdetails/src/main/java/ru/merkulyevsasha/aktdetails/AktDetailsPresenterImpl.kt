@@ -1,8 +1,8 @@
 package ru.merkulyevsasha.aktdetails
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
+import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcoreandroid.presentation.AktLikeClickHandler
@@ -10,7 +10,7 @@ import timber.log.Timber
 
 class AktDetailsPresenterImpl(
     private val aktsInteractor: AktsInteractor,
-    private val newsDistributor: NewsDistributor,
+    private val aktDistributor: AktDistributor,
     private val applicationRouter: GDMainActivityRouter
 ) : BasePresenterImpl<AktDetailsView>() {
 
@@ -52,7 +52,7 @@ class AktDetailsPresenterImpl(
                 .doAfterTerminate { view?.hideProgress() }
                 .subscribe(
                     {
-                        //newsDistributor.distribute(it)
+                        aktDistributor.distribute(it)
                     },
                     {
                         Timber.e(it)

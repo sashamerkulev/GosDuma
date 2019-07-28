@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">domain</string>
+    <string name="akt_chooser_title">Выберите приложение</string>
+    <string name="akt_info_send">%s публикует новость: \'%s\'</string>
+    <string name="aktcomment_info_send">Пользователь \'%s\' оставил комментарий: \'%s\'</string>
 </resources>

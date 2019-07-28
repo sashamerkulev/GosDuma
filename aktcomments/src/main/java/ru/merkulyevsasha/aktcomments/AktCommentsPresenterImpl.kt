@@ -1,9 +1,9 @@
 package ru.merkulyevsasha.aktcomments
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.models.ArticleOrComment
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
+import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
@@ -18,7 +18,7 @@ import timber.log.Timber
 class AktCommentsPresenterImpl(
     private val aktCommentsInteractor: AktCommentsInteractor,
     aktsInteractor: AktsInteractor,
-    private val newsDistributor: NewsDistributor
+    private val aktDistributor: AktDistributor
 ) : BasePresenterImpl<AktCommentsView>(),
     AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentLikeCallbackClickHandler, AktCommentShareCallbackClickHandler {
 
@@ -83,6 +83,7 @@ class AktCommentsPresenterImpl(
     }
 
     override fun onAktShareClicked(item: Akt) {
+        aktDistributor.distribute(item)
     }
 
     override fun onAktCommentLikeClicked(item: AktComment) {
@@ -114,7 +115,7 @@ class AktCommentsPresenterImpl(
     }
 
     override fun onAktCommentShareClicked(item: AktComment) {
-        //newsDistributor.distribute(item)
+        aktDistributor.distribute(item)
     }
 
 }

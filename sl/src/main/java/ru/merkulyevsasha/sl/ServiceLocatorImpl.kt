@@ -1,7 +1,7 @@
 package ru.merkulyevsasha.sl
 
 import android.content.Context
-import ru.merkulyevsasha.core.NewsDistributor
+import ru.merkulyevsasha.core.ArticleDistributor
 import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.core.domain.ArticleCommentsInteractor
 import ru.merkulyevsasha.core.domain.ArticlesInteractor
@@ -26,11 +26,12 @@ import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
 import ru.merkulyevsasha.data.network.users.UsersApiRepositoryImpl
 import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
+import ru.merkulyevsasha.domain.ArticleDistributorImpl
 import ru.merkulyevsasha.domain.ArticlesInteractorImpl
-import ru.merkulyevsasha.domain.NewsDistributorImpl
 import ru.merkulyevsasha.domain.SetupInteractorImpl
 import ru.merkulyevsasha.domain.UsersInteractorImpl
 import ru.merkulyevsasha.domain.mappers.ArticleSourceNameMapper
+import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository
 import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
@@ -41,6 +42,7 @@ import ru.merkulyevsasha.gdcore.repositories.AktsApiRepository
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
 import ru.merkulyevsasha.gddomain.AktCommentsInteractorImpl
+import ru.merkulyevsasha.gddomain.AktDistributorImpl
 import ru.merkulyevsasha.gddomain.AktsInteractorImpl
 import ru.merkulyevsasha.gddomain.mappers.AktSourceNameMapper
 import ru.merkulyevsasha.preferences.SettingsSharedPreferencesImpl
@@ -66,7 +68,8 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[KeyValueStorage::class.java] = prefs
         maps[SettingsSharedPreferences::class.java] = prefs
         maps[ResourceProvider::class.java] = resourceProvider
-        maps[NewsDistributor::class.java] = NewsDistributorImpl(context, resourceProvider)
+        maps[ArticleDistributor::class.java] = ArticleDistributorImpl(context, resourceProvider)
+        maps[AktDistributor::class.java] = AktDistributorImpl(context, resourceProvider)
         maps[SetupApiRepository::class.java] = SetupApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[ArticlesApiRepository::class.java] = ArticlesApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[ArticleCommentsApiRepository::class.java] = ArticleCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)

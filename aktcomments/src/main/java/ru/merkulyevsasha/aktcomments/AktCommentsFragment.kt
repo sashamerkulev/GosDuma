@@ -13,13 +13,13 @@ import kotlinx.android.synthetic.main.fragment_aktcomments.editTextComment
 import kotlinx.android.synthetic.main.fragment_aktcomments.layoutAddCommentButton
 import kotlinx.android.synthetic.main.fragment_aktcomments.recyclerView
 import kotlinx.android.synthetic.main.fragment_aktcomments.swipeRefreshLayout
-import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.RequireServiceLocator
 import ru.merkulyevsasha.core.ServiceLocator
 import ru.merkulyevsasha.core.domain.ArticleCommentsInteractor
 import ru.merkulyevsasha.core.models.ArticleOrComment
 import ru.merkulyevsasha.coreandroid.common.AdViewHelper
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
+import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
@@ -74,7 +74,7 @@ class AktCommentsFragment : Fragment(), AktCommentsView, RequireServiceLocator {
 
         val interactor = serviceLocator.get(AktCommentsInteractor::class.java)
         val articleInteractor = serviceLocator.get(AktsInteractor::class.java)
-        presenter = AktCommentsPresenterImpl(interactor, articleInteractor, serviceLocator.get(NewsDistributor::class.java))
+        presenter = AktCommentsPresenterImpl(interactor, articleInteractor, serviceLocator.get(AktDistributor::class.java))
         presenter?.bindView(this)
 
         initRecyclerView()

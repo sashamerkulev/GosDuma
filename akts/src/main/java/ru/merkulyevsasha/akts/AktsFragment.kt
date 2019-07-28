@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_akts.adView
 import kotlinx.android.synthetic.main.fragment_akts.buttonUp
 import kotlinx.android.synthetic.main.fragment_akts.recyclerView
 import kotlinx.android.synthetic.main.fragment_akts.swipeRefreshLayout
-import ru.merkulyevsasha.core.NewsDistributor
 import ru.merkulyevsasha.core.RequireServiceLocator
 import ru.merkulyevsasha.core.ServiceLocator
 import ru.merkulyevsasha.core.domain.ArticlesInteractor
@@ -31,6 +30,7 @@ import ru.merkulyevsasha.coreandroid.common.AppbarScrollExpander
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.coreandroid.common.ShowActionBarListener
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
+import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
@@ -129,7 +129,7 @@ class AktsFragment : Fragment(), AktsView, RequireServiceLocator {
         AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
 
         val interactor = serviceLocator.get(AktsInteractor::class.java)
-        presenter = AktsPresenterImpl(interactor, serviceLocator.get(NewsDistributor::class.java),
+        presenter = AktsPresenterImpl(interactor, serviceLocator.get(AktDistributor::class.java),
             serviceLocator.get(GDMainActivityRouter::class.java))
         presenter?.bindView(this)
 
