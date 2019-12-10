@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#242F3E</color>
+    <color name="colorPrimaryDark">#1B2433</color>
+    <color name="colorAccent">#3B4655</color>
+    <color name="colorInactive">#3B4655</color>
+    <color name="colorActive">#B3BEC1</color>
+    <color name="colorBackground">#242F3E</color>
+    <color name="colorWindowBackground">#1B2433</color>
+    <color name="colorControlNormal">#B3BEC1</color>
+    <color name="actionBarTextColor">#B3BEC1</color>
+    <color name="textColor">#B3BEC1</color>
+    <color name="separator">#1B2433</color>
+</resources>
