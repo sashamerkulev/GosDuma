@@ -4,8 +4,8 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class FcmService : FirebaseMessagingService() {
-    override fun onMessageReceived(message: RemoteMessage?) {
-        message?.let { remoteMessage ->
+    override fun onMessageReceived(message: RemoteMessage) {
+//        message?.let { remoteMessage ->
 //            val data = remoteMessage.data
 //            if (data.containsKey("commentId")) {
 //                val userName = data["userName"] ?: ""
@@ -32,10 +32,10 @@ class FcmService : FirebaseMessagingService() {
 //                val likeOrDislikePart = if (likeOrDislike) " не" else " "
 //                val notificationMessage = "Пользователю $userName$likeOrDislikePart понравился ваш комментарий"
 //            }
-        }
+//        }
     }
 
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
 //        val serviceLocator = ServiceLocatorImpl.getInstance(applicationContext)
 //        val setupInteractor = serviceLocator.get(SetupInteractor::class.java)
 //        token?.let {

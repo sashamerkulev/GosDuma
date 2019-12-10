@@ -1,11 +1,15 @@
 package ru.merkulyevsasha.sl
 
 import android.content.Context
+import ru.merkulyevsasha.articlecomments.ArticleCommentsPresenterImpl
+import ru.merkulyevsasha.articledetails.ArticleDetailsPresenterImpl
+import ru.merkulyevsasha.articles.ArticlesPresenterImpl
 import ru.merkulyevsasha.core.ArticleDistributor
 import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.core.domain.ArticleCommentsInteractor
 import ru.merkulyevsasha.core.domain.ArticlesInteractor
 import ru.merkulyevsasha.core.domain.SetupInteractor
+import ru.merkulyevsasha.core.domain.SourceInteractor
 import ru.merkulyevsasha.core.domain.UsersInteractor
 import ru.merkulyevsasha.core.preferences.KeyValueStorage
 import ru.merkulyevsasha.core.repositories.ArticleCommentsApiRepository
@@ -16,11 +20,7 @@ import ru.merkulyevsasha.core.repositories.UsersApiRepository
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
-import ru.merkulyevsasha.data.database.DatabaseRepositoryImpl
-import ru.merkulyevsasha.data.database.GDDatabaseRepositoryImpl
-import ru.merkulyevsasha.data.database.GosdumaRoomDatabaseSourceCreator
-import ru.merkulyevsasha.data.network.aktcomments.AktCommentsApiRepositoryImpl
-import ru.merkulyevsasha.data.network.akts.AktsApiRepositoryImpl
+import ru.merkulyevsasha.data.database.NewsDatabaseRepositoryImpl
 import ru.merkulyevsasha.data.network.articlecomments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
@@ -29,11 +29,11 @@ import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
 import ru.merkulyevsasha.domain.ArticleDistributorImpl
 import ru.merkulyevsasha.domain.ArticlesInteractorImpl
 import ru.merkulyevsasha.domain.SetupInteractorImpl
+import ru.merkulyevsasha.domain.SourceInteractorImpl
 import ru.merkulyevsasha.domain.UsersInteractorImpl
-import ru.merkulyevsasha.domain.mappers.ArticleSourceNameMapper
 import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.GDServiceLocator
-import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository
+import ru.merkulyevsasha.gdcore.database.GdDatabaseRepository
 import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
@@ -41,11 +41,15 @@ import ru.merkulyevsasha.gdcore.repositories.AktCommentsApiRepository
 import ru.merkulyevsasha.gdcore.repositories.AktsApiRepository
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
+import ru.merkulyevsasha.gddata.database.GdDatabaseRepositoryImpl
+import ru.merkulyevsasha.gddata.database.GosdumaRoomDatabaseSourceCreator
+import ru.merkulyevsasha.gddata.network.aktcomments.AktCommentsApiRepositoryImpl
+import ru.merkulyevsasha.gddata.network.akts.AktsApiRepositoryImpl
 import ru.merkulyevsasha.gddomain.AktCommentsInteractorImpl
 import ru.merkulyevsasha.gddomain.AktDistributorImpl
 import ru.merkulyevsasha.gddomain.AktsInteractorImpl
-import ru.merkulyevsasha.gddomain.mappers.AktSourceNameMapper
 import ru.merkulyevsasha.preferences.SettingsSharedPreferencesImpl
+import ru.merkulyevsasha.userinfo.UserInfoPresenterImpl
 
 class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocator {
 
@@ -76,8 +80,8 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[AktsApiRepository::class.java] = AktsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[AktCommentsApiRepository::class.java] = AktCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
-        maps[NewsDatabaseRepository::class.java] = DatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
-        maps[GDDatabaseRepository::class.java] = GDDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
+        maps[NewsDatabaseRepository::class.java] = NewsDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
+        maps[GdDatabaseRepository::class.java] = GdDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -89,38 +93,44 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
             ArticlesInteractor::class.java -> maps[clazz] = ArticlesInteractorImpl(
                 getArticlesApiRepository(),
                 getPreferences(),
-                getDatabaseRepository(),
-                ArticleSourceNameMapper(getDatabaseRepository())
-            )
+                getDatabaseRepository())
             AktsInteractor::class.java -> maps[clazz] = AktsInteractorImpl(
                 getAktsApiRepository(),
                 getSettingsSharedPreferences(),
-                getGDDatabaseRepository(),
-                AktSourceNameMapper(getGDDatabaseRepository())
-            )
+                getGDDatabaseRepository())
             UsersInteractor::class.java -> maps[clazz] = UsersInteractorImpl(
                 getUsersApiRepository(),
-                getPreferences()
-            )
+                getPreferences(),
+                getDatabaseRepository())
             ArticleCommentsInteractor::class.java -> maps[clazz] = ArticleCommentsInteractorImpl(
                 getArticlesApiRepository(),
                 getArticleCommentsApiRepository(),
                 getPreferences(),
-                getDatabaseRepository(),
-                ArticleSourceNameMapper(getDatabaseRepository())
-            )
+                getDatabaseRepository())
             AktCommentsInteractor::class.java -> maps[clazz] = AktCommentsInteractorImpl(
                 getAktsApiRepository(),
                 getAktCommentsApiRepository(),
                 getSettingsSharedPreferences(),
-                getGDDatabaseRepository(),
-                AktSourceNameMapper(getGDDatabaseRepository())
-            )
+                getGDDatabaseRepository())
             SetupInteractor::class.java -> maps[clazz] = SetupInteractorImpl(
                 getPreferences(),
                 getSetupApiRepository(),
-                getDatabaseRepository()
-            )
+                getDatabaseRepository())
+            SourceInteractor::class.java -> maps[clazz] = SourceInteractorImpl(
+                getDatabaseRepository())
+            ArticleCommentsPresenterImpl::class.java -> maps[clazz] = ArticleCommentsPresenterImpl(
+                get(ArticleCommentsInteractor::class.java),
+                get(ArticlesInteractor::class.java),
+                get(ArticleDistributor::class.java))
+            ArticleDetailsPresenterImpl::class.java -> maps[clazz] = ArticleDetailsPresenterImpl(
+                get(ArticlesInteractor::class.java),
+                get(ArticleDistributor::class.java),
+                get(MainActivityRouter::class.java))
+            ArticlesPresenterImpl::class.java -> maps[clazz] = ArticlesPresenterImpl(
+                get(ArticlesInteractor::class.java),
+                get(ArticleDistributor::class.java),
+                get(MainActivityRouter::class.java))
+            UserInfoPresenterImpl::class.java -> maps[clazz] = UserInfoPresenterImpl(get(UsersInteractor::class.java), get(SourceInteractor::class.java))
         }
         return maps[clazz] as T
     }
@@ -200,8 +210,8 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         return maps[NewsDatabaseRepository::class.java] as NewsDatabaseRepository
     }
 
-    private fun getGDDatabaseRepository(): GDDatabaseRepository {
-        return maps[GDDatabaseRepository::class.java] as GDDatabaseRepository
+    private fun getGDDatabaseRepository(): GdDatabaseRepository {
+        return maps[GdDatabaseRepository::class.java] as GdDatabaseRepository
     }
 
     private fun getPreferences(): KeyValueStorage {

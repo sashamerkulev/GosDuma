@@ -75,11 +75,11 @@ class AktCommentsPresenterImpl(
     }
 
     override fun onAktLikeClicked(item: Akt) {
-        compositeDisposable.add(aktLikeClickHandler.onArticleLikeClicked(item.articleId))
+        compositeDisposable.add(aktLikeClickHandler.onArticleLikeClicked(item.aktId))
     }
 
     override fun onAktDislikeClicked(item: Akt) {
-        compositeDisposable.add(aktLikeClickHandler.onArticleDislikeClicked(item.articleId))
+        compositeDisposable.add(aktLikeClickHandler.onArticleDislikeClicked(item.aktId))
     }
 
     override fun onAktShareClicked(item: Akt) {

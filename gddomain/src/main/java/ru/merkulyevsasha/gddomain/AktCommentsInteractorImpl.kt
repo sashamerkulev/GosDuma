@@ -4,22 +4,20 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository
+import ru.merkulyevsasha.gdcore.database.GdDatabaseRepository
 import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.models.AktComment
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
 import ru.merkulyevsasha.gdcore.repositories.AktCommentsApiRepository
 import ru.merkulyevsasha.gdcore.repositories.AktsApiRepository
-import ru.merkulyevsasha.gddomain.mappers.AktSourceNameMapper
 import java.util.*
 
 class AktCommentsInteractorImpl(
     private val aktsApiRepository: AktsApiRepository,
     private val aktCommentsApiRepository: AktCommentsApiRepository,
     private val keyValueStorage: SettingsSharedPreferences,
-    private val databaseRepository: GDDatabaseRepository,
-    private val sourceNameMapper: AktSourceNameMapper
+    private val databaseRepository: GdDatabaseRepository
 ) : AktCommentsInteractor {
 
     override fun getAktComments(articleId: Int): Single<Pair<Akt, List<AktComment>>> {
@@ -41,9 +39,6 @@ class AktCommentsInteractorImpl(
                     aktsApiRepository.getAkt(articleId)
                         .doOnSuccess { item ->
                             databaseRepository.updateAkt(item)
-                        }
-                        .map { item ->
-                            sourceNameMapper.map(item)
                         },
                     aktCommentsApiRepository.getAktComments(articleId, it)
                         .doOnSuccess { items ->

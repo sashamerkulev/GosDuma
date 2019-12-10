@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class AktResponse(
-    @field:SerializedName("ArticleId") val articleId: Int,
-    @field:SerializedName("SourceName") val sourceName: String,
+    @field:SerializedName("ArticleId") val aktId: Int,
+    @field:SerializedName("SourceName") val sourceId: String,
     @field:SerializedName("Title") val title: String,
     @field:SerializedName("Link") val link: String,
     @field:SerializedName("Description") val description: String?,

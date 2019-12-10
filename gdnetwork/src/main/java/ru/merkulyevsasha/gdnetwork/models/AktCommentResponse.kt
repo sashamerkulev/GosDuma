@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class AktCommentResponse(
-    @field:SerializedName("ArticleId") val articleId: Int,
+    @field:SerializedName("ArticleId") val aktId: Int,
     @field:SerializedName("CommentId") val commentId: Int,
     @field:SerializedName("UserId") val userId: Int,
     @field:SerializedName("Name") val userName: String?,

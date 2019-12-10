@@ -18,7 +18,7 @@ import ru.merkulyevsasha.gddata.database.mappers.AktCommentMapper
 import ru.merkulyevsasha.gddata.database.mappers.AktMapper
 import java.util.*
 
-class GDDatabaseRepositoryImpl(
+class GdDatabaseRepositoryImpl(
     private val gdDatabaseSource: GdDatabaseSource,
     keyValueStorage: KeyValueStorage,
     baseUrl: String

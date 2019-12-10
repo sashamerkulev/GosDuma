@@ -1,5 +1,5 @@
 def glide = "4.6.1"
-def circleImage = "2.1.0"
+def circleImage = "3.0.1"
 
 dependencies {
     implementation "com.github.bumptech.glide:glide:$glide"

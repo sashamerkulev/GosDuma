@@ -6,20 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.row_news.view.imageViewComment
-import kotlinx.android.synthetic.main.row_news.view.imageViewDislike
-import kotlinx.android.synthetic.main.row_news.view.imageViewLike
-import kotlinx.android.synthetic.main.row_news.view.imageViewThumb
-import kotlinx.android.synthetic.main.row_news.view.layoutButtonComment
-import kotlinx.android.synthetic.main.row_news.view.layoutButtonDislike
-import kotlinx.android.synthetic.main.row_news.view.layoutButtonLike
-import kotlinx.android.synthetic.main.row_news.view.layoutButtonShare
-import kotlinx.android.synthetic.main.row_news.view.newsDateSource
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.imageViewComment
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.imageViewDislike
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.imageViewLike
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.layoutButtonComment
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.layoutButtonDislike
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.layoutButtonLike
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.layoutButtonShare
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.textViewComment
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.textViewDislike
+import kotlinx.android.synthetic.main.merge_articles_buttons.view.textViewLike
+import kotlinx.android.synthetic.main.merge_title_layout.view.imageViewThumb
+import kotlinx.android.synthetic.main.merge_title_layout.view.newsDateSource
+import kotlinx.android.synthetic.main.merge_title_layout.view.newsTitle
 import kotlinx.android.synthetic.main.row_news.view.newsDescription
-import kotlinx.android.synthetic.main.row_news.view.newsTitle
-import kotlinx.android.synthetic.main.row_news.view.textViewComment
-import kotlinx.android.synthetic.main.row_news.view.textViewDislike
-import kotlinx.android.synthetic.main.row_news.view.textViewLike
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcoreandroid.R
@@ -89,7 +89,7 @@ class AktViewAdapter constructor(
     fun updateItems(items: List<Akt>) {
         var index = 0
         for (item in items) {
-            val oldItemIndex = this.items.indexOfFirst { it.articleId == item.articleId }
+            val oldItemIndex = this.items.indexOfFirst { it.aktId == item.aktId }
             if (oldItemIndex >= 0) {
                 this.items.set(oldItemIndex, item)
             } else {
@@ -101,7 +101,7 @@ class AktViewAdapter constructor(
     }
 
     fun updateItem(item: Akt) {
-        val index = items.indexOfFirst { it.articleId == item.articleId }
+        val index = items.indexOfFirst { it.aktId == item.aktId }
         items[index] = item
         this.notifyDataSetChanged()
     }
@@ -129,7 +129,7 @@ class AktViewAdapter constructor(
 
         holder.itemView.layoutButtonComment.setOnClickListener {
             val newItem = items[holder.adapterPosition]
-            commentCallbackClickHandler?.onAktCommentClicked(newItem.articleId)
+            commentCallbackClickHandler?.onAktCommentClicked(newItem.aktId)
         }
 
         holder.itemView.layoutButtonDislike.setOnClickListener {

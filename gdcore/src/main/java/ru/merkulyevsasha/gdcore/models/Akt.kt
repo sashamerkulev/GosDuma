@@ -4,7 +4,8 @@ import ru.merkulyevsasha.core.models.ArticleOrComment
 import java.util.*
 
 class Akt(
-    val articleId: Int,
+    val aktId: Int,
+    val sourceId: String,
     val sourceName: String,
     val title: String,
     val link: String,

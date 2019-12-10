@@ -15,6 +15,11 @@ dependencies {
     compileOnly project(path: ':gdcoreandroid')
     implementation project(path: ':preferences')
     implementation project(path: ':data')
+    implementation project(path: ':gddata')
     implementation project(path: ':domain')
     implementation project(path: ':gddomain')
+    implementation project(path: ':articlecomments')
+    implementation project(path: ':articledetails')
+    implementation project(path: ':articles')
+    implementation project(path: ':userinfo')
 }

@@ -5,7 +5,7 @@ import ru.merkulyevsasha.core.repositories.NewsDatabaseRepository
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.models.AktComment
 
-interface GDDatabaseRepository : NewsDatabaseRepository {
+interface GdDatabaseRepository : NewsDatabaseRepository {
 
     fun getAkt(aktId: Int): Single<Akt>
     fun getAkts(): Single<List<Akt>>

@@ -46,6 +46,17 @@ android {
     }
 }
 
+def appcompat = "1.0.2"
+def material = "1.0.0"
+def rxjava2 = '2.2.2'
+def rxjava2Android = '2.1.0'
+def junit = '4.12'
+def testRunner = '1.2.0'
+def assertJ = '3.8.0'
+def mockito = '3.2.0'
+def espresso = '3.2.0'
+def timber = '4.7.1'
+
 dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxjava2"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjava2Android"

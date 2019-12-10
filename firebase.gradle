@@ -1,7 +1,7 @@
 def firebaseCore = "17.0.0"
 def firebaseCrash = "16.2.1"
 def firebaseAds = "18.0.0"
-def firebaseMessaging = "19.0.1"
+def firebaseMessaging = "20.0.1"
 
 dependencies {
     implementation "com.google.firebase:firebase-core:$firebaseCore"

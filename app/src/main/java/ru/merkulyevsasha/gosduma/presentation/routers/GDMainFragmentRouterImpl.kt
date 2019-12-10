@@ -19,6 +19,10 @@ class GDMainFragmentRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
         replaceFragment(tag, fragment)
     }
 
+    override fun showSourceList() {
+
+    }
+
     override fun showUserActivities() {
 //        val tag = UserActivitiesFragment.TAG
 //        val fragment = findOrCreateFragment(tag) { UserActivitiesFragment.newInstance() }

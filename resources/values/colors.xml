@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#009688</color>
-    <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#00BFA5</color>
+    <color name="colorPrimary">#90A4AE</color>
+    <color name="colorPrimaryDark">#607D8B</color>
+    <color name="colorAccent">#90A4AE</color>
     <color name="colorInactive">#B0BEC5</color>
-    <color name="white">#f5f5f5</color>
-    <color name="black22">#6f6f6f</color>
-    <color name="separator">#cecece</color>
+    <color name="colorActive">#90A4AE</color>
+    <color name="colorBackground">#f5f5f5</color>
+    <color name="colorWindowBackground">#CFD8DC</color>
+    <color name="colorControlNormal">#607D8B</color>
+    <color name="actionBarTextColor">#f5f5f5</color>
+    <color name="textColor">#607D8B</color>
+    <color name="separator">#CFD8DC</color>
 </resources>

@@ -1,5 +1,5 @@
 def retrofit = '2.2.0'
-def okHttp = '3.11.0'
+def okHttp = '4.2.2'
 
 dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"

@@ -1,6 +1,7 @@
 package ru.merkulyevsasha.preferences
 
 import android.content.Context
+import ru.merkulyevsasha.core.models.ThemeEnum
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
 import java.util.*
 
@@ -17,6 +18,7 @@ class SettingsSharedPreferencesImpl(context: Context) : SettingsSharedPreference
         private val KEY_APPLICATION_RUN_NUMBER = "KEY_APPLICATION_RUN_NUMBER"
         private val KEY_APPLICATION_RATED_FLAG = "KEY_APPLICATION_RATED_FLAG"
         private val KEY_LAST_APPLICATION_RUN_DATE = "KEY_LAST_APPLICATION_RUN_DATE"
+        private val KEY_USER_PROFILE_THEME = "KEY_USER_PROFILE_THEME"
     }
 
     private val prefs: android.content.SharedPreferences =
@@ -111,6 +113,15 @@ class SettingsSharedPreferencesImpl(context: Context) : SettingsSharedPreference
         prefs.edit()
             .putLong(KEY_LAST_APPLICATION_RUN_DATE, calendar.timeInMillis)
             .apply()
+    }
+
+    override fun getUserProfileTheme(): ThemeEnum {
+        return ThemeEnum.valueOf(prefs.getString(KEY_USER_PROFILE_THEME, ThemeEnum.Classic.name)
+            ?: ThemeEnum.Classic.name)
+    }
+
+    override fun setUserProfileTheme(theme: ThemeEnum) {
+        prefs.edit().putString(KEY_USER_PROFILE_THEME, theme.name).apply()
     }
 
 }

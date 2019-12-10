@@ -4,7 +4,7 @@ import ru.merkulyevsasha.core.models.ArticleOrComment
 import java.util.*
 
 data class AktComment(
-    val articleId: Int,
+    val aktId: Int,
     val commentId: Int,
     val userId: Int,
     val userName: String,

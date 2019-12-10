@@ -2,19 +2,17 @@ package ru.merkulyevsasha.gddomain
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import ru.merkulyevsasha.gdcore.database.GDDatabaseRepository
+import ru.merkulyevsasha.gdcore.database.GdDatabaseRepository
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
 import ru.merkulyevsasha.gdcore.repositories.AktsApiRepository
-import ru.merkulyevsasha.gddomain.mappers.AktSourceNameMapper
 import java.util.*
 
 class AktsInteractorImpl(
     private val aktsApiRepository: AktsApiRepository,
     private val keyValueStorage: SettingsSharedPreferences,
-    private val databaseRepository: GDDatabaseRepository,
-    private val sourceNameMapper: AktSourceNameMapper
+    private val databaseRepository: GdDatabaseRepository
 ) : AktsInteractor {
 
     companion object {
@@ -34,7 +32,7 @@ class AktsInteractorImpl(
                 databaseRepository.getAkts()
                     .flatMap { items ->
                         if (items.isEmpty()) refreshAndGetAkts()
-                        else Single.just(items.map { sourceNameMapper.map(it) })
+                        else Single.just(items)
                     }
             }
             .subscribeOn(Schedulers.io())
@@ -51,9 +49,6 @@ class AktsInteractorImpl(
                         }
                     }
             }
-            .flattenAsFlowable { it }
-            .map { sourceNameMapper.map(it) }
-            .toList()
             .subscribeOn(Schedulers.io())
     }
 
@@ -61,11 +56,7 @@ class AktsInteractorImpl(
         return Single.fromCallable { searchText ?: "" }
             .flatMap { st: String ->
                 if (st.isEmpty()) getAkts()
-                else
-                    databaseRepository.searchAkts(st)
-                        .flattenAsFlowable { it }
-                        .map { sourceNameMapper.map(it) }
-                        .toList()
+                else databaseRepository.searchAkts(st)
             }
             .subscribeOn(Schedulers.io())
     }
@@ -75,7 +66,6 @@ class AktsInteractorImpl(
             .doOnSuccess {
                 databaseRepository.updateAkt(it)
             }
-            .map { sourceNameMapper.map(it) }
             .subscribeOn(Schedulers.io())
     }
 
@@ -84,7 +74,6 @@ class AktsInteractorImpl(
             .doOnSuccess {
                 databaseRepository.updateAkt(it)
             }
-            .map { sourceNameMapper.map(it) }
             .subscribeOn(Schedulers.io())
     }
 
@@ -93,7 +82,6 @@ class AktsInteractorImpl(
             .doOnSuccess {
                 databaseRepository.updateAkt(it)
             }
-            .map { sourceNameMapper.map(it) }
             .subscribeOn(Schedulers.io())
     }
 }

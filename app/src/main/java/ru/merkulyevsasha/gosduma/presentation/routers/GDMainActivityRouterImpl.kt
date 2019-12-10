@@ -39,6 +39,10 @@ class GDMainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
         replaceFragment(tag, fragment, true)
     }
 
+    override fun showSourceArticles(sourceId: String, sourceName: String) {
+
+    }
+
     override fun showAktComments(articleId: Int) {
         val tag = AktCommentsFragment.TAG
         val fragment = findOrCreateFragment(tag) { AktCommentsFragment.newInstance(articleId) }
