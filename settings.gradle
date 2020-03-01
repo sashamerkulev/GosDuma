@@ -1,4 +1,5 @@
-include ':app', ':core', ':coreandroid', ':data', ':database', ':network', ':domain', ':gddata', ':gddatabase',
+include ':app', ':core', ':coreandroid', ':netrepository', /*':database',*/ ':network', ':domain',
+        ':gddatabase',
         ':gdcore', ':gdcoreandroid', ':gdnetwork', ':gddomain', ':preferences',
         ':akts', ':aktdetails', ':aktcomments',
         ':articles', ':articledetails', ':articlecomments', ':userinfo',
@@ -8,9 +9,11 @@ project(':core').projectDir = new File('../News2/core')
 project(':coreandroid').projectDir = new File('../News2/coreandroid')
 project(':domain').projectDir = new File('../News2/domain')
 project(':network').projectDir = new File('../News2/network')
-project(':database').projectDir = new File('../News2/database')
-project(':data').projectDir = new File('../News2/data')
+//project(':database').projectDir = new File('../News2/database')
+project(':netrepository').projectDir = new File('../News2/netrepository')
 project(':articles').projectDir = new File('../News2/articles')
 project(':articledetails').projectDir = new File('../News2/articledetails')
 project(':articlecomments').projectDir = new File('../News2/articlecomments')
 project(':userinfo').projectDir = new File('../News2/userinfo')
+include ':gdnetrepository'
+include ':gddbrepository'

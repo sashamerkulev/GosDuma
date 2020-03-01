@@ -5,11 +5,11 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "akts", indices = [Index("sourceId"), Index("search"),
+@Entity(tableName = "articles", indices = [Index("sourceId"), Index("search"),
     Index("pubDate"), Index("lastActivityDate")])
-class AktEntity(
+class ArticleEntity(
     @PrimaryKey
-    val aktId: Int = 0,
+    val articleId: Int = 0,
     val sourceId: String,
     val title: String,
     val link: String,

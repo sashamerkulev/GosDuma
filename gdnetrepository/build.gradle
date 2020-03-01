@@ -8,15 +8,20 @@ apply from: "$rootDir/ktlint.gradle"
 apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"
 
+apply from: "$rootDir/retrofit.gradle"
+apply from: "$rootDir/room.gradle"
+
 dependencies {
     compileOnly project(path: ':core')
     compileOnly project(path: ':gdcore')
-//    compileOnly project(path: ':database')
+    compileOnly project(path: ':network')
+    compileOnly project(path: ':netrepository')
+    implementation project(path: ':gdnetwork')
 }
+
+apply from: "$rootDir/stetho.gradle"
 
 afterEvaluate {
     generateDebugBuildConfig.enabled = false
     generateReleaseBuildConfig.enabled = false
 }
-
-apply from: "$rootDir/room.gradle"

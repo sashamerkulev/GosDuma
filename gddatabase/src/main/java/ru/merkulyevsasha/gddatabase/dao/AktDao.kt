@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import io.reactivex.Single
-import ru.merkulyevsasha.database.entities.AktEntity
+import ru.merkulyevsasha.gddatabase.entities.AktEntity
 import ru.merkulyevsasha.gdcore.models.Akt
 
 @Dao

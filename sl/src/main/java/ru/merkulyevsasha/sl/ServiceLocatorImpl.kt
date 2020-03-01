@@ -20,11 +20,6 @@ import ru.merkulyevsasha.core.repositories.UsersApiRepository
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
-import ru.merkulyevsasha.data.database.NewsDatabaseRepositoryImpl
-import ru.merkulyevsasha.data.network.articlecomments.ArticleCommentsApiRepositoryImpl
-import ru.merkulyevsasha.data.network.articles.ArticlesApiRepositoryImpl
-import ru.merkulyevsasha.data.network.setup.SetupApiRepositoryImpl
-import ru.merkulyevsasha.data.network.users.UsersApiRepositoryImpl
 import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
 import ru.merkulyevsasha.domain.ArticleDistributorImpl
 import ru.merkulyevsasha.domain.ArticlesInteractorImpl
@@ -41,13 +36,17 @@ import ru.merkulyevsasha.gdcore.repositories.AktCommentsApiRepository
 import ru.merkulyevsasha.gdcore.repositories.AktsApiRepository
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
-import ru.merkulyevsasha.gddata.database.GdDatabaseRepositoryImpl
-import ru.merkulyevsasha.gddata.database.GosdumaRoomDatabaseSourceCreator
-import ru.merkulyevsasha.gddata.network.aktcomments.AktCommentsApiRepositoryImpl
-import ru.merkulyevsasha.gddata.network.akts.AktsApiRepositoryImpl
+import ru.merkulyevsasha.gddbrepository.database.GdDatabaseRepositoryImpl
+import ru.merkulyevsasha.gddbrepository.database.GosdumaRoomDatabaseSourceCreator
 import ru.merkulyevsasha.gddomain.AktCommentsInteractorImpl
 import ru.merkulyevsasha.gddomain.AktDistributorImpl
 import ru.merkulyevsasha.gddomain.AktsInteractorImpl
+import ru.merkulyevsasha.gdnetrepository.network.aktcomments.AktCommentsApiRepositoryImpl
+import ru.merkulyevsasha.gdnetrepository.network.akts.AktsApiRepositoryImpl
+import ru.merkulyevsasha.netrepository.network.articlecomments.ArticleCommentsApiRepositoryImpl
+import ru.merkulyevsasha.netrepository.network.articles.ArticlesApiRepositoryImpl
+import ru.merkulyevsasha.netrepository.network.setup.SetupApiRepositoryImpl
+import ru.merkulyevsasha.netrepository.network.users.UsersApiRepositoryImpl
 import ru.merkulyevsasha.preferences.SettingsSharedPreferencesImpl
 import ru.merkulyevsasha.userinfo.UserInfoPresenterImpl
 
@@ -80,7 +79,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[AktsApiRepository::class.java] = AktsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[AktCommentsApiRepository::class.java] = AktCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
-        maps[NewsDatabaseRepository::class.java] = NewsDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
+        maps[NewsDatabaseRepository::class.java] = GdDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
         maps[GdDatabaseRepository::class.java] = GdDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
     }
 

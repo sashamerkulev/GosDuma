@@ -4,6 +4,7 @@ buildscript {
     ext.minSdk = 16
     ext.targetSdk = 28
     ext.kotlin_version = '1.3.61'
+    ext.detekt_version = '1.6.0'
 
     repositories {
         jcenter()
@@ -11,7 +12,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,7 +22,7 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC14"
+    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
 }
 
 allprojects {
@@ -34,4 +35,38 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+def statTasks = []
+def testTasks = []
+def coverTasks = []
+subprojects { proj ->
+//    println proj.name
+    def linDebug = proj.name + ":lintDebug"
+    //statTasks = statTasks + linDebug
+    def ktLint = proj.name + ':ktlint'
+    //statTasks = statTasks + ktLint
+    def detekt = proj.name + ':detekt'
+    //statTasks = statTasks + detekt
+    def unitTest = proj.name + ":testDebugUnitTest"
+    //testTasks = testTasks + unitTest
+    def coverVer = proj.name + ":testDebugUnitTestCoverageVerification"
+    //coverTasks = coverTasks + coverVer
+}
+
+println statTasks
+println testTasks
+println coverTasks
+
+task allStaticAnalysis(dependsOn: statTasks) {
+    group = 'verification'
+}
+
+task allDebugUnitTest(dependsOn: testTasks) {
+    group = 'verification'
+}
+
+task allCoverageVerification(dependsOn: coverTasks) {
+    group = 'verification'
 }

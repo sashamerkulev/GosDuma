@@ -6,12 +6,12 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "aktComments",
-    foreignKeys = [ForeignKey(entity = AktEntity::class,
-        parentColumns = ["aktId"], childColumns = ["aktId"], onDelete = ForeignKey.CASCADE)],
-    indices = [Index("aktId"), Index("pubDate"), Index("lastActivityDate")])
-class AktCommentEntity(
-    val aktId: Int,
+@Entity(tableName = "articleComments",
+    foreignKeys = [ForeignKey(entity = ArticleEntity::class,
+        parentColumns = ["articleId"], childColumns = ["articleId"], onDelete = ForeignKey.CASCADE)],
+    indices = [Index("articleId"), Index("pubDate"), Index("lastActivityDate")])
+class ArticleCommentEntity(
+    val articleId: Int,
     @PrimaryKey
     val commentId: Int,
     val userId: Int,
