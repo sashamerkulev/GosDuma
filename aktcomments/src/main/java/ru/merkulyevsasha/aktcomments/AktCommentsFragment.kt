@@ -19,9 +19,6 @@ import ru.merkulyevsasha.core.domain.ArticleCommentsInteractor
 import ru.merkulyevsasha.core.models.ArticleOrComment
 import ru.merkulyevsasha.coreandroid.common.AdViewHelper
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
-import ru.merkulyevsasha.gdcore.AktDistributor
-import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
-import ru.merkulyevsasha.gdcore.domain.AktsInteractor
 import ru.merkulyevsasha.gdcore.models.Akt
 import ru.merkulyevsasha.gdcore.models.AktComment
 import java.util.*
@@ -72,9 +69,7 @@ class AktCommentsFragment : Fragment(), AktCommentsView, RequireServiceLocator {
 
         AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
 
-        val interactor = serviceLocator.get(AktCommentsInteractor::class.java)
-        val articleInteractor = serviceLocator.get(AktsInteractor::class.java)
-        presenter = AktCommentsPresenterImpl(interactor, articleInteractor, serviceLocator.get(AktDistributor::class.java))
+        presenter = serviceLocator.get(AktCommentsPresenterImpl::class.java)
         presenter?.bindView(this)
 
         initRecyclerView()

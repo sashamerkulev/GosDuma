@@ -22,5 +22,8 @@ dependencies {
     implementation project(path: ':articlecomments')
     implementation project(path: ':articledetails')
     implementation project(path: ':articles')
+    implementation project(path: ':aktcomments')
+    implementation project(path: ':aktdetails')
+    implementation project(path: ':akts')
     implementation project(path: ':userinfo')
 }

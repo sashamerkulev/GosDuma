@@ -1,6 +1,9 @@
 package ru.merkulyevsasha.sl
 
 import android.content.Context
+import ru.merkulyevsasha.aktcomments.AktCommentsPresenterImpl
+import ru.merkulyevsasha.aktdetails.AktDetailsPresenterImpl
+import ru.merkulyevsasha.akts.AktsPresenterImpl
 import ru.merkulyevsasha.articlecomments.ArticleCommentsPresenterImpl
 import ru.merkulyevsasha.articledetails.ArticleDetailsPresenterImpl
 import ru.merkulyevsasha.articles.ArticlesPresenterImpl
@@ -130,6 +133,18 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
                 get(ArticleDistributor::class.java),
                 get(MainActivityRouter::class.java))
             UserInfoPresenterImpl::class.java -> maps[clazz] = UserInfoPresenterImpl(get(UsersInteractor::class.java), get(SourceInteractor::class.java))
+            AktsPresenterImpl::class.java -> maps[clazz] = AktsPresenterImpl(
+                get(AktsInteractor::class.java),
+                get(AktDistributor::class.java),
+                get(GDMainActivityRouter::class.java))
+            AktDetailsPresenterImpl::class.java -> maps[clazz] = AktDetailsPresenterImpl(
+                get(AktsInteractor::class.java),
+                get(AktDistributor::class.java),
+                get(GDMainActivityRouter::class.java))
+            AktCommentsPresenterImpl::class.java -> maps[clazz] = AktCommentsPresenterImpl(
+                get(AktCommentsInteractor::class.java),
+                get(AktsInteractor::class.java),
+                get(AktDistributor::class.java))
         }
         return maps[clazz] as T
     }

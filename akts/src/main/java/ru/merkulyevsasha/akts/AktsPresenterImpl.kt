@@ -22,23 +22,23 @@ class AktsPresenterImpl(
     AktClickCallbackHandler, AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentCallbackClickHandler {
 
     private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
-        { view?.updateItem(it) },
+        { addCommand { view?.updateItem(it) } },
         { view?.showError() })
 
     private val searchAktHandler = SearchAktHandler(aktsInteractor, false,
-        { view?.showProgress() },
-        { view?.hideProgress() },
-        { view?.showItems(it) },
+        { addCommand { view?.showProgress() } },
+        { addCommand { view?.hideProgress() } },
+        { addCommand { view?.showItems(it) } },
         { view?.showError() })
 
     fun onFirstLoad() {
         compositeDisposable.add(
             aktsInteractor.getAkts()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe(
-                    { view?.showItems(it) },
+                    { addCommand { view?.showItems(it) } },
                     {
                         Timber.e(it)
                         view?.showError()
@@ -49,10 +49,10 @@ class AktsPresenterImpl(
         compositeDisposable.add(
             aktsInteractor.refreshAndGetAkts()
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe(
-                    { view?.updateItems(it) },
+                    { addCommand { view?.updateItems(it) } },
                     {
                         Timber.e(it)
                         view?.showError()

@@ -23,18 +23,18 @@ class AktCommentsPresenterImpl(
     AktLikeCallbackClickHandler, AktShareCallbackClickHandler, AktCommentLikeCallbackClickHandler, AktCommentShareCallbackClickHandler {
 
     private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
-        { view?.updateItem(it) },
+        { addCommand { view?.updateItem(it) } },
         { view?.showError() })
 
     fun onFirstLoad(articleId: Int) {
         compositeDisposable.add(
             aktCommentsInteractor.getAktComments(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe({
                     val result = listOf<ArticleOrComment>(it.first) + it.second
-                    view?.showComments(result)
+                    addCommand { view?.showComments(result) }
                 }, {
                     Timber.e(it)
                     view?.showError()
@@ -45,11 +45,11 @@ class AktCommentsPresenterImpl(
         compositeDisposable.add(
             aktCommentsInteractor.refreshAndGetAktComments(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe({
                     val aaa = listOf<ArticleOrComment>(it.first) + it.second
-                    view?.showComments(aaa)
+                    addCommand { view?.showComments(aaa) }
                 }, {
                     Timber.e(it)
                     view?.showError()
@@ -64,10 +64,10 @@ class AktCommentsPresenterImpl(
         compositeDisposable.add(
             aktCommentsInteractor.addAktComment(articleId, comment)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe({
-                    view?.updateCommentItem(it)
+                    addCommand { view?.updateCommentItem(it) }
                 }, {
                     Timber.e(it)
                     view?.showError()
@@ -90,10 +90,10 @@ class AktCommentsPresenterImpl(
         compositeDisposable.add(
             aktCommentsInteractor.likeAktComment(item.commentId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe({
-                    view?.updateCommentItem(it)
+                    addCommand { view?.updateCommentItem(it) }
                 }, {
                     Timber.e(it)
                     view?.showError()
@@ -104,10 +104,10 @@ class AktCommentsPresenterImpl(
         compositeDisposable.add(
             aktCommentsInteractor.dislikeAktComment(item.commentId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe({
-                    view?.updateCommentItem(it)
+                    addCommand { view?.updateCommentItem(it) }
                 }, {
                     Timber.e(it)
                     view?.showError()

@@ -15,17 +15,17 @@ class AktDetailsPresenterImpl(
 ) : BasePresenterImpl<AktDetailsView>() {
 
     private val aktLikeClickHandler = AktLikeClickHandler(aktsInteractor,
-        { view?.updateItem(it) },
+        { addCommand { view?.updateItem(it) } },
         { view?.showError() })
 
     fun onFirstLoad(articleId: Int) {
         compositeDisposable.add(
             aktsInteractor.getAkt(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe(
-                    { view?.showItem(it) },
+                    { addCommand { view?.showItem(it) } },
                     {
                         Timber.e(it)
                         view?.showError()
@@ -48,11 +48,11 @@ class AktDetailsPresenterImpl(
         compositeDisposable.add(
             aktsInteractor.getAkt(articleId)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.hideProgress() }
+                .doOnSubscribe { addCommand { view?.showProgress() } }
+                .doAfterTerminate { addCommand { view?.hideProgress() } }
                 .subscribe(
                     {
-                        aktDistributor.distribute(it)
+                        addCommand { aktDistributor.distribute(it) }
                     },
                     {
                         Timber.e(it)
