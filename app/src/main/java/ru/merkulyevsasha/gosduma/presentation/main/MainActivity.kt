@@ -5,18 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import ru.merkulyevsasha.core.RequireServiceLocator
 import ru.merkulyevsasha.core.ServiceLocator
 import ru.merkulyevsasha.core.domain.SetupInteractor
+import ru.merkulyevsasha.core.models.ThemeEnum
+import ru.merkulyevsasha.core.preferences.KeyValueStorage
+import ru.merkulyevsasha.core.presentation.OnThemeChangedCallback
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
 import ru.merkulyevsasha.gosduma.R
 
 class MainActivity : AppCompatActivity(),
-    MainView, ToolbarCombinator, RequireServiceLocator {
+    MainView, ToolbarCombinator, RequireServiceLocator, OnThemeChangedCallback {
 
     companion object {
         @JvmStatic
@@ -82,6 +86,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun showMainScreen() {
         serviceLocator.get(MainActivityRouter::class.java).showMain()
+        // TODO
+        val pref = serviceLocator.get(KeyValueStorage::class.java)
+        val theme = pref.getUserProfileTheme()
+        onThemeChanged(theme)
     }
 
     override fun showFatalError() {
@@ -95,6 +103,13 @@ class MainActivity : AppCompatActivity(),
 
     override fun unbindToolbar() {
         setSupportActionBar(null)
+    }
+
+    override fun onThemeChanged(theme: ThemeEnum) {
+        when (theme) {
+            ThemeEnum.ClassicNight -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            ThemeEnum.Classic -> delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     private fun isMainFragmentActive(): Boolean {
