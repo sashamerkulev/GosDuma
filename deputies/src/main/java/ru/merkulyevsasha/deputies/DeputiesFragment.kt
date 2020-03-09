@@ -22,6 +22,7 @@ import ru.merkulyevsasha.coreandroid.common.ShowActionBarListener
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
 import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
+import ru.merkulyevsasha.gdcore.models.Deputy
 
 class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
 
@@ -37,6 +38,7 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         }
     }
 
+    private lateinit var serviceLocator: GDServiceLocator
     private lateinit var toolbar: Toolbar
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var appbarLayout: AppBarLayout
@@ -44,9 +46,10 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
     private lateinit var appbarScrollExpander: AppbarScrollExpander
 
     private var combinator: ToolbarCombinator? = null
-    private var presenter: DeputiesPresenter? = null
+    private var presenter: DeputiesPresenterImpl? = null
 
     override fun setGDServiceLocator(serviceLocator: GDServiceLocator) {
+        this.serviceLocator = serviceLocator
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +90,10 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         swipeRefreshLayout.setOnRefreshListener { }
         colorThemeResolver.initSwipeRefreshColorScheme(swipeRefreshLayout)
 
+        presenter = serviceLocator.get(DeputiesPresenterImpl::class.java)
+        presenter?.bindView(this)
+        presenter?.onFirstLoad()
+
         AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
     }
 
@@ -119,6 +126,9 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         adView?.destroy()
         presenter?.onDestroy()
         super.onDestroyView()
+    }
+
+    override fun showItems(items: List<Deputy>) {
     }
 
 }

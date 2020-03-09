@@ -1,11 +1,15 @@
 package ru.merkulyevsasha.sl
 
 import android.content.Context
+import ru.merkulyevsasha.aktcomments.AktCommentsInteractorImpl
 import ru.merkulyevsasha.aktcomments.AktCommentsPresenterImpl
 import ru.merkulyevsasha.aktdetails.AktDetailsPresenterImpl
+import ru.merkulyevsasha.akts.AktsInteractorImpl
 import ru.merkulyevsasha.akts.AktsPresenterImpl
+import ru.merkulyevsasha.articlecomments.ArticleCommentsInteractorImpl
 import ru.merkulyevsasha.articlecomments.ArticleCommentsPresenterImpl
 import ru.merkulyevsasha.articledetails.ArticleDetailsPresenterImpl
+import ru.merkulyevsasha.articles.ArticlesInteractorImpl
 import ru.merkulyevsasha.articles.ArticlesPresenterImpl
 import ru.merkulyevsasha.core.ArticleDistributor
 import ru.merkulyevsasha.core.ResourceProvider
@@ -23,35 +27,36 @@ import ru.merkulyevsasha.core.repositories.UsersApiRepository
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.core.routers.MainFragmentRouter
 import ru.merkulyevsasha.coreandroid.providers.ResourceProviderImpl
-import ru.merkulyevsasha.domain.ArticleCommentsInteractorImpl
+import ru.merkulyevsasha.deputies.DeputiesInteractorImpl
+import ru.merkulyevsasha.deputies.DeputiesPresenterImpl
 import ru.merkulyevsasha.domain.ArticleDistributorImpl
-import ru.merkulyevsasha.domain.ArticlesInteractorImpl
 import ru.merkulyevsasha.domain.SetupInteractorImpl
 import ru.merkulyevsasha.domain.SourceInteractorImpl
-import ru.merkulyevsasha.domain.UsersInteractorImpl
 import ru.merkulyevsasha.gdcore.AktDistributor
 import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.database.GdDatabaseRepository
 import ru.merkulyevsasha.gdcore.domain.AktCommentsInteractor
 import ru.merkulyevsasha.gdcore.domain.AktsInteractor
+import ru.merkulyevsasha.gdcore.domain.DeputiesInteractor
 import ru.merkulyevsasha.gdcore.preferences.SettingsSharedPreferences
 import ru.merkulyevsasha.gdcore.repositories.AktCommentsApiRepository
 import ru.merkulyevsasha.gdcore.repositories.AktsApiRepository
+import ru.merkulyevsasha.gdcore.repositories.DeputiesApiRepository
 import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
 import ru.merkulyevsasha.gddbrepository.database.GdDatabaseRepositoryImpl
 import ru.merkulyevsasha.gddbrepository.database.GosdumaRoomDatabaseSourceCreator
-import ru.merkulyevsasha.gddomain.AktCommentsInteractorImpl
 import ru.merkulyevsasha.gddomain.AktDistributorImpl
-import ru.merkulyevsasha.gddomain.AktsInteractorImpl
 import ru.merkulyevsasha.gdnetrepository.network.aktcomments.AktCommentsApiRepositoryImpl
 import ru.merkulyevsasha.gdnetrepository.network.akts.AktsApiRepositoryImpl
+import ru.merkulyevsasha.gdnetrepository.network.deputies.DeputiesApiRepositoryImpl
 import ru.merkulyevsasha.netrepository.network.articlecomments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.netrepository.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.netrepository.network.setup.SetupApiRepositoryImpl
 import ru.merkulyevsasha.netrepository.network.users.UsersApiRepositoryImpl
 import ru.merkulyevsasha.preferences.SettingsSharedPreferencesImpl
 import ru.merkulyevsasha.userinfo.UserInfoPresenterImpl
+import ru.merkulyevsasha.userinfo.UsersInteractorImpl
 
 class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocator {
 
@@ -82,6 +87,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
         maps[AktsApiRepository::class.java] = AktsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[AktCommentsApiRepository::class.java] = AktCommentsApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[UsersApiRepository::class.java] = UsersApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
+        maps[DeputiesApiRepository::class.java] = DeputiesApiRepositoryImpl(prefs, BuildConfig.API_URL, BuildConfig.DEBUG_MODE)
         maps[NewsDatabaseRepository::class.java] = GdDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
         maps[GdDatabaseRepository::class.java] = GdDatabaseRepositoryImpl(databaseSource, prefs, BuildConfig.API_URL)
     }
@@ -120,6 +126,8 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
                 getDatabaseRepository())
             SourceInteractor::class.java -> maps[clazz] = SourceInteractorImpl(
                 getDatabaseRepository())
+            DeputiesInteractor::class.java -> maps[clazz] = DeputiesInteractorImpl(
+                get(DeputiesApiRepository::class.java))
             ArticleCommentsPresenterImpl::class.java -> maps[clazz] = ArticleCommentsPresenterImpl(
                 get(ArticleCommentsInteractor::class.java),
                 get(ArticlesInteractor::class.java),
@@ -145,6 +153,9 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
                 get(AktCommentsInteractor::class.java),
                 get(AktsInteractor::class.java),
                 get(AktDistributor::class.java))
+            DeputiesPresenterImpl::class.java -> maps[clazz] = DeputiesPresenterImpl(
+                get(DeputiesInteractor::class.java),
+                get(ResourceProvider::class.java))
         }
         return maps[clazz] as T
     }

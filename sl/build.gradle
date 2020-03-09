@@ -26,4 +26,5 @@ dependencies {
     implementation project(path: ':aktdetails')
     implementation project(path: ':akts')
     implementation project(path: ':userinfo')
+    implementation project(path: ':deputies')
 }
