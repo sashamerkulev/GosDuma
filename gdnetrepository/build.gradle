@@ -9,7 +9,6 @@ apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"
 
 apply from: "$rootDir/retrofit.gradle"
-apply from: "$rootDir/room.gradle"
 
 dependencies {
     compileOnly project(path: ':core')

@@ -8,17 +8,13 @@ apply from: "$rootDir/ktlint.gradle"
 apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"
 
-apply from: "$rootDir/retrofit.gradle"
 apply from: "$rootDir/room.gradle"
 
 dependencies {
     compileOnly project(path: ':core')
     compileOnly project(path: ':gdcore')
     compileOnly project(path: ':network')
-//    compileOnly project(path: ':database')
-//    compileOnly project(path: ':data')
     implementation project(path: ':gddatabase')
-//    implementation project(path: ':gdnetwork')
 }
 
 apply from: "$rootDir/stetho.gradle"

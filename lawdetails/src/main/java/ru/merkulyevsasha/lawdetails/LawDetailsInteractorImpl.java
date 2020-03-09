@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gddomain;
+package ru.merkulyevsasha.lawdetails;
 
 
 import java.util.HashMap;

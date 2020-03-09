@@ -1,4 +1,4 @@
-package ru.merkulyevsasha.gddomain
+package ru.merkulyevsasha.aktcomments
 
 import io.reactivex.Completable
 import io.reactivex.Single
