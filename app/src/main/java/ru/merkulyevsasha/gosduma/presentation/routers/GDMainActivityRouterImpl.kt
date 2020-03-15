@@ -51,7 +51,7 @@ class GDMainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
 
     override fun showDeputyDetails(deputyId: Int) {
         val tag = DeputyDetailsFragment.TAG
-        val fragment = findOrCreateFragment(tag) { DeputyDetailsFragment.newInstance() }
+        val fragment = findOrCreateFragment(tag) { DeputyDetailsFragment.newInstance(deputyId) }
         replaceFragment(tag, fragment, true)
     }
 

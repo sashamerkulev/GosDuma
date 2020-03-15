@@ -27,13 +27,17 @@ import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 class DeputyDetailsFragment : Fragment(), DeputyDetailsView, RequireGDServiceLocator {
 
     companion object {
+        private const val DEPUTY_ID: String = "DEPUTY_ID"
+
         @JvmStatic
         val TAG: String = "DeputyDetailsFragment"
 
         @JvmStatic
-        fun newInstance(): Fragment {
+        fun newInstance(deputyId: Int): Fragment {
             val fragment = DeputyDetailsFragment()
-            fragment.arguments = Bundle()
+            val args = Bundle()
+            args.putInt(DEPUTY_ID, deputyId)
+            fragment.arguments = args
             return fragment
         }
     }
@@ -44,10 +48,13 @@ class DeputyDetailsFragment : Fragment(), DeputyDetailsView, RequireGDServiceLoc
     private lateinit var colorThemeResolver: ColorThemeResolver
     private lateinit var appbarScrollExpander: AppbarScrollExpander
 
+    private lateinit var serviceLocator: GDServiceLocator
     private var combinator: ToolbarCombinator? = null
-    private var presenter: DeputyDetailsPresenter? = null
+    private var presenter: DeputyDetailsPresenterImpl? = null
+    private var deputyId = 0
 
     override fun setGDServiceLocator(serviceLocator: GDServiceLocator) {
+        this.serviceLocator = serviceLocator
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +94,12 @@ class DeputyDetailsFragment : Fragment(), DeputyDetailsView, RequireGDServiceLoc
         colorThemeResolver.initSwipeRefreshColorScheme(swipeRefreshLayout)
 
         AdViewHelper.loadBannerAd(adView, BuildConfig.DEBUG_MODE)
+
+        val bundle = savedInstanceState ?: arguments ?: return
+        deputyId = bundle.getInt(DEPUTY_ID, 0)
+        presenter = serviceLocator.get(DeputyDetailsPresenterImpl::class.java)
+        presenter?.bindView(this)
+        presenter?.onFirstLoad(deputyId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

@@ -4,7 +4,10 @@ import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
 import ru.merkulyevsasha.gdcore.domain.DeputyDetailsInteractor
 
-class DeputyDetailsPresenter(
+class DeputyDetailsPresenterImpl(
     private val deputyDetailsInteractor: DeputyDetailsInteractor,
     private val resourceProvider: ResourceProvider
-) : BasePresenterImpl<DeputyDetailsView>()
+) : BasePresenterImpl<DeputyDetailsView>() {
+    fun onFirstLoad(deputyId: Int) {
+    }
+}
