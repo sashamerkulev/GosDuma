@@ -8,7 +8,7 @@ import ru.merkulyevsasha.gdnetrepository.network.base.CorBaseApiRepository
 import ru.merkulyevsasha.gdnetwork.data.DeputiesApi
 
 class DeputiesApiRepositoryImpl(
-    sharedPreferences: KeyValueStorage,
+    private val sharedPreferences: KeyValueStorage,
     baseUrl: String,
     debugMode: Boolean
 ) : CorBaseApiRepository(sharedPreferences, baseUrl, debugMode), DeputiesApiRepository {
@@ -19,8 +19,9 @@ class DeputiesApiRepositoryImpl(
         val result = api.getDeputies(searchText, page, pageSize, orderFields, orderDirection)
         if (result.isSuccessful) {
             val resp = result.body()!!
+            val token = "bearer " + sharedPreferences.getAccessToken()
             return DeputyPages(resp.page, resp.pageSize,
-                resp.pageNumbers, resp.rowNumbers, resp.deputies.map { Deputy(it.id, it.name, it.isCurrent, it.position) })
+                resp.pageNumbers, resp.rowNumbers, resp.deputies.map { Deputy(it.id, it.name, it.isCurrent, it.position, it.avatar, token) })
         } else {
             val err = result.errorBody()
             throw Exception(err?.string())

@@ -15,14 +15,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.fragment_deputies.adView
+import kotlinx.android.synthetic.main.fragment_deputies.emptyText
 import kotlinx.android.synthetic.main.fragment_deputies.recyclerView
 import kotlinx.android.synthetic.main.fragment_deputies.swipeRefreshLayout
+import kotlinx.android.synthetic.main.row_deputy.view.current
+import kotlinx.android.synthetic.main.row_deputy.view.imageViewAvatar
+import kotlinx.android.synthetic.main.row_deputy.view.name
+import kotlinx.android.synthetic.main.row_deputy.view.position
 import ru.merkulyevsasha.coreandroid.common.AdViewHelper
 import ru.merkulyevsasha.coreandroid.common.AppbarScrollExpander
+import ru.merkulyevsasha.coreandroid.common.AvatarShower
 import ru.merkulyevsasha.coreandroid.common.ColorThemeResolver
 import ru.merkulyevsasha.coreandroid.common.ShowActionBarListener
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
-import ru.merkulyevsasha.coreandroid.common.newsadapter.NewsViewAdapter
 import ru.merkulyevsasha.gdcore.GDServiceLocator
 import ru.merkulyevsasha.gdcore.RequireGDServiceLocator
 import ru.merkulyevsasha.gdcore.models.Deputy
@@ -169,22 +174,33 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
     }
 
     override fun showItems(items: List<Deputy>) {
+        if (items.isEmpty()) {
+            emptyText.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        } else {
+            emptyText.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            adapter.setItems(items)
+        }
+    }
+
+    override fun showProgress() {
+        swipeRefreshLayout.isRefreshing = true
+    }
+
+    override fun hideProgress() {
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun initRecyclerView() {
         layoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
-//        adapter = NewsViewAdapter(
-//            requireContext(),
-//            presenter,
-//            presenter,
-//            presenter,
-//            presenter,
-//            presenter,
-//            colorThemeResolver,
-//            ArrayList()
-//        )
+        adapter = DeputiesAdapter(
+            requireContext(),
+            colorThemeResolver,
+            ArrayList()
+        )
         recyclerView.adapter = adapter
     }
 
@@ -195,19 +211,47 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         state.putString(KEY_SEARCH_TEXT, searchText)
     }
 
+    class DeputiesAdapter(
+        private val context: Context,
+        private val colorThemeResolver: ColorThemeResolver,
+        private val items: MutableList<Deputy>
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class DeputiesAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val avatarShower = AvatarShower()
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.row_deputy, parent, false)
+            return DeputyViewHolder(view)
         }
 
         override fun getItemCount(): Int {
-            TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+            return items.size
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+            (holder as DeputyViewHolder).bind(position)
         }
 
+        fun setItems(items: List<Deputy>) {
+            this.items.clear()
+            this.items.addAll(items)
+            this.notifyDataSetChanged()
+        }
+
+        inner class DeputyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bind(position: Int) {
+                val item = items[position]
+
+                itemView.name.text = item.name
+                itemView.position.text = item.position
+                itemView.current.setText(if (item.isCurrent) R.string.deputy_current else R.string.deputy_not_current)
+
+                if (item.avatarUrl.isNotEmpty()) {
+                    avatarShower.showWithoutCache(context, R.drawable.ic_avatar_empty, item.avatarUrl,
+                        item.authorization, itemView.imageViewAvatar)
+                }
+            }
+        }
     }
+
 }

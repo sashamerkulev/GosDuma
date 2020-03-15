@@ -24,10 +24,14 @@ class DeputiesPresenterImpl(
     fun onFirstLoad() {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
+                addCommand { view?.showProgress() }
                 val result = deputiesInteractor.getDeputies("", "")
                 addCommand { view?.showItems(result.deputies) }
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+            finally {
+                addCommand { view?.hideProgress() }
             }
         }
     }

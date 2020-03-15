@@ -76,4 +76,7 @@
     <string name="image_content_description">фото</string>
     <string name="open_details_image">открыть</string>
 
+    <string name="deputy_current">действующий</string>
+    <string name="deputy_not_current">не действующий</string>
+
 </resources>
