@@ -1,0 +1,13 @@
+android {
+    sourceSets {
+        main {
+            //manifest.srcFile 'AndroidManifest.xml'
+            //java.srcDirs = ['src']
+            resources.srcDirs = ['/src/main/res',"$rootDir/resources"]
+            //aidl.srcDirs = ['src']
+            //renderscript.srcDirs = ['src']
+            res.srcDirs = ['/src/main/res', "$rootDir/resources"]
+            //assets.srcDirs = ['assets']
+        }
+    }
+}

@@ -1,10 +1,10 @@
-def retrofit = '2.7.2'
-def okHttp = '4.4.0'
+def retrofit = '2.2.0'
+def okHttp = '4.4.1'
 
 dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+
     implementation "com.squareup.okhttp3:okhttp:$okHttp"
-    implementation 'ru.gildor.coroutines:kotlin-coroutines-retrofit:1.1.0'
 }

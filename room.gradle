@@ -1,4 +1,4 @@
-def room = '2.2.2'
+def room = '2.2.4'
 
 dependencies {
     implementation "androidx.room:room-runtime:$room"

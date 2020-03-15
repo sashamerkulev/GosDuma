@@ -15,6 +15,12 @@ class DeputiesPresenterImpl(
 
     var job: Job? = null
 
+    override fun onDestroy() {
+        job?.cancel()
+        job = null
+        super.onDestroy()
+    }
+
     fun onFirstLoad() {
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
@@ -26,9 +32,8 @@ class DeputiesPresenterImpl(
         }
     }
 
-    override fun onDestroy() {
-        job?.cancel()
-        job = null
-        super.onDestroy()
+    fun onRefresh() {
+
     }
+
 }

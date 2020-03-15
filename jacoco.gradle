@@ -1,108 +1,108 @@
-//apply plugin: 'jacoco'
-//
-//jacoco {
-//    toolVersion = "0.8.5"
-//}
-//
-//project.afterEvaluate {
-//    // Grab all build types and product flavors
-//    def buildTypes = android.buildTypes.collect { type -> type.name }
-//    def productFlavors = android.productFlavors.collect { flavor -> flavor.name }
-//
-//    // When no product flavors defined, use empty
-//    if (!productFlavors) productFlavors.add('')
-//
-//    productFlavors.each { productFlavorName ->
-//        buildTypes.each { buildTypeName ->
-//            def sourceName, sourcePath
-//            if (!productFlavorName) {
-//                sourceName = sourcePath = "${buildTypeName}"
-//            } else {
-//                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
-//                sourcePath = "${productFlavorName}/${buildTypeName}"
-//            }
-//            def testTaskName = "test${sourceName.capitalize()}UnitTest"
-//
-//            def excludes = []
-//            new File("$rootDir/jacoco.exclude").eachLine { line ->
-//                if (!line.isEmpty() && !line.startsWith("//")) {
-//                    excludes << line
-//                }
-//            }
-//
-//            def coverageSourceDirs = [
-//                    "src/main/java",
-//                    "src/$productFlavorName/java",
-//                    "src/$buildTypeName/java"
-//            ]
-//
-//            def debugTree = fileTree(dir: "${project.buildDir}/intermediates/classes/${sourcePath}", excludes: excludes)
-//            def kotlinDebugTree = fileTree(dir: "${project.buildDir}/tmp/kotlin-classes/${sourcePath}", excludes: excludes)
-//            def classDirs = files([debugTree], [kotlinDebugTree])
-//            def jacocoExecFile = "${project.buildDir}/jacoco/${testTaskName}.exec"
-//
-//            // Create coverage task of form 'testFlavorTypeCoverage' depending on 'testFlavorTypeUnitTest'
-//            def jacocoTestReportTaskName = "${testTaskName}Coverage"
-//            task "$jacocoTestReportTaskName"(type: JacocoReport, dependsOn: "$testTaskName") {
-//                group = "Reporting"
-//                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
-//
-//                classDirectories = classDirs
-//                additionalSourceDirs = files(coverageSourceDirs)
-//                sourceDirectories = files(coverageSourceDirs)
-//                executionData = files(jacocoExecFile)
-//
-//                reports {
-//                    xml.enabled = true
-//                    html.enabled = true
-//                }
-//            }
-//
-//            task "${jacocoTestReportTaskName}Verification"(type: JacocoCoverageVerification, dependsOn: "$jacocoTestReportTaskName") {
-//                group = "Verification"
-//                description = "Verifies Jacoco coverage reports on the ${sourceName.capitalize()} build."
-//
-//                classDirectories = classDirs
-//                sourceDirectories = files(coverageSourceDirs)
-//                executionData = files(jacocoExecFile)
-//
-//                violationRules {
-//                    setFailOnViolation(true)
-//
-//                    rule {
-//                        element = 'CLASS'
-//                        enabled = true
-//
-//                        limit {
-//                            value = 'COVEREDRATIO'
-//                            counter = 'BRANCH'
-//                            minimum = 0.8
-//                        }
-//                    }
-//
-//                    rule {
-//                        element = 'CLASS'
-//
-//                        limit {
-//                            value = 'COVEREDRATIO'
-//                            counter = 'INSTRUCTION'
-//                            minimum = 0.6
-//                        }
-//                    }
-//
-//                    rule {
-//                        element = 'CLASS'
-//                        enabled = true
-//
-//                        limit {
-//                            counter = 'CLASS'
-//                            value = 'MISSEDCOUNT'
-//                            maximum = 0
-//                        }
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
-//}
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+project.afterEvaluate {
+    // Grab all build types and product flavors
+    def buildTypes = android.buildTypes.collect { type -> type.name }
+    def productFlavors = android.productFlavors.collect { flavor -> flavor.name }
+
+    // When no product flavors defined, use empty
+    if (!productFlavors) productFlavors.add('')
+
+    productFlavors.each { productFlavorName ->
+        buildTypes.each { buildTypeName ->
+            def sourceName, sourcePath
+            if (!productFlavorName) {
+                sourceName = sourcePath = "${buildTypeName}"
+            } else {
+                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                sourcePath = "${productFlavorName}/${buildTypeName}"
+            }
+            def testTaskName = "test${sourceName.capitalize()}UnitTest"
+
+            def excludes = []
+            new File("$rootDir/jacoco.exclude").eachLine { line ->
+                if (!line.isEmpty() && !line.startsWith("//")) {
+                    excludes << line
+                }
+            }
+
+            def coverageSourceDirs = [
+                    "src/main/java",
+                    "src/$productFlavorName/java",
+                    "src/$buildTypeName/java"
+            ]
+
+            def debugTree = fileTree(dir: "${project.buildDir}/intermediates/classes/${sourcePath}", excludes: excludes)
+            def kotlinDebugTree = fileTree(dir: "${project.buildDir}/tmp/kotlin-classes/${sourcePath}", excludes: excludes)
+            def classDirs = files([debugTree], [kotlinDebugTree])
+            def jacocoExecFile = "${project.buildDir}/jacoco/${testTaskName}.exec"
+
+            // Create coverage task of form 'testFlavorTypeCoverage' depending on 'testFlavorTypeUnitTest'
+            def jacocoTestReportTaskName = "${testTaskName}Coverage"
+            task "$jacocoTestReportTaskName"(type: JacocoReport, dependsOn: "$testTaskName") {
+                group = "Reporting"
+                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+
+                classDirectories = classDirs
+                additionalSourceDirs = files(coverageSourceDirs)
+                sourceDirectories = files(coverageSourceDirs)
+                executionData = files(jacocoExecFile)
+
+                reports {
+                    xml.enabled = true
+                    html.enabled = true
+                }
+            }
+
+            task "${jacocoTestReportTaskName}Verification"(type: JacocoCoverageVerification, dependsOn: "$jacocoTestReportTaskName") {
+                group = "Verification"
+                description = "Verifies Jacoco coverage reports on the ${sourceName.capitalize()} build."
+
+                classDirectories = classDirs
+                sourceDirectories = files(coverageSourceDirs)
+                executionData = files(jacocoExecFile)
+
+                violationRules {
+                    setFailOnViolation(true)
+
+                    rule {
+                        element = 'CLASS'
+                        enabled = true
+
+                        limit {
+                            value = 'COVEREDRATIO'
+                            counter = 'BRANCH'
+                            minimum = 0.8
+                        }
+                    }
+
+                    rule {
+                        element = 'CLASS'
+
+                        limit {
+                            value = 'COVEREDRATIO'
+                            counter = 'INSTRUCTION'
+                            minimum = 0.6
+                        }
+                    }
+
+                    rule {
+                        element = 'CLASS'
+                        enabled = true
+
+                        limit {
+                            counter = 'CLASS'
+                            value = 'MISSEDCOUNT'
+                            maximum = 0
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
