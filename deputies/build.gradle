@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 apply from: "$rootDir/resource.gradle"
 apply from: "$rootDir/android.gradle"
+apply from: "$rootDir/corout.gradle"
 apply from: "$rootDir/ktlint.gradle"
 apply from: "$rootDir/detekt.gradle"
 apply from: "$rootDir/jacoco.gradle"

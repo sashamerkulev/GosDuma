@@ -1,0 +1,5 @@
+def coroutines = '1.1.0'
+
+dependencies {
+    implementation "ru.gildor.coroutines:kotlin-coroutines-retrofit:$coroutines"
+}
