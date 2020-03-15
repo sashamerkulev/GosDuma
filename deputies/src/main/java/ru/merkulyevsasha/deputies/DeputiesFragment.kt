@@ -241,15 +241,11 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         inner class DeputyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(position: Int) {
                 val item = items[position]
-
                 itemView.name.text = item.name
                 itemView.position.text = item.position
                 itemView.current.setText(if (item.isCurrent) R.string.deputy_current else R.string.deputy_not_current)
-
-                if (item.avatarUrl.isNotEmpty()) {
-                    avatarShower.showWithoutCache(context, R.drawable.ic_avatar_empty, item.avatarUrl,
-                        item.authorization, itemView.imageViewAvatar)
-                }
+                avatarShower.showWithoutCache(context, R.drawable.ic_avatar_empty, item.avatarUrl,
+                    item.authorization, itemView.imageViewAvatar)
             }
         }
     }

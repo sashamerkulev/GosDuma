@@ -9,7 +9,7 @@ import ru.merkulyevsasha.gdnetwork.data.DeputiesApi
 
 class DeputiesApiRepositoryImpl(
     private val sharedPreferences: KeyValueStorage,
-    baseUrl: String,
+    private val baseUrl: String,
     debugMode: Boolean
 ) : CorBaseApiRepository(sharedPreferences, baseUrl, debugMode), DeputiesApiRepository {
 
@@ -21,7 +21,11 @@ class DeputiesApiRepositoryImpl(
             val resp = result.body()!!
             val token = "bearer " + sharedPreferences.getAccessToken()
             return DeputyPages(resp.page, resp.pageSize,
-                resp.pageNumbers, resp.rowNumbers, resp.deputies.map { Deputy(it.id, it.name, it.isCurrent, it.position, it.avatar, token) })
+                resp.pageNumbers, resp.rowNumbers, resp.deputies.map {
+                val url = baseUrl + "/deputies/" + it.id + "/image"
+                Deputy(it.id, it.name, it.isCurrent, it.position, url, token)
+            }
+            )
         } else {
             val err = result.errorBody()
             throw Exception(err?.string())
