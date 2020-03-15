@@ -18,9 +18,10 @@ import ru.merkulyevsasha.core.presentation.OnThemeChangedCallback
 import ru.merkulyevsasha.core.routers.MainActivityRouter
 import ru.merkulyevsasha.coreandroid.common.ToolbarCombinator
 import ru.merkulyevsasha.gosduma.R
+import ru.merkulyevsasha.main.MainPresenterImpl
 
 class MainActivity : AppCompatActivity(),
-    MainView, ToolbarCombinator, RequireServiceLocator, OnThemeChangedCallback {
+    ru.merkulyevsasha.main.MainView, ToolbarCombinator, RequireServiceLocator, OnThemeChangedCallback {
 
     companion object {
         @JvmStatic
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(),
 
     private lateinit var serviceLocator: ServiceLocator
     private lateinit var mainActivityRouter: MainActivityRouter
-    private lateinit var presenter: MainPresenter
+    private lateinit var presenter: ru.merkulyevsasha.main.MainPresenterImpl
 
     override fun setServiceLocator(serviceLocator: ServiceLocator) {
         this.serviceLocator = serviceLocator
@@ -45,8 +46,7 @@ class MainActivity : AppCompatActivity(),
 
         setContentView(R.layout.activity_main)
 
-        val interactor = serviceLocator.get(SetupInteractor::class.java)
-        presenter = MainPresenter(interactor)
+        presenter = serviceLocator.get(MainPresenterImpl::class.java)
 
         //AppRateRequester.run(this, BuildConfig.APPLICATION_ID)
 

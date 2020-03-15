@@ -19,6 +19,7 @@ dependencies {
     implementation project(path: ':gddbrepository')
     implementation project(path: ':domain')
     implementation project(path: ':gddomain')
+    implementation project(path: ':main')
     implementation project(path: ':articlecomments')
     implementation project(path: ':articledetails')
     implementation project(path: ':articles')

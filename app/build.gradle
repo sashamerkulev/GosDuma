@@ -31,6 +31,7 @@ dependencies {
     implementation project(path: ':gdcore')
     implementation project(path: ':coreandroid')
     implementation project(path: ':gdcoreandroid')
+    implementation project(path: ':main')
     implementation project(path: ':sl')
     implementation project(path: ':articles')
     implementation project(path: ':articledetails')

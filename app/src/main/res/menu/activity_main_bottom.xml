@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_rss_feed_black_24px"
         android:title="@string/bottom_button_articles_title" />
 
-    <item
-        android:id="@+id/navigation_akt"
-        android:icon="@drawable/ic_note_outline"
-        android:title="@string/bottom_button_akt_title" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_akt"-->
+<!--        android:icon="@drawable/ic_note_outline"-->
+<!--        android:title="@string/bottom_button_akt_title" />-->
 
     <item
         android:id="@+id/navigation_deputies"

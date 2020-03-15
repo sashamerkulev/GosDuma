@@ -47,10 +47,10 @@ class MainFragment : Fragment(), RequireServiceLocator {
                     mainFragmentRouter.showUserInfo()
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.navigation_akt -> {
-                    mainFragmentRouter.showAkts()
-                    return@OnNavigationItemSelectedListener true
-                }
+//                R.id.navigation_akt -> {
+//                    mainFragmentRouter.showAkts()
+//                    return@OnNavigationItemSelectedListener true
+//                }
             }
             false
         }

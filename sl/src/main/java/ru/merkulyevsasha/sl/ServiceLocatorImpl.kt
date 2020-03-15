@@ -50,6 +50,7 @@ import ru.merkulyevsasha.gddomain.AktDistributorImpl
 import ru.merkulyevsasha.gdnetrepository.network.aktcomments.AktCommentsApiRepositoryImpl
 import ru.merkulyevsasha.gdnetrepository.network.akts.AktsApiRepositoryImpl
 import ru.merkulyevsasha.gdnetrepository.network.deputies.DeputiesApiRepositoryImpl
+import ru.merkulyevsasha.main.MainPresenterImpl
 import ru.merkulyevsasha.netrepository.network.articlecomments.ArticleCommentsApiRepositoryImpl
 import ru.merkulyevsasha.netrepository.network.articles.ArticlesApiRepositoryImpl
 import ru.merkulyevsasha.netrepository.network.setup.SetupApiRepositoryImpl
@@ -128,6 +129,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
                 getDatabaseRepository())
             DeputiesInteractor::class.java -> maps[clazz] = DeputiesInteractorImpl(
                 get(DeputiesApiRepository::class.java))
+            MainPresenterImpl::class.java -> maps[clazz] = MainPresenterImpl(get(SetupInteractor::class.java))
             ArticleCommentsPresenterImpl::class.java -> maps[clazz] = ArticleCommentsPresenterImpl(
                 get(ArticleCommentsInteractor::class.java),
                 get(ArticlesInteractor::class.java),

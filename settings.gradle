@@ -16,3 +16,4 @@ project(':articlecomments').projectDir = new File('../News2/articlecomments')
 project(':userinfo').projectDir = new File('../News2/userinfo')
 include ':gdnetrepository'
 include ':gddbrepository'
+include ':main'
