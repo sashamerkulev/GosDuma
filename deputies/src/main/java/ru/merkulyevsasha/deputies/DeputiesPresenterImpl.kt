@@ -7,11 +7,13 @@ import kotlinx.coroutines.launch
 import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
 import ru.merkulyevsasha.gdcore.domain.DeputiesInteractor
+import ru.merkulyevsasha.gdcore.routers.GDMainActivityRouter
 
 class DeputiesPresenterImpl(
     private val deputiesInteractor: DeputiesInteractor,
+    private val router: GDMainActivityRouter,
     private val resourceProvider: ResourceProvider
-) : BasePresenterImpl<DeputiesView>() {
+) : BasePresenterImpl<DeputiesView>(), OnDeputyClickListener {
 
     var job: Job? = null
 
@@ -29,15 +31,18 @@ class DeputiesPresenterImpl(
                 addCommand { view?.showItems(result.deputies) }
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
-            finally {
+            } finally {
                 addCommand { view?.hideProgress() }
             }
         }
     }
 
     fun onRefresh() {
+        addCommand { view?.hideProgress() }
+    }
 
+    override fun onDeputyClicked(deputyId: Int) {
+        router.showDeputyDetails(deputyId)
     }
 
 }

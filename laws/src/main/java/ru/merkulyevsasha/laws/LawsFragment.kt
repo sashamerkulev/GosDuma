@@ -27,7 +27,7 @@ class LawsFragment : Fragment(), LawsView, RequireGDServiceLocator {
 
     companion object {
         @JvmStatic
-        val TAG: String = LawsFragment::class.java.simpleName
+        val TAG: String = "LawsFragment"
 
         @JvmStatic
         fun newInstance(): Fragment {

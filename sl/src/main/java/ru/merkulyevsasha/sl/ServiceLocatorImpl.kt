@@ -157,6 +157,7 @@ class ServiceLocatorImpl private constructor(context: Context) : GDServiceLocato
                 get(AktDistributor::class.java))
             DeputiesPresenterImpl::class.java -> maps[clazz] = DeputiesPresenterImpl(
                 get(DeputiesInteractor::class.java),
+                get(GDMainActivityRouter::class.java),
                 get(ResourceProvider::class.java))
         }
         return maps[clazz] as T

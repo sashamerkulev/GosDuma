@@ -28,7 +28,7 @@ class DeputyDetailsFragment : Fragment(), DeputyDetailsView, RequireGDServiceLoc
 
     companion object {
         @JvmStatic
-        val TAG: String = DeputyDetailsFragment::class.java.simpleName
+        val TAG: String = "DeputyDetailsFragment"
 
         @JvmStatic
         fun newInstance(): Fragment {
@@ -72,7 +72,7 @@ class DeputyDetailsFragment : Fragment(), DeputyDetailsView, RequireGDServiceLoc
         collapsingToolbarLayout = view.findViewById(R.id.collapsinngToolbarLayout)
         appbarLayout = view.findViewById(R.id.appbarLayout)
 
-//        toolbar.setTitle(R.string.menu_deputies)
+        toolbar.setTitle("депутат")
         toolbar.setTitleTextColor(colorThemeResolver.getThemeAttrColor(R.attr.actionBarTextColor))
         collapsingToolbarLayout.isTitleEnabled = false
         combinator?.bindToolbar(toolbar)

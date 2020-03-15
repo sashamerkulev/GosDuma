@@ -43,7 +43,7 @@ class AktsFragment : Fragment(), AktsView, RequireServiceLocator {
         private const val KEY_SEARCH_TEXT = "key_search_text"
 
         @JvmStatic
-        val TAG: String = AktsFragment::class.java.simpleName
+        val TAG: String = "AktsFragment"
 
         @JvmStatic
         fun newInstance(): Fragment {

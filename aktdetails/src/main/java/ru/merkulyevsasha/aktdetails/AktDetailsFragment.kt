@@ -32,7 +32,7 @@ class AktDetailsFragment : Fragment(), AktDetailsView, RequireServiceLocator {
     companion object {
         private const val ARTICLE_ID = "ARTICLE_ID"
         @JvmStatic
-        val TAG: String = AktDetailsFragment::class.java.simpleName
+        val TAG: String = "AktDetailsFragment"
 
         @JvmStatic
         fun newInstance(articleId: Int): Fragment {

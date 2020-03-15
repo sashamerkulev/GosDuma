@@ -49,13 +49,13 @@ class GDMainActivityRouterImpl(fragmentManager: FragmentManager) : BaseRouter(R.
         replaceFragment(tag, fragment, true)
     }
 
-    override fun showDeputyDetails() {
+    override fun showDeputyDetails(deputyId: Int) {
         val tag = DeputyDetailsFragment.TAG
         val fragment = findOrCreateFragment(tag) { DeputyDetailsFragment.newInstance() }
         replaceFragment(tag, fragment, true)
     }
 
-    override fun showLawDetails() {
+    override fun showLawDetails(lawId: Int) {
         val tag = LawDetailsFragment.TAG
         val fragment = findOrCreateFragment(tag) { LawDetailsFragment.newInstance() }
         replaceFragment(tag, fragment, true)

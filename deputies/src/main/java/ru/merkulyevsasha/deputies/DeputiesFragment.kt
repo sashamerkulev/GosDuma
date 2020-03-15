@@ -41,7 +41,7 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         private const val KEY_SEARCH_TEXT = "key_search_text"
 
         @JvmStatic
-        val TAG: String = DeputiesFragment::class.java.simpleName
+        val TAG: String = "DeputiesFragment"
 
         @JvmStatic
         fun newInstance(): Fragment {
@@ -175,21 +175,22 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
 
     override fun showItems(items: List<Deputy>) {
         if (items.isEmpty()) {
-            emptyText.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
+            emptyText?.visibility = View.VISIBLE
+            recyclerView?.visibility = View.GONE
         } else {
-            emptyText.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
+            emptyText?.visibility = View.GONE
+            recyclerView?.visibility = View.VISIBLE
             adapter.setItems(items)
+            layoutManager.scrollToPosition(position)
         }
     }
 
     override fun showProgress() {
-        swipeRefreshLayout.isRefreshing = true
+        swipeRefreshLayout?.isRefreshing = true
     }
 
     override fun hideProgress() {
-        swipeRefreshLayout.isRefreshing = false
+        swipeRefreshLayout?.isRefreshing = false
     }
 
     private fun initRecyclerView() {
@@ -199,6 +200,7 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
         adapter = DeputiesAdapter(
             requireContext(),
             colorThemeResolver,
+            presenter!!,
             ArrayList()
         )
         recyclerView.adapter = adapter
@@ -214,6 +216,7 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
     class DeputiesAdapter(
         private val context: Context,
         private val colorThemeResolver: ColorThemeResolver,
+        private val onDeputyClickListener: OnDeputyClickListener,
         private val items: MutableList<Deputy>
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -246,6 +249,7 @@ class DeputiesFragment : Fragment(), DeputiesView, RequireGDServiceLocator {
                 itemView.current.setText(if (item.isCurrent) R.string.deputy_current else R.string.deputy_not_current)
                 avatarShower.showWithoutCache(context, R.drawable.ic_avatar_empty, item.avatarUrl,
                     item.authorization, itemView.imageViewAvatar)
+                itemView.setOnClickListener { onDeputyClickListener.onDeputyClicked(item.id) }
             }
         }
     }

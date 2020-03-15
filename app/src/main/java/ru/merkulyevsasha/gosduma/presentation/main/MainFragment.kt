@@ -7,16 +7,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.bottomNav
+import ru.merkulyevsasha.articles.ArticlesFragment
 import ru.merkulyevsasha.core.RequireServiceLocator
 import ru.merkulyevsasha.core.ServiceLocator
+import ru.merkulyevsasha.deputies.DeputiesFragment
 import ru.merkulyevsasha.gdcore.routers.GDMainFragmentRouter
 import ru.merkulyevsasha.gosduma.R
+import ru.merkulyevsasha.laws.LawsFragment
+import ru.merkulyevsasha.userinfo.UserInfoFragment
 
 class MainFragment : Fragment(), RequireServiceLocator {
 
     companion object {
         @JvmStatic
-        val TAG: String = MainFragment::class.java.simpleName
+        val TAG: String = "MainFragment"
+        private val KEY_FRAG = "KEY_FRAG"
 
         @JvmStatic
         fun newInstance(): Fragment {
@@ -27,23 +32,28 @@ class MainFragment : Fragment(), RequireServiceLocator {
     }
 
     private lateinit var mainFragmentRouter: GDMainFragmentRouter
+    private var currentFrag = ArticlesFragment.TAG
 
     private val navigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_articles -> {
+                    currentFrag = ArticlesFragment.TAG
                     mainFragmentRouter.showArticles()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_deputies -> {
+                    currentFrag = DeputiesFragment.TAG
                     mainFragmentRouter.showDeputies()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_laws -> {
+                    currentFrag = LawsFragment.TAG
                     mainFragmentRouter.showLaws()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_user -> {
+                    currentFrag = UserInfoFragment.TAG
                     mainFragmentRouter.showUserInfo()
                     return@OnNavigationItemSelectedListener true
                 }
@@ -67,7 +77,19 @@ class MainFragment : Fragment(), RequireServiceLocator {
         bottomNav.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
 
         if (savedInstanceState == null) {
-            mainFragmentRouter.showArticles()
+            when(currentFrag) {
+                ArticlesFragment.TAG -> mainFragmentRouter.showArticles()
+                DeputiesFragment.TAG -> mainFragmentRouter.showSourceList()
+                LawsFragment.TAG -> mainFragmentRouter.showUserActivities()
+                UserInfoFragment.TAG -> mainFragmentRouter.showUserInfo()
+            }
+        } else {
+            currentFrag = savedInstanceState.getString(KEY_FRAG) ?: ArticlesFragment.TAG
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_FRAG, currentFrag)
     }
 }

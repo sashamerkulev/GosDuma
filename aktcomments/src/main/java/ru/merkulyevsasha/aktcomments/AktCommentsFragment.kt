@@ -29,7 +29,7 @@ class AktCommentsFragment : Fragment(), AktCommentsView, RequireServiceLocator {
         private const val KEY_POSITION = "key_position"
         private const val ARTICLE_ID = "ARTICLE_ID"
         @JvmStatic
-        val TAG: String = AktCommentsFragment::class.java.simpleName
+        val TAG: String = "AktCommentsFragment"
 
         @JvmStatic
         fun newInstance(articleId: Int): Fragment {
