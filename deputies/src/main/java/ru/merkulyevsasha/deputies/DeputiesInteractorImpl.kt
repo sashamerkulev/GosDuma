@@ -7,7 +7,7 @@ import ru.merkulyevsasha.gdcore.repositories.DeputiesApiRepository
 class DeputiesInteractorImpl(private val repo: DeputiesApiRepository) : DeputiesInteractor {
 
     override suspend fun getDeputies(searchText: String, orderDirection: String): DeputyPages {
-        return repo.getDeputies(searchText, 1, 100, "", orderDirection)
+        return repo.getDeputies(searchText, 1, 500, "", orderDirection)
     }
 
 }

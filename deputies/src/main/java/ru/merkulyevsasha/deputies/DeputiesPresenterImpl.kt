@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.merkulyevsasha.core.ResourceProvider
 import ru.merkulyevsasha.coreandroid.base.BasePresenterImpl
 import ru.merkulyevsasha.gdcore.domain.DeputiesInteractor
@@ -27,7 +28,7 @@ class DeputiesPresenterImpl(
         job = GlobalScope.launch(Dispatchers.Main) {
             try {
                 addCommand { view?.showProgress() }
-                val result = deputiesInteractor.getDeputies("", "")
+                val result = withContext(Dispatchers.IO) { deputiesInteractor.getDeputies("", "") }
                 addCommand { view?.showItems(result.deputies) }
             } catch (e: Exception) {
                 e.printStackTrace()
